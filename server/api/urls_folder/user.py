@@ -1,8 +1,9 @@
 from django.urls import path
-from ..views import UserView, UserCourseView, ChangePasswordView, FindUserView, FindUserCourseView, CartView, CourseInCartExists, CheckoutCourse, CourseInUserCourseExists
+from ..views import AllUsersView, UserView, UserCourseView, ChangePasswordView, FindUserView, FindUserCourseView, CartView, CourseInCartExists, CheckoutCourse, CourseInUserCourseExists
 
 urlpatterns = [
     path("", UserView.as_view(), name="my-profile"),
+    path("all", AllUsersView.as_view(), name="find-all-users"),
     path("cart", CartView.as_view(), name="cart"),
     path("cart/checkout", CheckoutCourse.as_view(), name="cart"),
     path("cart/<int:course_id>", CourseInCartExists.as_view(), name="cart"),

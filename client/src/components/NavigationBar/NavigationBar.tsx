@@ -1,7 +1,14 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Menu, User, ShoppingCart, Compass, BookOpenText } from "lucide-react";
+import {
+  Menu,
+  User,
+  ShoppingCart,
+  Compass,
+  BookOpenText,
+  MessageSquareText,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -15,6 +22,7 @@ import { UserContext } from "@/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { CartItem, getCartItems } from "@/services/cart.service";
 import { getCoursesTaken, UserCourseItem } from "@/services/courses.service";
+import ChatRoomDialog from "./ChatRoomDialog";
 
 const NavigationBar = () => {
   const navigate = useNavigate();
@@ -97,6 +105,7 @@ const NavigationBar = () => {
               Logo
             </Link>
           </div>
+
           <div className="relative w-2/3 lg:w-1/3 xl:w-1/2">
             <input
               className="w-full rounded-full border border-black px-3 py-2 pl-10 text-sm"
@@ -120,7 +129,7 @@ const NavigationBar = () => {
               />
             </svg>
           </div>
-          <div className="hidden lg:block pr-16">
+          <div className="hidden lg:block">
             <div className="flex items-center gap-12">
               <Link to="/">
                 <NavigationMenu>
@@ -297,6 +306,7 @@ const NavigationBar = () => {
                   Sign Up
                 </Link>
               )}
+              {user && <ChatRoomDialog />}
             </div>
           </div>
           <div className="lg:hidden">
@@ -346,6 +356,15 @@ const NavigationBar = () => {
                     </div>
                   )}
                 </div>
+                {user && (
+                  <div className="flex flex-col gap-4 mt-4">
+                    <div className="flex items-center gap-2">
+                      <h1 className="text-lg font-bold">Chat</h1>
+                      <MessageSquareText />
+                    </div>
+                    <Link to="/courses">My Chats</Link>
+                  </div>
+                )}
               </SheetContent>
             </Sheet>
           </div>

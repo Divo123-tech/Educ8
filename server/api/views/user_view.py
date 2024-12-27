@@ -97,6 +97,27 @@ class FindUserView(RetrieveAPIView):
     serializer_class = UserSerializer
 
 
+class AllUsersView(ListAPIView):
+    permission_classes = [AllowAny]
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        """
+        Get courses with optional filtering
+        """
+        queryset = CustomUser.objects.all()
+        search_term = self.request.query_params.get('search', None)
+
+        if search_term:
+            queryset = queryset.filter(
+                Q(username__icontains=search_term) |
+                Q(email__icontains=search_term)
+            )
+
+        return queryset
+
+
 class UserView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]

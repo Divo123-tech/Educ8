@@ -5,3 +5,4 @@ from .reviews import Review
 from .user import CustomUser
 from .user_course import UserCourse
 from .cart import Cart
+from .chat import Chat

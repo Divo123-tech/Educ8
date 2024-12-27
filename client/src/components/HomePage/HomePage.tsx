@@ -69,10 +69,10 @@ const HomePage = () => {
               <img
                 src={import.meta.env.VITE_API_URL + user.profile_picture}
                 alt="profile"
-                className="rounded-full w-16 h-16"
+                className="rounded-full w-16 h-16 xl:w-20 xl:h-20"
               />
             ) : (
-              <div className="bg-black rounded-full w-16 h-16 flex items-center justify-center">
+              <div className="bg-black rounded-full w-16 h-16 xl:w-20 xl:h-20 flex items-center justify-center">
                 <p className="font-bold text-white text-2xl">
                   {user?.username
                     .split(" ")
@@ -134,8 +134,8 @@ const HomePage = () => {
             <CarouselContent className="">
               {courses1?.map((course: Course) => {
                 return (
-                  <CarouselItem className="basis-auto">
-                    <CourseHomeScreen course={course} key={course.id} />
+                  <CarouselItem className="basis-auto" key={course.id}>
+                    <CourseHomeScreen course={course} />
                   </CarouselItem>
                 );
               })}

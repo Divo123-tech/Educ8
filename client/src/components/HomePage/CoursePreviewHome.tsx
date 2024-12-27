@@ -14,7 +14,8 @@ const CoursePreviewHome = ({ course }: Props) => {
         className="w-1/3 h-fit"
       ></img>
       <div className="flex flex-col gap-2">
-        <h1 className="font-bold text-xl">{course?.name}</h1>
+        <h1 className="font-bold text-xl">{course?.title}</h1>
+        <h1 className="font-bold text-xl">{course?.subtitle}</h1>
         <p className="text-sm">{course?.description}</p>
         <p className="text-gray-600 text-xs">By {course?.creator.username}</p>
         <div className="flex items-center gap-1">

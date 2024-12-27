@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, Section, SectionContent, Review, CustomUser, UserCourse, Cart
+from .models import Course, Section, SectionContent, Review, CustomUser, UserCourse, Cart, Chat
 from django.db.models import Avg
 
 
@@ -140,3 +140,10 @@ class CourseRevenueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id', 'title', 'price', 'revenue', 'total_students']
+
+
+class ChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chat
+        # Customize this based on your model
+        fields = ['sent_by', 'message', 'sent_at']

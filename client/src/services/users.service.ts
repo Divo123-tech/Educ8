@@ -214,3 +214,22 @@ export const editUser = async (user: FormData): Promise<User> => {
     throw error;
   }
 };
+export type UsersResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: User[];
+};
+export const getAllUsers = async (search?: string): Promise<UsersResponse> => {
+  try {
+    const url = `${import.meta.env.VITE_API_URL}/api/users/all?search=${
+      search || ""
+    }`;
+    const response = await axios.get(url);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
+  }
+};

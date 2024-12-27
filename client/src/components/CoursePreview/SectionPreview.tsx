@@ -29,10 +29,10 @@ const SectionPreview = ({ courseId, section, value }: Props) => {
           {section.contents.length} lectures
         </p>
       </AccordionTrigger>
-      <AccordionContent className="bg-white px-10 py-2">
+      <AccordionContent className="bg-white flex flex-col">
         {contents.map((content: Content) => {
           return (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 px-10 py-3 hover:bg-gray-200 cursor-pointer">
               {content.contentType == "text" && <FileIcon size={18} />}
               {content.contentType == "video" && <MonitorPlay size={18} />}
               {content.contentType == "image" && <Image size={18} />}

@@ -16,6 +16,7 @@ import UserProfile from "./components/UserProfile";
 import MyLearning from "./components/MyLearning";
 import CourseFull from "./components/CourseFull";
 import Dashboard from "./components/Dashboard";
+import Chat from "./components/Chat";
 
 function App() {
   const location = useLocation();
@@ -41,6 +42,7 @@ function App() {
           <Route path={"/user/:userId"} element={<UserProfile />}></Route>
           <Route path={"/course/:courseId"} element={<CourseFull />}></Route>
           <Route path={"/dashboard"} element={<Dashboard />}></Route>
+          <Route path={"/chat/:roomName"} element={<Chat />}></Route>
           <Route
             path={"/preview-course/:courseId"}
             element={<CoursePreview />}
