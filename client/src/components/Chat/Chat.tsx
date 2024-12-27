@@ -1,5 +1,5 @@
 import { UserContext } from "@/context/UserContext";
-import { getMessages } from "@/services/chat.services";
+import { getMessages, Message } from "@/services/chat.services";
 import { getCurrentUser } from "@/services/users.service";
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router";
@@ -7,11 +7,7 @@ import { useParams, useNavigate } from "react-router";
 interface MessageEvent {
   data: string; // The WebSocket message payload
 }
-interface Message {
-  sent_by: string;
-  message: string;
-  sent_at: string;
-}
+
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
@@ -48,12 +44,11 @@ const Chat: React.FC = () => {
     }
   }, [navigate, roomName, setUser]);
   useEffect(() => {
-    const fetchMessages = async () => {
+    (async () => {
       const response = await getMessages(roomName || "");
       console.log(response);
       setMessages(response);
-    };
-    fetchMessages();
+    })();
     const ws = new WebSocket(`ws://localhost:8000/ws/chat/${roomName}/`);
     console.log(ws);
     setSocket(ws);
@@ -61,7 +56,8 @@ const Chat: React.FC = () => {
     ws.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
       if (data.message) {
-        setMessages((prev) => [...prev, data.message]);
+        console.log(data);
+        setMessages((prev) => [...prev, data]);
       }
     };
 
@@ -81,7 +77,7 @@ const Chat: React.FC = () => {
 
   const sendMessage = () => {
     if (socket && message.trim()) {
-      socket.send(JSON.stringify({ message, user }));
+      socket.send(JSON.stringify({ message, user: user?.id }));
       setMessage("");
     }
   };

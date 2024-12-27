@@ -15,8 +15,6 @@ class FetchMessagesView(APIView):
         """
         Fetch all messages in the given room, only if the user is authenticated.
         """
-        # Debug print to confirm the function is triggered
-        print("here 1")
 
         # Fetch messages from the database filtered by room_name
         messages = Chat.objects.filter(room_name=room_name).order_by('sent_at')

@@ -9,7 +9,7 @@ if not settings.configured:
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
-from ..models import Chat
+from ..models import Chat, CustomUser
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -39,20 +39,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        user = text_data_json['user']
-        # print(self.scope)
-        # user = self.scope["user"]  # Assuming user is authenticated
+        userId = text_data_json['user']
 
         # Save the message to the database
-        # print("nigga")
+        print(userId)
+        user = await sync_to_async(CustomUser.objects.get)(id=userId)
         print(user)
-        # print(user)
-        # if user.is_authenticated:
-        #     print("Saving message")
-        #     # await sync_to_async(Chat.objects.create)(
-        #     #     room_name=self.room_name,
-        #     #     sent_by=user,
-        #     # )
+        chat_message = await sync_to_async(Chat.objects.create)(
+            room_name=self.room_name,
+            sent_by=user,
+            message=message
+        )
 
         # Send message to the room group
         await self.channel_layer.group_send(
@@ -60,16 +57,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': message,
-                'user': user
+                'sent_by': userId,
+                'sent_at': chat_message.sent_at.isoformat()
             }
         )
 
     async def chat_message(self, event):
         message = event['message']
-        user = event['user']
+        sent_by = event['sent_by']
+        sent_at = event['sent_at']  # Extract sent_at from the event
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
-            'user': user
+            'sent_by': sent_by,
+            'sent_at': sent_at  # Include sent_at in the response
         }))

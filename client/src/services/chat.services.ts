@@ -1,10 +1,14 @@
 import { fetchWithAuth } from "./users.service";
 
-export const getMessages = async (roomname: string) => {
+export interface Message {
+  message: string;
+  sent_by: number;
+  sent_at: Date;
+}
+export const getMessages = async (roomname: string): Promise<Message[]> => {
   try {
     const url = `${import.meta.env.VITE_API_URL}/api/messages/${roomname}/`;
-    console.log("NIGGER");
-    const response = await fetchWithAuth({
+    const response = await fetchWithAuth<Message[]>({
       url,
       method: "GET",
     });
