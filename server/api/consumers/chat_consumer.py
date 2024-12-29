@@ -42,9 +42,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         userId = text_data_json['user']
 
         # Save the message to the database
-        print(userId)
         user = await sync_to_async(CustomUser.objects.get)(id=userId)
-        print(user)
         chat_message = await sync_to_async(Chat.objects.create)(
             room_name=self.room_name,
             sent_by=user,
