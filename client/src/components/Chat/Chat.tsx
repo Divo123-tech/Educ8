@@ -1,9 +1,9 @@
 import { User, UserContext } from "@/context/UserContext";
 import { getMessages, Message } from "@/services/chat.services";
 import { getCurrentUser, getUserInfo } from "@/services/users.service";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router";
-
+import { PiPaperPlaneRight } from "react-icons/pi";
 interface MessageEvent {
   data: string; // The WebSocket message payload
 }
@@ -12,7 +12,8 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [otherUser, setOtherUser] = useState<User>(null);
+  const [otherUser, setOtherUser] = useState<User | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { roomName } = useParams();
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
@@ -22,6 +23,10 @@ const Chat: React.FC = () => {
   }
 
   const { user, setUser } = userContext;
+  // Scroll to the bottom when messages are updated
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
   useEffect(() => {
     if (Number(roomName?.split("-")?.length) < 2) {
       navigate("/");
@@ -79,6 +84,10 @@ const Chat: React.FC = () => {
     };
   }, [roomName]);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const sendMessage = () => {
     if (socket && message.trim()) {
       socket.send(JSON.stringify({ message, user: user?.id }));
@@ -101,8 +110,8 @@ const Chat: React.FC = () => {
                 className="rounded-full w-14 h-14"
               />
             ) : (
-              <div className="bg-black rounded-full w-24 h-24 flex items-center justify-center">
-                <p className="font-bold text-white text-4xl">
+              <div className="bg-black rounded-full w-14 h-14 flex items-center justify-center">
+                <p className="font-bold text-white text-2xl">
                   {otherUser?.username
                     .split(" ")
                     .map((word) => word[0])
@@ -113,20 +122,47 @@ const Chat: React.FC = () => {
           </>
           <p className="font-bold">{otherUser?.username}</p>
         </div>
-        <div className="border px-6 pb-4">
+        <div className="border-2 px-6 pb-4 flex flex-col gap-1 h-[450px] overflow-y-scroll">
           {messages.map((msg, index) => (
-            <div key={index} className="bg-green-500">
-              {msg.message}
+            <div
+              key={index}
+              className={`${
+                msg.sent_by === user?.id
+                  ? "bg-blue-500 text-white self-end"
+                  : "bg-green-400 text-black self-start"
+              } w-fit rounded-lg px-3 py-2 flex items-end gap-4 `}
+            >
+              <p>{msg.message}</p>
+              <span
+                className={`${
+                  msg.sent_by === user?.id ? "text-gray-200" : "text-gray-500"
+                }  text-xs`}
+              >
+                {new Date(msg.sent_at).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-        />
-        <button onClick={sendMessage}>Send</button>
+        <div className="border border-black flex justify-end">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            placeholder="Type a message..."
+            className="w-11/12 pl-4 py-2"
+          />
+          <button
+            onClick={sendMessage}
+            className="bg-gray-200 py-1 px-8 w-1/12 text-center hover:bg-gray-300"
+          >
+            <PiPaperPlaneRight size={28} className="text-center" />
+          </button>
+        </div>
       </div>
     </div>
   );
