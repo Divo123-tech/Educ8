@@ -212,7 +212,7 @@ const CourseFull = () => {
       {courseInfoShown == "overview" && (
         <div className="px-4 sm:px-16 md:px-32 xl:px-48 py-4 flex flex-col gap-4">
           <div>
-            <p className="xs:text-xl">{course?.subtitle}</p>
+            <p className="sm:text-xl">{course?.subtitle}</p>
           </div>
           <div className="flex gap-2 xs:gap-12 items-center">
             <div>
@@ -250,91 +250,99 @@ const CourseFull = () => {
         </div>
       )}
       {courseInfoShown == "review" && (
-        <div className="px-4 sm:px-16 md:px-32 xl:px-96 py-8 flex flex-col gap-4">
-          <div>
-            <h1 className="font-bold text-xl xl:text-2xl">Student Feedback</h1>
-          </div>
-          <div className="flex  gap-8">
-            <div className="flex flex-col gap-2 w-fit items-center">
-              <p className="text-4xl xl:text-5xl font-bold text-[#94751e]">
-                {course?.average_rating?.toFixed(1) || "0.0"}
-              </p>
-              <div className="flex items-center gap-1">
-                {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
-                  <span key={number}>
-                    {number <= (course?.average_rating || 0) ? (
-                      <Star fill="#e1a03b" color="#94751e" size={14} />
-                    ) : number - 0.5 > (course?.average_rating || 0) ? (
-                      <Star fill="#FFFFFF" color="#94751e" size={14} />
-                    ) : (
-                      <FaStarHalfAlt fill="#e1a03b" color="#94751e" size={14} />
-                    )}
-                  </span>
+        <>
+          <div className="px-4 sm:px-16 md:px-32 xl:px-96 py-8 flex flex-col gap-4">
+            <div>
+              <h1 className="font-bold text-xl xl:text-2xl">
+                Student Feedback
+              </h1>
+            </div>
+            <div className="flex  gap-8">
+              <div className="flex flex-col gap-2 w-fit items-center">
+                <p className="text-4xl xl:text-5xl font-bold text-[#94751e]">
+                  {course?.average_rating?.toFixed(1) || "0.0"}
+                </p>
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
+                    <span key={number}>
+                      {number <= (course?.average_rating || 0) ? (
+                        <Star fill="#e1a03b" color="#94751e" size={14} />
+                      ) : number - 0.5 > (course?.average_rating || 0) ? (
+                        <Star fill="#FFFFFF" color="#94751e" size={14} />
+                      ) : (
+                        <FaStarHalfAlt
+                          fill="#e1a03b"
+                          color="#94751e"
+                          size={14}
+                        />
+                      )}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-sm font-bold text-[#94751e] text-nowrap">
+                  Course Rating
+                </p>
+              </div>
+              <div>
+                {Array.from({ length: 5 }, (_, index) => (
+                  <StarsSearch
+                    key={index}
+                    stars={5 - index}
+                    course={course}
+                    handleReviewsFilter={handleReviewsFilter}
+                  />
                 ))}
               </div>
-              <p className="text-sm font-bold text-[#94751e] text-nowrap">
-                Course Rating
-              </p>
             </div>
-            <div>
-              {Array.from({ length: 5 }, (_, index) => (
-                <StarsSearch
-                  key={index}
-                  stars={5 - index}
-                  course={course}
-                  handleReviewsFilter={handleReviewsFilter}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <h1
-              className="text-xl font-bold cursor-pointer hover:underline"
-              onClick={fetchAllReviews}
-            >
-              All Reviews ({total})
-            </h1>
             <div className="flex flex-col gap-4">
-              {reviews?.map((review: Review) => {
-                return (
-                  <ReviewComponent
-                    review={review}
-                    key={review.id}
-                    fetchAllReviews={fetchAllReviews}
-                  />
-                );
-              })}
+              <h1
+                className="text-xl font-bold cursor-pointer hover:underline"
+                onClick={fetchAllReviews}
+              >
+                All Reviews ({total})
+              </h1>
+              <div className="flex flex-col gap-4">
+                {reviews?.map((review: Review) => {
+                  return (
+                    <ReviewComponent
+                      review={review}
+                      key={review.id}
+                      fetchAllReviews={fetchAllReviews}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
+          <div className="flex justify-center gap-2">
+            <p>
+              <ChevronLeft
+                cursor={previousPage ? "pointer" : "not-allowed"}
+                opacity={previousPage ? "100%" : "50%"}
+                onClick={() =>
+                  setCurrentPage((prevCurrentPage) =>
+                    previousPage ? (prevCurrentPage -= 1) : prevCurrentPage
+                  )
+                }
+              />
+            </p>
+            <p>
+              Page {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}
+            </p>
+            <p>
+              <ChevronRight
+                cursor={nextPage ? "pointer" : "not-allowed"}
+                opacity={nextPage ? "100%" : "50%"}
+                onClick={() =>
+                  setCurrentPage((prevCurrentPage) =>
+                    nextPage ? (prevCurrentPage += 1) : prevCurrentPage
+                  )
+                }
+              />
+            </p>
+          </div>
+        </>
       )}
-      <div className="flex justify-center gap-2">
-        <p>
-          <ChevronLeft
-            cursor={previousPage ? "pointer" : "not-allowed"}
-            opacity={previousPage ? "100%" : "50%"}
-            onClick={() =>
-              setCurrentPage((prevCurrentPage) =>
-                previousPage ? (prevCurrentPage -= 1) : prevCurrentPage
-              )
-            }
-          />
-        </p>
-        <p>
-          Page {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}
-        </p>
-        <p>
-          <ChevronRight
-            cursor={nextPage ? "pointer" : "not-allowed"}
-            opacity={nextPage ? "100%" : "50%"}
-            onClick={() =>
-              setCurrentPage((prevCurrentPage) =>
-                nextPage ? (prevCurrentPage += 1) : prevCurrentPage
-              )
-            }
-          />
-        </p>
-      </div>
     </div>
   );
 };

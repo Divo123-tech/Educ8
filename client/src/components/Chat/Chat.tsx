@@ -95,7 +95,7 @@ const Chat: React.FC = () => {
     }
   };
   return (
-    <div className="flex flex-col px-48 py-4">
+    <div className="flex flex-col px-8 xl:px-48 md:py-4">
       <div className="">
         <div
           id="chat-header"
@@ -120,7 +120,12 @@ const Chat: React.FC = () => {
               </div>
             )}
           </>
-          <p className="font-bold">{otherUser?.username}</p>
+          <div>
+            <p className="font-bold">{otherUser?.username}</p>
+            <p className="text-xs text-gray-400 font-medium">
+              {otherUser?.email}
+            </p>
+          </div>
         </div>
         <div className="border-2 px-6 pb-4 flex flex-col gap-1 h-[450px] overflow-y-scroll">
           {messages.map((msg, index) => (
@@ -130,13 +135,13 @@ const Chat: React.FC = () => {
                 msg.sent_by === user?.id
                   ? "bg-blue-500 text-white self-end"
                   : "bg-green-400 text-black self-start"
-              } w-fit rounded-lg px-3 py-2 flex items-end gap-4 `}
+              } w-fit rounded-lg max-w-[70%] px-3 py-2 flex items-end gap-4`}
             >
-              <p>{msg.message}</p>
+              <p className="break-all">{msg.message}</p>
               <span
                 className={`${
                   msg.sent_by === user?.id ? "text-gray-200" : "text-gray-500"
-                }  text-xs`}
+                }  text-xs text-nowrap`}
               >
                 {new Date(msg.sent_at).toLocaleTimeString([], {
                   hour: "2-digit",
@@ -158,7 +163,7 @@ const Chat: React.FC = () => {
           />
           <button
             onClick={sendMessage}
-            className="bg-gray-200 py-1 px-8 w-1/12 text-center hover:bg-gray-300"
+            className="bg-gray-200 py-1 px-1 xl:px-8 w-1/12 text-center hover:bg-gray-300"
           >
             <PiPaperPlaneRight size={28} className="text-center" />
           </button>
