@@ -140,7 +140,7 @@ const NavigationBar = () => {
                       </NavigationMenuTrigger>
                       <NavigationMenuContent className="lg:w-[200px] py-2 flex flex-col gap-4 ">
                         <Link
-                          to="/"
+                          to="/explore?category=Finance"
                           className="text-gray-600 hover:text-primary px-3 rounded-md text-sm   font-normal"
                         >
                           Finance

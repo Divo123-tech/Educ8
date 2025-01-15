@@ -47,7 +47,7 @@ class CourseView(ListCreateAPIView):
 
         if search_term:
             queryset = queryset.filter(
-                Q(name__icontains=search_term) |
+                Q(title__icontains=search_term) |
                 Q(creator__username__icontains=search_term)
             )
 

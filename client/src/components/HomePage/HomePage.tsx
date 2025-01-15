@@ -60,7 +60,7 @@ const HomePage = () => {
     })();
   }, []);
   return (
-    <div className="flex flex-col gap-10 px-4 lg:px-56 py-12">
+    <div className="flex flex-col gap-10 px-4 lg:px-56 py-4">
       <div className="flex gap-4">
         {user && (
           <>
@@ -69,11 +69,11 @@ const HomePage = () => {
               <img
                 src={import.meta.env.VITE_API_URL + user.profile_picture}
                 alt="profile"
-                className="rounded-full w-16 h-16 xl:w-20 xl:h-20"
+                className="rounded-full w-16 h-16 xl:w-14 xl:h-14"
               />
             ) : (
-              <div className="bg-black rounded-full w-16 h-16 xl:w-20 xl:h-20 flex items-center justify-center">
-                <p className="font-bold text-white text-2xl">
+              <div className="bg-black rounded-full w-16 h-16 xl:w-14 xl:h-14 flex items-center justify-center">
+                <p className="font-bold text-white text-xl">
                   {user?.username
                     .split(" ")
                     .map((word) => word[0])
@@ -84,12 +84,12 @@ const HomePage = () => {
           </>
         )}
         {user && (
-          <div className="flex flex-col gap-1">
-            <h1 className="font-bold text-2xl">
+          <div className="flex flex-col gap-1 justify-between ">
+            <h1 className="font-bold text-lg xl:text-xl">
               {`Welcome Back ${user?.username}!`}
             </h1>
             <Link to="/profile">
-              <p className="text-green-500 underline underline-offset-2 font-semibold text-sm">
+              <p className="text-green-500 underline underline-offset-2 font-semibold text-xs">
                 Edit Your Profile
               </p>
             </Link>
@@ -98,7 +98,7 @@ const HomePage = () => {
       </div>
       <div className="px-4">
         <Carousel
-          className="px-2 h-[200px] lg:h-[350px]"
+          className="w-full"
           opts={{
             align: "start",
             loop: true,
@@ -106,13 +106,13 @@ const HomePage = () => {
         >
           <CarouselContent>
             <CarouselItem>
-              <img src={Carousel1} className="h-[200px] lg:h-[350px]"></img>
+              <img src={Carousel1} className="w-full"></img>
             </CarouselItem>
             <CarouselItem>
-              <img src={Carousel1} className="h-[200px] lg:h-[350px]"></img>
+              <img src={Carousel1} className="w-full"></img>
             </CarouselItem>
             <CarouselItem>
-              <img src={Carousel1} className="h-[200px] lg:h-[350px]"></img>
+              <img src={Carousel1} className="w-full"></img>
             </CarouselItem>
           </CarouselContent>
           <CarouselPrevious className="bg-black text-white" />

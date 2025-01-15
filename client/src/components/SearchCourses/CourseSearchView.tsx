@@ -17,7 +17,7 @@ const CourseSearchView = ({ course }: Props) => {
           ></img>
           <div className="flex flex-col justify-between">
             <h1 className="font-bold text-md">{course?.title}</h1>
-            <p className="text-sm">{course?.description}</p>
+            <p className="text-sm">{course?.subtitle}</p>
             <p className="text-gray-600 text-xs"> {course?.creator.username}</p>
             <div className="flex items-center gap-2">
               <p className="font-bold">{course?.average_rating || "4.5"}</p>

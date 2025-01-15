@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CourseSearchView from "./CourseSearchView";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cartesianSeriesTypes } from "@mui/x-charts/internals";
 
 const SearchCourses = () => {
   const [searchParams] = useSearchParams();
-  const searchQuery = searchParams.get("search") || "";
+  const searchQuery = searchParams.get("search");
+  const category = searchParams.get("category");
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [previousPage, setPreviousPage] = useState<string | null>(null);
   const [nextPage, setNextPage] = useState<string | null>(null);
@@ -14,7 +16,7 @@ const SearchCourses = () => {
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     (async () => {
-      const response = await getCourses(currentPage, searchQuery);
+      const response = await getCourses(currentPage, searchQuery || "");
       setCourses(response.results);
       setPreviousPage(response.previous);
       setNextPage(response.next);
@@ -28,7 +30,7 @@ const SearchCourses = () => {
         <div>
           <div>
             <h1 className="font-bold text-3xl">
-              {total} results for "{searchQuery}"
+              {total} results for "{searchQuery || category}"
             </h1>
           </div>
 

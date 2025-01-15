@@ -52,7 +52,10 @@ const ReviewComponent = ({ review, fetchAllReviews }: Props) => {
           {review.reviewed_by?.profile_picture &&
           typeof review.reviewed_by.profile_picture == "string" ? (
             <img
-              src={review.reviewed_by.profile_picture}
+              src={
+                import.meta.env.VITE_API_URL +
+                review.reviewed_by.profile_picture
+              }
               alt="profile"
               className="rounded-full w-8 h-8 xl:w-12 xl:h-12"
             />
