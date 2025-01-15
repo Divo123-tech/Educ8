@@ -68,7 +68,7 @@ const CourseCartView = ({
             </p>
             <div className="flex items-center gap-2">
               <p className="font-bold text-xs">
-                {course.average_rating || "4.5"}
+                {course.average_rating?.toFixed(1) || "4.5"}
               </p>
               <div className="flex gap-1">
                 {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
@@ -97,7 +97,11 @@ const CourseCartView = ({
                 <Trash2 size={16} cursor={"pointer"} />
               </MenubarTrigger>
 
-              <DeleteDialog handleDelete={handleDelete} />
+              <DeleteDialog
+                handleDelete={handleDelete}
+                deleteMessage="Are you sure you want to remove this course from your cart?"
+                deleteButtonMessage="Delete"
+              />
             </MenubarMenu>
           </Menubar>
         </div>

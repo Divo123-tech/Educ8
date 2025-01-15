@@ -11,16 +11,24 @@ import { MenubarContent, MenubarItem } from "@/components/ui/menubar";
 import { Trash2 } from "lucide-react";
 type Props = {
   handleDelete: () => void;
+  deleteMessage: string;
+  deleteButtonMessage: string;
 };
 
-const DeleteDialog = ({ handleDelete }: Props) => {
+const DeleteDialog = ({
+  handleDelete,
+  deleteMessage,
+  deleteButtonMessage,
+}: Props) => {
   return (
     <Dialog>
       <DialogTrigger>
         <MenubarContent>
           <MenubarItem>
             <div className="flex justify-between items-center w-full py-1 cursor-pointer">
-              <p className="text-md text-red-400 font-semibold">Delete</p>
+              <p className="text-md text-red-400 font-semibold">
+                {deleteButtonMessage}
+              </p>
               <Trash2 size={20} color="red" />
             </div>
           </MenubarItem>
@@ -29,20 +37,18 @@ const DeleteDialog = ({ handleDelete }: Props) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="font-bold text-xl">
-            Confirm Delete
+            Confirm {deleteButtonMessage}
           </DialogTitle>
           <DialogDescription>
             <div className="flex flex-col gap-8">
-              <p className="text-lg">
-                Are you sure you want to delete this course?
-              </p>
+              <p className="text-lg">{deleteMessage}</p>
               <div className="flex gap-8 justify-center sm:justify-start">
                 <DialogClose asChild>
                   <button
                     className="bg-red-500 text-white font-bold px-3 py-1 text-lg"
                     onClick={handleDelete}
                   >
-                    Delete
+                    {deleteButtonMessage}
                   </button>
                 </DialogClose>
 

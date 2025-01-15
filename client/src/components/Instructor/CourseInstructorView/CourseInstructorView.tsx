@@ -57,7 +57,11 @@ const CourseInstructorView = ({ course }: Props) => {
                   <Settings />
                 </button>
               </MenubarTrigger>
-              <DeleteDialog handleDelete={handleDelete} />
+              <DeleteDialog
+                handleDelete={handleDelete}
+                deleteButtonMessage="Delete"
+                deleteMessage="Are you sure you want to delete this course?"
+              />
             </MenubarMenu>
           </Menubar>
         </button>

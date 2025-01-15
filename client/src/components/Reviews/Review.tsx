@@ -99,7 +99,11 @@ const ReviewComponent = ({ review, fetchAllReviews }: Props) => {
                   <Trash2 size={16} cursor={"pointer"} />
                 </MenubarTrigger>
 
-                <DeleteDialog handleDelete={handleDelete} />
+                <DeleteDialog
+                  deleteButtonMessage="Delete"
+                  handleDelete={handleDelete}
+                  deleteMessage="Are you sure you want to delete this review?"
+                />
               </MenubarMenu>
             </Menubar>
           )}

@@ -5,12 +5,19 @@ export type DropdownCourseType = {
   title: string;
   creator: string;
   image: File | null | undefined;
+  isCart: boolean;
 };
 
-const DropdownCourse = ({ id, title, creator, image }: DropdownCourseType) => {
+const DropdownCourse = ({
+  id,
+  title,
+  creator,
+  image,
+  isCart,
+}: DropdownCourseType) => {
   return (
     <Link
-      to={`/course/${id}`}
+      to={isCart ? `/cart` : `/course/${id}`}
       className="text-gray-600 hover:text-primary pt-4 rounded-md text-sm font-normal flex flex-col gap-2"
     >
       <div className="flex items-start gap-2">

@@ -3,7 +3,7 @@ import {
   getCourseInUserCourse,
   getSingleCourse,
 } from "@/services/courses.service";
-import { Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { FaStarHalfAlt } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router";
@@ -21,6 +21,8 @@ import { toast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { getCourseInCart, postCourseToCart } from "@/services/cart.service";
 import { getReviews, Review } from "@/services/review.services";
+import CoursePreviewReview from "./CoursePreviewReview";
+import StarsSearch from "../Reviews/StarsSearch";
 
 const CoursePreview = () => {
   const navigate = useNavigate();
@@ -30,7 +32,10 @@ const CoursePreview = () => {
   const [instructor, setInstructor] = useState<User | null>(null);
   const [isCourseInCart, setIsCourseInCart] = useState<boolean>(false);
   const [reviews, setReviews] = useState<Review[] | null>(null);
-
+  const [previousPage, setPreviousPage] = useState<string | null>(null);
+  const [nextPage, setNextPage] = useState<string | null>(null);
+  const [total, setTotal] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [isCourseInUserCourse, setIsCourseInUserCourse] =
     useState<boolean>(false);
   const userContext = useContext(UserContext);
@@ -40,6 +45,14 @@ const CoursePreview = () => {
   }
 
   const { user, setUser } = userContext;
+  const handleReviewsFilter = async (rating: number) => {
+    const response = await getReviews(courseId || "", rating);
+    console.log(response);
+    setReviews(response.results);
+    setPreviousPage(response.previous);
+    setNextPage(response.next);
+    setTotal(response.count);
+  };
   const addCourseToCart = async () => {
     try {
       await postCourseToCart(courseId || 0);
@@ -59,25 +72,7 @@ const CoursePreview = () => {
       });
     }
   };
-  function formatTimestamp(timestamp: Date) {
-    try {
-      // Parse the ISO 8601 timestamp into a Date object
-      const date = new Date(timestamp);
 
-      // Format the date and time components
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-      const year = date.getFullYear();
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minutes = String(date.getMinutes()).padStart(2, "0");
-
-      // Combine components into the desired format
-      return `${day}/${month}/${year} - ${hours}:${minutes}`;
-    } catch (error: unknown) {
-      console.error(error);
-      return "Invalid timestamp format";
-    }
-  }
   useEffect(() => {
     (async () => {
       setCourse(await getSingleCourse(courseId || ""));
@@ -87,6 +82,10 @@ const CoursePreview = () => {
       const reviewsResponse = await getReviews(courseId || "");
       console.log(reviewsResponse);
       setReviews(reviewsResponse.results);
+      setReviews(reviewsResponse.results);
+      setPreviousPage(reviewsResponse.previous);
+      setNextPage(reviewsResponse.next);
+      setTotal(reviewsResponse.count);
       if (user) {
         setIsCourseInCart(await getCourseInCart(courseId || ""));
         setIsCourseInUserCourse(await getCourseInUserCourse(courseId || ""));
@@ -243,80 +242,59 @@ const CoursePreview = () => {
           )}
           <p>{instructor?.bio || ""}</p>
         </div>
-        <div id="reviews-container">
-          <div className="flex items-center gap-2 mb-8">
+        <div id="reviews-container" className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
             <Star fill="#e1a03b" color="#e1a03b" size={18} />
             <p className="font-bold text-2xl">
-              {course?.average_rating || "4.3"} course rating
+              {course?.average_rating?.toFixed(1) || "4.3"} course rating
             </p>
             <span className="w-2 h-2 bg-gray-400 mt-1 rounded-full"></span>
             <p className="font-bold text-2xl">
               {course?.reviews.length} reviews
             </p>
+            <div className="flex justify-center gap-2 ml-auto">
+              <p>
+                <ChevronLeft
+                  cursor={previousPage ? "pointer" : "not-allowed"}
+                  opacity={previousPage ? "100%" : "50%"}
+                  onClick={() =>
+                    setCurrentPage((prevCurrentPage) =>
+                      previousPage ? (prevCurrentPage -= 1) : prevCurrentPage
+                    )
+                  }
+                />
+              </p>
+              <p>
+                Page {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}
+              </p>
+              <p>
+                <ChevronRight
+                  cursor={nextPage ? "pointer" : "not-allowed"}
+                  opacity={nextPage ? "100%" : "50%"}
+                  onClick={() =>
+                    setCurrentPage((prevCurrentPage) =>
+                      nextPage ? (prevCurrentPage += 1) : prevCurrentPage
+                    )
+                  }
+                />
+              </p>
+            </div>
           </div>
-          <div className="flex gap-4">
+          <div className="w-full">
+            {Array.from({ length: 5 }, (_, index) => (
+              <StarsSearch
+                key={index}
+                stars={5 - index}
+                course={course}
+                handleReviewsFilter={handleReviewsFilter}
+              />
+            ))}
+          </div>
+          <div className="flex justify-between flex-wrap">
             {reviews?.map((review) => {
               return (
-                <div className="flex flex-col gap-2 border-t border-gray-300 w-1/2 py-4">
-                  <div className="flex gap-4">
-                    {review.reviewed_by?.profile_picture &&
-                    typeof review.reviewed_by.profile_picture == "string" ? (
-                      <img
-                        src={
-                          import.meta.env.VITE_API_URL +
-                          review.reviewed_by.profile_picture
-                        }
-                        alt="profile"
-                        className="rounded-full w-8 h-8 xl:w-12 xl:h-12"
-                      />
-                    ) : (
-                      <div className="bg-black rounded-full w-10 h-10 xl:w-12 xl:h-12 flex items-center justify-center">
-                        <p className="font-bold text-white text-lg xl:text-xl">
-                          {review.reviewed_by?.username
-                            .split(" ")
-                            .map((word) => word[0])
-                            .join("")}
-                        </p>
-                      </div>
-                    )}
-                    <div className="flex flex-col justify-around">
-                      <p className="text-sm font-bold">
-                        {review.reviewed_by.username}
-                      </p>
-                      <div className="flex">
-                        {Array.from({ length: 5 }, (_, i) => i + 1).map(
-                          (number) => (
-                            <span key={number}>
-                              {number <= review.rating ? (
-                                <Star
-                                  fill="#e1a03b"
-                                  color="#94751e"
-                                  size={12}
-                                />
-                              ) : number - 0.5 > 3.7 ? (
-                                <Star
-                                  fill="#FFFFFF"
-                                  color="#94751e"
-                                  size={12}
-                                />
-                              ) : (
-                                <FaStarHalfAlt
-                                  fill="#e1a03b"
-                                  color="#94751e"
-                                  size={12}
-                                />
-                              )}
-                            </span>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <p className="font-bold">{review?.title}</p>
-                  <p>{review?.description}</p>
-                  <p className="text-gray-400 text-xs font-bold">
-                    {formatTimestamp(review?.created_at)}
-                  </p>
+                <div className="w-[45%]">
+                  <CoursePreviewReview review={review} />
                 </div>
               );
             })}

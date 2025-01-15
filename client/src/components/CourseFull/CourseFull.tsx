@@ -3,9 +3,10 @@ import {
   Course,
   getCourseInUserCourse,
   getSingleCourse,
+  refundCourse,
 } from "@/services/courses.service";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import SectionFull from "./SectionFull";
 import { Accordion } from "../ui/accordion";
 import { Content, getSingleContent } from "@/services/content.services";
@@ -16,6 +17,10 @@ import ReviewDialog from "../Reviews/ReviewDialog";
 import { getReviews, Review } from "@/services/review.services";
 import StarsSearch from "../Reviews/StarsSearch";
 import ReviewComponent from "../Reviews/Review";
+import { Menubar, MenubarMenu, MenubarTrigger } from "../ui/menubar";
+import DeleteDialog from "../DeleteDialog";
+import { getCurrentUser } from "@/services/users.service";
+import { UserContext } from "@/context/UserContext";
 
 const CourseFull = () => {
   const [courseInfoShown, setCourseInfoShown] = useState<string>("content");
@@ -30,7 +35,14 @@ const CourseFull = () => {
   // const [nextContent, setNextContent] = useState<Content | null>(null);
   // const [prevContent, setPrevContent] = useState<Content | null>(null);
   const { courseId } = useParams();
+  const navigate = useNavigate();
+  const userContext = useContext(UserContext);
 
+  if (!userContext) {
+    throw new Error("YourComponent must be used within a Provider");
+  }
+
+  const { setUser } = userContext;
   const selectSectionContent = (
     content: Content
     // nextContent: Content | null,
@@ -52,7 +64,7 @@ const CourseFull = () => {
   };
   useEffect(() => {
     (async () => {
-      await getCourseInUserCourse(courseId || "");
+      if (!(await getCourseInUserCourse(courseId || ""))) navigate("/");
       setCourse(await getSingleCourse(courseId || ""));
       const sections = await getSections(courseId || "");
       setSections(sections);
@@ -84,6 +96,16 @@ const CourseFull = () => {
     setTotal(response.count);
   };
 
+  const handleDelete = async () => {
+    try {
+      await refundCourse(course?.id || "");
+      setUser(await getCurrentUser());
+      navigate("/my-learning");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="h-screen">
       <div className="bg-[#1c1d1f] flex items-center gap-2 lg:gap-6 px-2 sm:px-8 py-4 border-b border-gray-600">
@@ -93,13 +115,27 @@ const CourseFull = () => {
         {/* Vertical Divider */}
         <div className="h-4 border-l border-gray-400"></div>
         <h1 className="text-white text-xs sm:text-sm">{course?.title}</h1>
-        <div className="flex ml-auto gap-1 sm:gap-4">
+        <div className="flex ml-auto gap-1 sm:gap-4 items-center">
           <ReviewDialog
             courseId={courseId || ""}
             fetchAllReviews={fetchAllReviews}
           />
           <div className="h-4 border-l border-gray-400"></div>
-          <p className="text-red-500 text-xs font-bold">Refund Course</p>
+          <Menubar className="bg-[#1c1d1f] cursor-pointer">
+            <MenubarMenu>
+              <MenubarTrigger className="px-0">
+                <p className="text-red-500 text-xs font-bold cursor-pointer">
+                  Refund Course
+                </p>
+              </MenubarTrigger>
+
+              <DeleteDialog
+                deleteButtonMessage="Refund"
+                handleDelete={handleDelete}
+                deleteMessage="Are you sure you want to refund this course?"
+              />
+            </MenubarMenu>
+          </Menubar>
         </div>
       </div>
       <div className="h-1/3 sm:h-2/3 border border-[#1c1d1f]">

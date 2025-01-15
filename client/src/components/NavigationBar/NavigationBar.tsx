@@ -185,6 +185,7 @@ const NavigationBar = () => {
                             userCourses?.map((item: UserCourseItem) => (
                               <DropdownCourse
                                 key={item.course.id}
+                                isCart={false}
                                 id={item.course.id}
                                 title={item.course.title}
                                 creator={item.course.creator.username}
@@ -192,7 +193,7 @@ const NavigationBar = () => {
                               />
                             ))
                           ) : (
-                            <p className="font-bold">No courses registered</p> // Handle empty cart state
+                            <p className="font-bold">No courses registered</p>
                           )}
                           <div className="flex justify-center pt-4">
                             <button className="bg-black text-white w-full py-2 text-md font-bold">
@@ -231,6 +232,7 @@ const NavigationBar = () => {
                                 id={cartItem.course.id}
                                 title={cartItem.course.title}
                                 creator={cartItem.course.creator.username}
+                                isCart={true}
                                 image={cartItem.course.thumbnail}
                               />
                             ))

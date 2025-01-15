@@ -20,7 +20,9 @@ const CourseSearchView = ({ course }: Props) => {
             <p className="text-sm">{course?.subtitle}</p>
             <p className="text-gray-600 text-xs"> {course?.creator.username}</p>
             <div className="flex items-center gap-2">
-              <p className="font-bold">{course?.average_rating || "4.5"}</p>
+              <p className="font-bold">
+                {course?.average_rating?.toFixed(1) || "4.5"}
+              </p>
               <div className="flex gap-1">
                 {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
                   <span key={number}>

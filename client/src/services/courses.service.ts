@@ -211,3 +211,19 @@ export const publishCourse = async (
     throw error;
   }
 };
+
+export const refundCourse = async (courseId: string | number) => {
+  try {
+    const url = `${import.meta.env.VITE_API_URL}/api/users/my-courses`;
+    const refundCourse = await fetchWithAuth<boolean>({
+      url,
+      method: "DELETE",
+      data: { course: courseId },
+    });
+    console.log(refundCourse);
+    return refundCourse;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
+  }
+};

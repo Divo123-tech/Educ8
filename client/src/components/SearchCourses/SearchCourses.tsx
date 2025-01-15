@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CourseSearchView from "./CourseSearchView";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cartesianSeriesTypes } from "@mui/x-charts/internals";
 
 const SearchCourses = () => {
   const [searchParams] = useSearchParams();

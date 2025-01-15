@@ -26,8 +26,9 @@ const StarsSearch = ({ stars, course, handleReviewsFilter }: Props) => {
   const decimalToPercent = () => {
     const number = Math.round((totalFiltered / total) * 100);
     if (isNaN(number)) {
-      return "0";
+      return 0;
     }
+    console.log(number);
 
     return number == 0 ? 0 : number;
   };

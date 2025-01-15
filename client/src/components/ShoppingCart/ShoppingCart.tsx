@@ -52,6 +52,7 @@ const ShoppingCart = () => {
     console.log(cartItems);
     await checkoutCartItems(cartItems || []);
     setCartItems([]);
+    navigate("/my-learning");
     setPreviousPage(null);
     setNextPage(null);
     setTotal(0);
