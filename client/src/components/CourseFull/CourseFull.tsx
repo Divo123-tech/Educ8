@@ -19,8 +19,8 @@ import StarsSearch from "../Reviews/StarsSearch";
 import ReviewComponent from "../Reviews/Review";
 import { Menubar, MenubarMenu, MenubarTrigger } from "../ui/menubar";
 import DeleteDialog from "../DeleteDialog";
-import { getCurrentUser } from "@/services/users.service";
-import { UserContext } from "@/context/UserContext";
+import { getCurrentUser, getUserInfo } from "@/services/users.service";
+import { User, UserContext } from "@/context/UserContext";
 
 const CourseFull = () => {
   const [courseInfoShown, setCourseInfoShown] = useState<string>("content");
@@ -32,6 +32,8 @@ const CourseFull = () => {
   const [nextPage, setNextPage] = useState<string | null>(null);
   const [total, setTotal] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [instructor, setInstructor] = useState<User | null>(null);
+
   // const [nextContent, setNextContent] = useState<Content | null>(null);
   // const [prevContent, setPrevContent] = useState<Content | null>(null);
   const { courseId } = useParams();
@@ -66,6 +68,7 @@ const CourseFull = () => {
     (async () => {
       if (!(await getCourseInUserCourse(courseId || ""))) navigate("/");
       setCourse(await getSingleCourse(courseId || ""));
+      setInstructor(await getUserInfo(course?.creator.id || ""));
       const sections = await getSections(courseId || "");
       setSections(sections);
       const firstContentId = sections[0].contents[0];
@@ -76,7 +79,7 @@ const CourseFull = () => {
       );
       setCurrentContent(content);
     })();
-  }, [courseId]);
+  }, [course?.creator.id, courseId, navigate]);
 
   useEffect(() => {
     if (courseInfoShown == "review") {
@@ -279,9 +282,38 @@ const CourseFull = () => {
             </div>
           </div>
           <div>
-            <p className="text-sm text-justify xs:text-md">
-              {course?.description}
+            <p
+              dangerouslySetInnerHTML={{ __html: course?.description || "" }}
+              className="text-sm text-justify xs:text-md"
+            >
+              {/* {course?.description} */}
             </p>
+          </div>
+          <div className="flex flex-col gap-4">
+            <h1 className="text-2xl font-bold">Instructor</h1>
+            <Link to={`/user/${instructor?.id}`}>
+              <p className="font-bold text-green-700 underline underline-offset-4">
+                {instructor?.username}
+              </p>
+            </Link>
+            {instructor?.profile_picture &&
+            typeof instructor.profile_picture == "string" ? (
+              <img
+                src={instructor.profile_picture}
+                alt="profile"
+                className="rounded-full w-24 h-24"
+              />
+            ) : (
+              <div className="bg-black rounded-full w-24 h-24 flex items-center justify-center">
+                <p className="font-bold text-white text-4xl">
+                  {instructor?.username
+                    .split(" ")
+                    .map((word) => word[0])
+                    .join("")}
+                </p>
+              </div>
+            )}
+            <p dangerouslySetInnerHTML={{ __html: instructor?.bio || "" }}></p>
           </div>
         </div>
       )}

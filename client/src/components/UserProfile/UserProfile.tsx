@@ -64,7 +64,7 @@ const UserProfile = () => {
       </div>
       <div>
         <h2 className="font-bold text-lg">About me</h2>
-        <p>{userProfile?.bio}</p>
+        <p dangerouslySetInnerHTML={{ __html: userProfile?.bio || "" }}></p>
       </div>
       <div className="flex gap-12">
         <h1

@@ -66,10 +66,10 @@ const ProfilePage = () => {
       if (prevUserData) {
         return {
           ...prevUserData,
-          description: value, // Update the `description` field
+          bio: value, // Update the `description` field specifically
         };
       }
-      return prevUserData;
+      return prevUserData; // or return a default object if null
     });
   };
 
@@ -178,19 +178,11 @@ const ProfilePage = () => {
         </div>
         <div className="flex flex-col w-full md:w-5/6 gap-2">
           <label className="font-bold">Bio</label>
-          {/* <ReactQuill
+          <ReactQuill
             theme="snow"
             value={userData?.bio}
             onChange={handleQuillChange}
-          /> */}
-          <textarea
-            rows={5}
-            cols={50}
-            value={userData?.bio == "null" ? "" : userData?.bio}
-            onChange={handleInputChange}
-            name="bio"
-            className="border border-black"
-          ></textarea>
+          />
         </div>
         <div>
           <button

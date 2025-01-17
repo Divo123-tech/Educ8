@@ -214,7 +214,9 @@ const CoursePreview = () => {
         </div>
         <div className="flex flex-col gap-4">
           <p className="font-bold text-2xl">Description</p>
-          <p>{course?.description}</p>
+          <p
+            dangerouslySetInnerHTML={{ __html: course?.description || "" }}
+          ></p>
         </div>
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold">Instructor</h1>
@@ -240,7 +242,7 @@ const CoursePreview = () => {
               </p>
             </div>
           )}
-          <p>{instructor?.bio || ""}</p>
+          <p dangerouslySetInnerHTML={{ __html: instructor?.bio || "" }}></p>
         </div>
         <div id="reviews-container" className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
@@ -293,7 +295,7 @@ const CoursePreview = () => {
           <div className="flex justify-between flex-wrap">
             {reviews?.map((review) => {
               return (
-                <div className="w-[45%]">
+                <div className="w-[45%]" key={review.id}>
                   <CoursePreviewReview review={review} />
                 </div>
               );
