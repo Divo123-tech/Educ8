@@ -5,7 +5,8 @@ import ChangePasswordModal from "./ChangePasswordModal";
 import { editUser, getCurrentUser } from "@/services/users.service";
 import { useNavigate } from "react-router";
 import { useToast } from "@/hooks/use-toast";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import the Quill themes
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -58,6 +59,17 @@ const ProfilePage = () => {
         };
       }
       return prevUserData; // or return a default object if null
+    });
+  };
+  const handleQuillChange = (value: string) => {
+    setUserData((prevUserData) => {
+      if (prevUserData) {
+        return {
+          ...prevUserData,
+          description: value, // Update the `description` field
+        };
+      }
+      return prevUserData;
     });
   };
 
@@ -166,6 +178,11 @@ const ProfilePage = () => {
         </div>
         <div className="flex flex-col w-full md:w-5/6 gap-2">
           <label className="font-bold">Bio</label>
+          {/* <ReactQuill
+            theme="snow"
+            value={userData?.bio}
+            onChange={handleQuillChange}
+          /> */}
           <textarea
             rows={5}
             cols={50}

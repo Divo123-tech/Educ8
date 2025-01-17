@@ -12,6 +12,8 @@ import { CircleAlert, CircleCheckBig } from "lucide-react";
 import { addCourse } from "@/services/courses.service";
 import { UserContext } from "@/context/UserContext";
 import { getCurrentUser } from "@/services/users.service";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import the Quill theme
 const CreateCourseModal = () => {
   const [courseForm, setCourseForm] = useState({
     title: "",
@@ -48,6 +50,13 @@ const CreateCourseModal = () => {
         [e.target.name]: e.target.value,
       };
     });
+  };
+
+  const handleQuillChange = (value: string) => {
+    setCourseForm((prevCourseForm) => ({
+      ...prevCourseForm,
+      description: value, // Update the `description` field with the HTML value
+    }));
   };
 
   const handleFormSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
@@ -136,13 +145,18 @@ const CreateCourseModal = () => {
                 <label className="text-black font-medium">
                   Course Description
                 </label>
-                <input
+                {/* <input
                   placeholder="Give a quick description!"
                   name="description"
                   className="border border-black px-2 py-2 text-sm"
                   value={courseForm.description}
                   onChange={handleInputChange}
-                ></input>
+                ></input> */}
+                <ReactQuill
+                  theme="snow"
+                  value={courseForm.description}
+                  onChange={handleQuillChange}
+                />
               </div>
               <div className="flex flex-col gap-2">
                 <label className="text-black font-medium">

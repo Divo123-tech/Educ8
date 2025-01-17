@@ -15,7 +15,8 @@ import NewSectionMenu from "../NewSectionMenu";
 import { getSections, Section } from "@/services/sections.services";
 import { Link } from "react-router-dom";
 import SectionInstructorView from "../SectionInstructorView";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import the Quill theme
 const EditCourse = () => {
   const [showNewSection, setShowNewSection] = useState<boolean>(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -129,6 +130,18 @@ const EditCourse = () => {
       return prevCourse; // or return a default object if null
     });
   };
+  const handleQuillChange = (value: string) => {
+    setCourse((prevCourse) => {
+      console.log(prevCourse);
+      if (prevCourse) {
+        return {
+          ...prevCourse,
+          description: value, // Update the `description` field specifically
+        };
+      }
+      return prevCourse; // or return a default object if null
+    });
+  };
 
   const isFormEmpty =
     course?.title == "" ||
@@ -138,10 +151,13 @@ const EditCourse = () => {
 
   return (
     <div className="flex flex-col px-4 md:px-16 lg:px-48 py-6 gap-6">
-      <div className="text-gray-500 flex gap-1 items-center">
+      <Link
+        to="/instructor/courses"
+        className="text-gray-500 flex gap-1 items-center hover:border-b-2 w-fit"
+      >
         <ArrowLeft size={20} />
-        <Link to="/instructor/courses">Back to Courses</Link>
-      </div>
+        <p>Back to Courses</p>
+      </Link>
       <div className="flex gap-8 text-lg">
         <p
           className={`cursor-pointer
@@ -233,13 +249,18 @@ const EditCourse = () => {
                   <label className="font-bold text-lg">
                     Course Description
                   </label>
-                  <textarea
+                  {/* <textarea
                     className="border border-black px-3 py-2"
                     value={course?.description}
                     name="description"
                     onChange={handleInputChange}
                     rows={5}
-                  ></textarea>
+                  ></textarea> */}
+                  <ReactQuill
+                    theme="snow"
+                    value={course?.description}
+                    onChange={handleQuillChange}
+                  />
                   <p className="text-xs text-gray-500">
                     Description should have minimum 200 words.
                   </p>
