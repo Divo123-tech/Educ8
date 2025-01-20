@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { CartItem, getCartItems } from "@/services/cart.service";
 import { getCoursesTaken, UserCourseItem } from "@/services/courses.service";
 import ChatRoomDialog from "./ChatRoomDialog";
-
+import Logo from "@/assets/Logo.png";
 const NavigationBar = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState<CartItem[] | null>(null);
@@ -95,18 +95,18 @@ const NavigationBar = () => {
   return (
     <nav className="bg-background border-b shadow-md w-full">
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 w-full">
+        <div className="flex items-center gap-8 h-16 w-full">
           <div className="flex items-center">
             <Link
               to=""
               className="text-2xl font-bold text-primary"
               onClick={() => console.log(user)}
             >
-              Logo
+              <img src={Logo} className="h-8 sm:h-10"></img>
             </Link>
           </div>
 
-          <div className="relative w-2/3 lg:w-1/3 xl:w-1/2">
+          <div className="relative w-2/3 lg:w-2/5 xl:w-3/5">
             <input
               className="w-full rounded-full border border-black px-3 py-2 pl-10 text-sm"
               placeholder="Search Courses By Title, Description, or Teacher!"
@@ -129,7 +129,7 @@ const NavigationBar = () => {
               />
             </svg>
           </div>
-          <div className="hidden lg:block">
+          <div className="hidden lg:block ml-auto">
             <div className="flex items-center gap-12">
               <Link to="/">
                 <NavigationMenu>

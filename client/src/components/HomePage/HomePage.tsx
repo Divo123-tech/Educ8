@@ -10,6 +10,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Carousel1 from "@/assets/Carousel1.png";
+import Carousel2 from "@/assets/Carousel2.png";
+import Carousel3 from "@/assets/Carousel3.png";
 import { Link } from "react-router-dom";
 import CoursePreviewHome from "./CoursePreviewHome";
 
@@ -60,7 +62,7 @@ const HomePage = () => {
     })();
   }, []);
   return (
-    <div className="flex flex-col gap-10 px-4 lg:px-56 py-4">
+    <div className="flex flex-col gap-10 px-4 xl:px-56 py-4">
       <div className="flex gap-4">
         {user && (
           <>
@@ -105,14 +107,64 @@ const HomePage = () => {
           }}
         >
           <CarouselContent>
-            <CarouselItem>
-              <img src={Carousel1} className="w-full"></img>
+            <CarouselItem className="relative">
+              {/* Image */}
+              <img
+                src={Carousel1}
+                className="w-full sm:absolute sm:inset-0 sm:h-full sm:object-cover"
+                alt="Carousel Image"
+              />
+
+              {/* Overlay content */}
+              <div className="p-6 bg-white sm:absolute sm:w-1/3 sm:h-auto sm:shadow-lg sm:rounded-lg sm:top-1/2 sm:left-1/4 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2 flex flex-col justify-start items-start space-y-4">
+                <h1 className="text-xl sm:text-4xl font-bold font-serif">
+                  Title Here
+                </h1>
+                <p className="text-sm sm:text-md">
+                  Your content description or message here
+                </p>
+                <button className="bg-green-600 rounded-sm py-2 px-3 font-bold text-white text-sm hover:bg-green-500 w-full sm:w-fit">
+                  Click Me!
+                </button>
+              </div>
             </CarouselItem>
-            <CarouselItem>
-              <img src={Carousel1} className="w-full"></img>
+            <CarouselItem className="relative">
+              {/* Image */}
+              <img
+                src={Carousel2}
+                className="w-full sm:absolute sm:inset-0 sm:h-full sm:object-cover"
+                alt="Carousel Image"
+              />
+
+              {/* Overlay content */}
+              <div className="p-6 bg-white border-black shadow-md sm:absolute sm:w-1/3 sm:h-auto sm:shadow-lg sm:rounded-lg sm:top-1/2 sm:left-1/4 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2 flex flex-col justify-start items-start space-y-4">
+                <h1 className="text-xl sm:text-4xl font-bold font-serif">
+                  Learning that gets you
+                </h1>
+                <p className="text-sm sm:text-md">
+                  Your content description or message here
+                </p>
+                <button className="bg-green-600 rounded-sm py-2 px-3 font-bold text-white text-sm hover:bg-green-500 w-full sm:w-fit">
+                  Click Me!
+                </button>
+              </div>
             </CarouselItem>
-            <CarouselItem>
-              <img src={Carousel1} className="w-full"></img>
+            <CarouselItem className="relative">
+              {/* Image */}
+              <img
+                src={Carousel3}
+                className="w-full sm:inset-0 sm:h-full sm:object-cover"
+                alt="Carousel Image"
+              />
+              <div className="p-6 bg-white sm:absolute sm:w-1/3 sm:h-auto sm:shadow-lg sm:rounded-lg sm:top-1/2 sm:left-1/4 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2 flex flex-col justify-start items-start space-y-4">
+                <h1 className="text-xl sm:text-4xl font-bold font-serif">
+                  Learning that gets you
+                </h1>
+                <p className="text-sm sm:text-md">
+                  Skills for your present (and your future). Get started with
+                  us.
+                </p>
+              </div>
             </CarouselItem>
           </CarouselContent>
           <CarouselPrevious className="bg-black text-white" />
@@ -156,8 +208,8 @@ const HomePage = () => {
             <CarouselContent className="">
               {courses1?.map((course: Course) => {
                 return (
-                  <CarouselItem className="basis-auto">
-                    <CourseHomeScreen course={course} key={course.id} />
+                  <CarouselItem className="basis-auto" key={course.id}>
+                    <CourseHomeScreen course={course} />
                   </CarouselItem>
                 );
               })}
@@ -178,8 +230,8 @@ const HomePage = () => {
             <CarouselContent className="">
               {courses1?.map((course: Course) => {
                 return (
-                  <CarouselItem className="basis-auto">
-                    <CourseHomeScreen course={course} key={course.id} />
+                  <CarouselItem className="basis-auto" key={course.id}>
+                    <CourseHomeScreen course={course} />
                   </CarouselItem>
                 );
               })}
@@ -200,8 +252,8 @@ const HomePage = () => {
             <CarouselContent className="">
               {courses1?.map((course: Course) => {
                 return (
-                  <CarouselItem className="basis-auto">
-                    <CourseHomeScreen course={course} key={course.id} />
+                  <CarouselItem className="basis-auto" key={course.id}>
+                    <CourseHomeScreen course={course} />
                   </CarouselItem>
                 );
               })}
