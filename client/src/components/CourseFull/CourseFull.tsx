@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router";
 import SectionFull from "./SectionFull";
 import { Accordion } from "../ui/accordion";
 import { Content, getSingleContent } from "@/services/content.services";
-import { BadgeAlert, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { BadgeAlert, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FaStarHalfAlt } from "react-icons/fa";
 import ReviewDialog from "../Reviews/ReviewDialog";
@@ -21,6 +21,7 @@ import { Menubar, MenubarMenu, MenubarTrigger } from "../ui/menubar";
 import DeleteDialog from "../DeleteDialog";
 import { getCurrentUser, getUserInfo } from "@/services/users.service";
 import { User, UserContext } from "@/context/UserContext";
+import Pagination from "../Pagination";
 
 const CourseFull = () => {
   const [courseInfoShown, setCourseInfoShown] = useState<string>("content");
@@ -34,8 +35,6 @@ const CourseFull = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [instructor, setInstructor] = useState<User | null>(null);
 
-  // const [nextContent, setNextContent] = useState<Content | null>(null);
-  // const [prevContent, setPrevContent] = useState<Content | null>(null);
   const { courseId } = useParams();
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
@@ -285,9 +284,7 @@ const CourseFull = () => {
             <p
               dangerouslySetInnerHTML={{ __html: course?.description || "" }}
               className="text-sm text-justify xs:text-md"
-            >
-              {/* {course?.description} */}
-            </p>
+            ></p>
           </div>
           <div className="flex flex-col gap-4">
             <h1 className="text-2xl font-bold">Instructor</h1>
@@ -382,33 +379,13 @@ const CourseFull = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center gap-2">
-            <p>
-              <ChevronLeft
-                cursor={previousPage ? "pointer" : "not-allowed"}
-                opacity={previousPage ? "100%" : "50%"}
-                onClick={() =>
-                  setCurrentPage((prevCurrentPage) =>
-                    previousPage ? (prevCurrentPage -= 1) : prevCurrentPage
-                  )
-                }
-              />
-            </p>
-            <p>
-              Page {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}
-            </p>
-            <p>
-              <ChevronRight
-                cursor={nextPage ? "pointer" : "not-allowed"}
-                opacity={nextPage ? "100%" : "50%"}
-                onClick={() =>
-                  setCurrentPage((prevCurrentPage) =>
-                    nextPage ? (prevCurrentPage += 1) : prevCurrentPage
-                  )
-                }
-              />
-            </p>
-          </div>
+          <Pagination
+            previousPage={previousPage}
+            currentPage={currentPage}
+            nextPage={nextPage}
+            total={total}
+            setCurrentPage={setCurrentPage}
+          />
         </>
       )}
     </div>

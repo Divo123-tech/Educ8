@@ -1,7 +1,8 @@
 import { getCoursesTaken, UserCourseItem } from "@/services/courses.service";
 import { useEffect, useState } from "react";
 import CourseHomeScreen from "../HomePage/CourseHomeScreen";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { Search } from "lucide-react";
+import Pagination from "../Pagination";
 
 const MyLearning = () => {
   const [userCourses, setUserCourses] = useState<UserCourseItem[] | null>(null);
@@ -76,33 +77,13 @@ const MyLearning = () => {
         })}
       </div>
       <div className="flex justify-center">
-        <div className="flex justify-end gap-2">
-          <p>
-            <ChevronLeft
-              cursor={previousPage ? "pointer" : "not-allowed"}
-              opacity={previousPage ? "100%" : "50%"}
-              onClick={() =>
-                setCurrentPage((prevCurrentPage) =>
-                  previousPage ? (prevCurrentPage -= 1) : prevCurrentPage
-                )
-              }
-            />
-          </p>
-          <p>
-            Page {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}
-          </p>
-          <p>
-            <ChevronRight
-              cursor={nextPage ? "pointer" : "not-allowed"}
-              opacity={nextPage ? "100%" : "50%"}
-              onClick={() =>
-                setCurrentPage((prevCurrentPage) =>
-                  nextPage ? (prevCurrentPage += 1) : prevCurrentPage
-                )
-              }
-            />
-          </p>
-        </div>
+        <Pagination
+          previousPage={previousPage}
+          currentPage={currentPage}
+          nextPage={nextPage}
+          total={total}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
     </div>
   );

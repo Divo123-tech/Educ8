@@ -1,15 +1,11 @@
 import { ChangeEvent, useContext, useEffect, useState } from "react";
-import {
-  Search,
-  ChartColumnDecreasing,
-  ChevronRight,
-  ChevronLeft,
-} from "lucide-react";
+import { Search, ChartColumnDecreasing } from "lucide-react";
 import CreateCourseModal from "../CreateCourseModal";
 import { Course, getCoursesTaught } from "@/services/courses.service";
 import { UserContext } from "@/context/UserContext";
 import CourseInstructorView from "../CourseInstructorView";
 import { Link } from "react-router-dom";
+import Pagination from "@/components/Pagination";
 const InstructorCourse = () => {
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [previousPage, setPreviousPage] = useState<string | null>(null);
@@ -64,33 +60,13 @@ const InstructorCourse = () => {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <div className="flex justify-end gap-2">
-          <p>
-            <ChevronLeft
-              cursor={previousPage ? "pointer" : "not-allowed"}
-              opacity={previousPage ? "100%" : "50%"}
-              onClick={() =>
-                setCurrentPage((prevCurrentPage) =>
-                  previousPage ? (prevCurrentPage -= 1) : prevCurrentPage
-                )
-              }
-            />
-          </p>
-          <p>
-            Page {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}
-          </p>
-          <p>
-            <ChevronRight
-              cursor={nextPage ? "pointer" : "not-allowed"}
-              opacity={nextPage ? "100%" : "50%"}
-              onClick={() =>
-                setCurrentPage((prevCurrentPage) =>
-                  nextPage ? (prevCurrentPage += 1) : prevCurrentPage
-                )
-              }
-            />
-          </p>
-        </div>
+        <Pagination
+          previousPage={previousPage}
+          currentPage={currentPage}
+          nextPage={nextPage}
+          total={total}
+          setCurrentPage={setCurrentPage}
+        />
         <div className="flex flex-col gap-8">
           {courses?.map((course: Course) => {
             return <CourseInstructorView course={course} key={course.id} />;

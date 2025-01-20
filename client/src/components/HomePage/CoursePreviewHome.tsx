@@ -1,6 +1,5 @@
 import { Course } from "@/services/courses.service";
-import { Star } from "lucide-react";
-import { FaStarHalfAlt } from "react-icons/fa";
+import StarDisplay from "../StarDisplay";
 
 type Props = {
   course: Course | null;
@@ -19,18 +18,8 @@ const CoursePreviewHome = ({ course }: Props) => {
         <p className="text-sm">{course?.description}</p>
         <p className="text-gray-600 text-xs">By {course?.creator.username}</p>
         <div className="flex items-center gap-1">
-          <p className="font-bold">{course?.average_rating || "4.5"}</p>
-          {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
-            <span key={number}>
-              {number <= 3.2 ? (
-                <Star fill="#94751e" color="#94751e" size={12} />
-              ) : number - 0.5 > 3.2 ? (
-                <Star fill="#FFFFFF" color="#94751e" size={12} />
-              ) : (
-                <FaStarHalfAlt fill="#94751e" color="#94751e" size={12} />
-              )}
-            </span>
-          ))}
+          <p className="font-bold">{course?.average_rating || "0.0"}</p>
+          <StarDisplay rating={course?.average_rating || 0} />
         </div>
         <p className="mt-auto font-bold text-md">${course?.price}</p>
       </div>

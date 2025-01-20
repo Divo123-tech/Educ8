@@ -3,7 +3,7 @@ import {
   getCourseInUserCourse,
   getSingleCourse,
 } from "@/services/courses.service";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { FaStarHalfAlt } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router";
@@ -23,6 +23,8 @@ import { getCourseInCart, postCourseToCart } from "@/services/cart.service";
 import { getReviews, Review } from "@/services/review.services";
 import CoursePreviewReview from "./CoursePreviewReview";
 import StarsSearch from "../Reviews/StarsSearch";
+import Pagination from "../Pagination";
+import StarDisplay from "../StarDisplay";
 
 const CoursePreview = () => {
   const navigate = useNavigate();
@@ -102,19 +104,7 @@ const CoursePreview = () => {
             <p className="font-bold text-xs text-[#e1a03b]">
               {course?.average_rating?.toFixed(1) || "4.6"}
             </p>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
-                <span key={number}>
-                  {number <= 3.7 ? (
-                    <Star fill="#e1a03b" color="#94751e" size={12} />
-                  ) : number - 0.5 > 3.7 ? (
-                    <Star fill="#000000" color="#94751e" size={12} />
-                  ) : (
-                    <FaStarHalfAlt fill="#e1a03b" color="#94751e" size={12} />
-                  )}
-                </span>
-              ))}
-            </div>
+            <StarDisplay rating={course?.average_rating || 0} />
             <p className="text-xs underline underline-offset-2 text-green-400">
               ({course?.reviews.length} ratings)
             </p>
@@ -254,34 +244,17 @@ const CoursePreview = () => {
             <p className="font-bold text-2xl">
               {course?.reviews.length} reviews
             </p>
-            <div className="flex justify-center gap-2 ml-auto">
-              <p>
-                <ChevronLeft
-                  cursor={previousPage ? "pointer" : "not-allowed"}
-                  opacity={previousPage ? "100%" : "50%"}
-                  onClick={() =>
-                    setCurrentPage((prevCurrentPage) =>
-                      previousPage ? (prevCurrentPage -= 1) : prevCurrentPage
-                    )
-                  }
-                />
-              </p>
-              <p>
-                Page {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}
-              </p>
-              <p>
-                <ChevronRight
-                  cursor={nextPage ? "pointer" : "not-allowed"}
-                  opacity={nextPage ? "100%" : "50%"}
-                  onClick={() =>
-                    setCurrentPage((prevCurrentPage) =>
-                      nextPage ? (prevCurrentPage += 1) : prevCurrentPage
-                    )
-                  }
-                />
-              </p>
+            <div className="ml-auto">
+              <Pagination
+                previousPage={previousPage}
+                currentPage={currentPage}
+                nextPage={nextPage}
+                total={total}
+                setCurrentPage={setCurrentPage}
+              />
             </div>
           </div>
+
           <div className="w-full">
             {Array.from({ length: 5 }, (_, index) => (
               <StarsSearch

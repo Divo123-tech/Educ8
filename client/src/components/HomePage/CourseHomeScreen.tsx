@@ -1,7 +1,5 @@
 import { Course } from "@/services/courses.service";
-import { Star } from "lucide-react";
 import NoThumbnail from "@/assets/NoThumbnail.png";
-import { FaStarHalfAlt } from "react-icons/fa";
 import {
   HoverCard,
   HoverCardContent,
@@ -13,6 +11,7 @@ import { useContext } from "react";
 import { UserContext } from "@/context/UserContext";
 import { Link } from "react-router-dom";
 import { postCourseToCart } from "@/services/cart.service";
+import StarDisplay from "../StarDisplay";
 type Props = {
   course: Course;
   addedThumbnailLink?: boolean;
@@ -81,19 +80,7 @@ const CourseHomeScreen = ({
             <p className="font-bold text-xs">
               {course.average_rating?.toFixed(1) || "0.0"}
             </p>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
-                <span key={number}>
-                  {number <= 3.7 ? (
-                    <Star fill="#94751e" color="#94751e" size={12} />
-                  ) : number - 0.5 > 3.7 ? (
-                    <Star fill="#FFFFFF" color="#94751e" size={12} />
-                  ) : (
-                    <FaStarHalfAlt fill="#94751e" color="#94751e" size={12} />
-                  )}
-                </span>
-              ))}
-            </div>
+            <StarDisplay rating={course.average_rating || 0} />
           </div>
           <p className="font-bold text-sm">${course.price}</p>
         </div>

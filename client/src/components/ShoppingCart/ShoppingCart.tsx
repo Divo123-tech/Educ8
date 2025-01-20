@@ -5,11 +5,11 @@ import {
 } from "@/services/cart.service";
 
 import { useContext, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import CourseCartView from "./CourseCartView";
 import { UserContext } from "@/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "@/services/users.service";
+import Pagination from "../Pagination";
 const ShoppingCart = () => {
   const navigate = useNavigate();
 
@@ -63,34 +63,14 @@ const ShoppingCart = () => {
       <div>
         <h1 className="font-bold text-4xl">Shopping Cart</h1>
       </div>
-      <div className="flex flex-col gap-4">
-        <div className="flex  justify-end gap-2">
-          <p>
-            <ChevronLeft
-              cursor={previousPage ? "pointer" : "not-allowed"}
-              opacity={previousPage ? "100%" : "50%"}
-              onClick={() =>
-                setCurrentPage((prevCurrentPage) =>
-                  previousPage ? (prevCurrentPage -= 1) : prevCurrentPage
-                )
-              }
-            />
-          </p>
-          <p>
-            Page {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}
-          </p>
-          <p>
-            <ChevronRight
-              cursor={nextPage ? "pointer" : "not-allowed"}
-              opacity={nextPage ? "100%" : "50%"}
-              onClick={() =>
-                setCurrentPage((prevCurrentPage) =>
-                  nextPage ? (prevCurrentPage += 1) : prevCurrentPage
-                )
-              }
-            />
-          </p>
-        </div>
+      <div className="flex flex-col gap-4 ml-auto">
+        <Pagination
+          previousPage={previousPage}
+          currentPage={currentPage}
+          nextPage={nextPage}
+          total={total}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
       <div className="flex justify-between flex-col md:flex-row">
         <div className="flex flex-col gap-2 w-full md:w-3/4">

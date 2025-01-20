@@ -23,18 +23,8 @@ const ReviewDialog = ({ courseId, fetchAllReviews }: Props) => {
     description: "",
     rating: 0,
   });
-  const handleClose = () => {
-    setReviewSuccess(null);
-    setProjectedReview(0);
-    setReview({
-      title: "",
-      description: "",
-      rating: 0,
-    });
-  };
 
   const [projectedReview, setProjectedReview] = useState<number>(0);
-
   const [reviewSuccess, setReviewSuccess] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -57,7 +47,15 @@ const ReviewDialog = ({ courseId, fetchAllReviews }: Props) => {
       };
     });
   };
-
+  const handleClose = () => {
+    setReviewSuccess(null);
+    setProjectedReview(0);
+    setReview({
+      title: "",
+      description: "",
+      rating: 0,
+    });
+  };
   const handleFormSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
