@@ -12,7 +12,6 @@ export const getMessages = async (roomname: string): Promise<Message[]> => {
       url,
       method: "GET",
     });
-    console.log(response);
     return response;
   } catch (err) {
     console.error(err);

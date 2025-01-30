@@ -11,7 +11,6 @@ export const addSection = async (title: string, courseId: number | string) => {
       method: "POST",
       data: { title },
     });
-    console.log(section);
     return section;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -35,7 +34,6 @@ export const getSections = async (
       import.meta.env.VITE_API_URL
     }/api/courses/${courseId}/sections`;
     const response = await axios.get(url);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user data:", error);

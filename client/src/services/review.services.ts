@@ -38,7 +38,6 @@ export const postReview = async (
       method: "POST",
       data: review,
     });
-    console.log(sectionContent);
     return sectionContent;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -57,7 +56,6 @@ export const getReviews = async (
       rating != undefined ? `?rating=${rating}` : ""
     }`;
     const response = await axios.get(url);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user data:", error);

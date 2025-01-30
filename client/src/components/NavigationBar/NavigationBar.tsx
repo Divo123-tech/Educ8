@@ -72,12 +72,13 @@ const NavigationBar = () => {
   };
 
   const handleSearchClick = () => {
-    console.log(inputText);
+    if (inputText != "") {
+      navigate(`/explore?search=${inputText}`);
+    }
   };
 
   const handleSearchEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      console.log(inputText);
       if (inputText != "") {
         navigate(`/explore?search=${inputText}`);
       }
@@ -97,11 +98,7 @@ const NavigationBar = () => {
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8 h-16 w-full">
           <div className="flex items-center">
-            <Link
-              to=""
-              className="text-2xl font-bold text-primary"
-              onClick={() => console.log(user)}
-            >
+            <Link to="" className="text-2xl font-bold text-primary">
               <img src={Logo} className="h-8 sm:h-10"></img>
             </Link>
           </div>
@@ -264,7 +261,7 @@ const NavigationBar = () => {
                           className="hover:text-green-500"
                         >
                           <Link to="/profile">
-                            <User onClick={() => console.log(user)} />
+                            <User />
                           </Link>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent className="lg:w-[120px] py-2 flex flex-col gap-4">

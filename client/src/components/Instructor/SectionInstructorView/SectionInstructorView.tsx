@@ -34,7 +34,6 @@ const SectionInstructorView = ({
   useEffect(() => {
     setSectionState(section);
     (async () => {
-      console.log(await getContentsDetailed(courseId, section.id));
       setContents(await getContentsDetailed(courseId, section.id));
     })();
   }, [courseId, section]);
@@ -55,7 +54,6 @@ const SectionInstructorView = ({
         title: event.target.value,
       };
     });
-    console.log(sectionState);
   };
 
   const handlePositionInputChange = (
@@ -74,13 +72,7 @@ const SectionInstructorView = ({
   ) => {
     event.preventDefault();
     try {
-      console.log(sectionState);
-      const editedSection = await editSection(
-        courseId,
-        section.id,
-        sectionState
-      );
-      console.log(editedSection);
+      await editSection(courseId, section.id, sectionState);
       setSections(await getSections(courseId));
       toggleEditSection();
     } catch (err) {
@@ -148,7 +140,11 @@ const SectionInstructorView = ({
                   <Trash2 size={16} cursor={"pointer"} />
                 </MenubarTrigger>
 
-                <DeleteDialog handleDelete={handleDelete} />
+                <DeleteDialog
+                  handleDelete={handleDelete}
+                  deleteButtonMessage="Delete"
+                  deleteMessage="Are you sure you want to delete this section?"
+                />
               </MenubarMenu>
             </Menubar>
           </div>

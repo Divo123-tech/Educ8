@@ -36,7 +36,6 @@ export const addCourse = async (
       method: "POST",
       data: { title, description, category, subtitle },
     });
-    console.log(course);
     return course;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -99,7 +98,6 @@ export const getCoursesTaken = async (
       url,
       method: "GET",
     });
-    console.log(response);
     return response;
   } catch (err) {
     console.error(err);
@@ -116,7 +114,6 @@ export const getCourseInUserCourse = async (courseId: number | string) => {
       url,
       method: "GET",
     });
-    console.log(isCourseInUserCourse);
     return isCourseInUserCourse;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -136,7 +133,6 @@ export const getCourses = async (
       creator || ""
     }`;
     const response = await axios.get(url);
-    console.log(response.data);
     return response.data;
   } catch (err) {
     console.error(err);
@@ -182,7 +178,6 @@ export const editCourse = async (
         "Content-Type": "multipart/form-data", // Important for file uploads
       },
     });
-    console.log(editedCourse);
     return editedCourse;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -204,7 +199,6 @@ export const publishCourse = async (
         "Content-Type": "multipart/form-data", // Important for file uploads
       },
     });
-    console.log(editedCourse);
     return editedCourse;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -220,7 +214,6 @@ export const refundCourse = async (courseId: string | number) => {
       method: "DELETE",
       data: { course: courseId },
     });
-    console.log(refundCourse);
     return refundCourse;
   } catch (error) {
     console.error("Error fetching user data:", error);

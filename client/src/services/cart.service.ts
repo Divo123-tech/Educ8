@@ -4,13 +4,11 @@ import { fetchWithAuth } from "./users.service";
 export const postCourseToCart = async (courseId: number | string) => {
   try {
     const url = `${import.meta.env.VITE_API_URL}/api/users/cart`;
-    console.log(courseId);
     const course = await fetchWithAuth({
       url,
       method: "POST",
       data: { course: courseId },
     });
-    console.log(course);
     return course;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -21,13 +19,11 @@ export const postCourseToCart = async (courseId: number | string) => {
 export const deleteCourseInCart = async (id: number | string) => {
   try {
     const url = `${import.meta.env.VITE_API_URL}/api/users/cart`;
-    console.log(id);
     const course = await fetchWithAuth({
       url,
       method: "DELETE",
       data: { course: id },
     });
-    console.log(course);
     return course;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -55,7 +51,6 @@ export const getCartItems = async (page: number) => {
       url,
       method: "GET",
     });
-    console.log(course);
     return course;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -70,7 +65,6 @@ export const getCourseInCart = async (courseId: number | string) => {
       url,
       method: "GET",
     });
-    console.log(isCourseInCart);
     return isCourseInCart;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -86,7 +80,6 @@ export const checkoutCartItems = async (cartItems: CartItem[]) => {
       data: { cartItems },
       method: "POST",
     });
-    console.log(response);
     return response;
   } catch (error) {
     console.error("Error fetching user data:", error);

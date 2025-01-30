@@ -164,7 +164,11 @@ const SectionContentInstructor = ({
                   <Trash2 size={16} cursor={"pointer"} />
                 </MenubarTrigger>
 
-                <DeleteDialog handleDelete={handleDelete} />
+                <DeleteDialog
+                  handleDelete={handleDelete}
+                  deleteButtonMessage="Delete"
+                  deleteMessage="Are you sure you want to delete this section content?"
+                />
               </MenubarMenu>
             </Menubar>
           </div>

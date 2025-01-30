@@ -120,7 +120,6 @@ const EditCourse = () => {
     >
   ) => {
     setCourse((prevCourse) => {
-      console.log(prevCourse);
       if (prevCourse) {
         return {
           ...prevCourse,
@@ -132,7 +131,6 @@ const EditCourse = () => {
   };
   const handleQuillChange = (value: string) => {
     setCourse((prevCourse) => {
-      console.log(prevCourse);
       if (prevCourse) {
         return {
           ...prevCourse,

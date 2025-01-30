@@ -61,7 +61,6 @@ const CreateCourseModal = () => {
 
   const handleFormSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(courseForm);
     try {
       await addCourse(
         courseForm.title,

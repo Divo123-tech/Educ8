@@ -5,7 +5,6 @@ import {
 } from "@/services/courses.service";
 import { Star } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { FaStarHalfAlt } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router";
 import { BadgeAlert } from "lucide-react";
 import { TbBrandVolkswagen } from "react-icons/tb";
@@ -49,7 +48,6 @@ const CoursePreview = () => {
   const { user, setUser } = userContext;
   const handleReviewsFilter = async (rating: number) => {
     const response = await getReviews(courseId || "", rating);
-    console.log(response);
     setReviews(response.results);
     setPreviousPage(response.previous);
     setNextPage(response.next);
@@ -82,7 +80,6 @@ const CoursePreview = () => {
       setSections(sections);
       setInstructor(await getUserInfo(course?.creator.id || ""));
       const reviewsResponse = await getReviews(courseId || "");
-      console.log(reviewsResponse);
       setReviews(reviewsResponse.results);
       setReviews(reviewsResponse.results);
       setPreviousPage(reviewsResponse.previous);

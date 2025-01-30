@@ -59,8 +59,7 @@ const ReviewDialog = ({ courseId, fetchAllReviews }: Props) => {
   const handleFormSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await postReview(courseId, review);
-      console.log(response);
+      await postReview(courseId, review);
       setReviewSuccess(true);
       setProjectedReview(0);
       setReview({
@@ -70,7 +69,6 @@ const ReviewDialog = ({ courseId, fetchAllReviews }: Props) => {
       });
       fetchAllReviews();
     } catch (e: unknown) {
-      console.error(e);
       setReviewSuccess(false);
     }
   };

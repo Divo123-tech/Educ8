@@ -44,20 +44,12 @@ const CourseFull = () => {
   }
 
   const { setUser } = userContext;
-  const selectSectionContent = (
-    content: Content
-    // nextContent: Content | null,
-    // prevContent: Content | null
-  ) => {
-    console.log(content);
+  const selectSectionContent = (content: Content) => {
     setCurrentContent(content);
-    // setNextContent(nextContent);
-    // setPrevContent(prevContent);
   };
   const fetchAllReviews = async () => {
     setCourse(await getSingleCourse(courseId || ""));
     const response = await getReviews(courseId || "");
-    console.log(response);
     setReviews(response.results);
     setPreviousPage(response.previous);
     setNextPage(response.next);
@@ -91,7 +83,6 @@ const CourseFull = () => {
 
   const handleReviewsFilter = async (rating: number) => {
     const response = await getReviews(courseId || "", rating);
-    console.log(response);
     setReviews(response.results);
     setPreviousPage(response.previous);
     setNextPage(response.next);

@@ -40,7 +40,6 @@ const ChangePasswordModal = () => {
 
   const handleFormSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(passwordForm);
     try {
       await changePassword(passwordForm.oldPassword, passwordForm.newPassword);
       setPasswordSuccess(true);

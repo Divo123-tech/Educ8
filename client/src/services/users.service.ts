@@ -3,7 +3,6 @@ import { User } from "@/context/UserContext";
 // Handles refreshing the access token
 const refreshAccessToken = async (): Promise<string> => {
   const refreshToken = localStorage.getItem("refresh");
-  console.log(refreshToken);
   if (!refreshToken) {
     window.location.href = "/login";
     // throw new Error("Refresh token is missing. User must log in again.");
@@ -86,11 +85,8 @@ export const login = async (
         "Content-Type": "application/json",
       },
     });
-    console.log("Response:", response.data); // Log the response for debugging
     localStorage.setItem("access", response.data.access);
     localStorage.setItem("refresh", response.data.refresh);
-    console.log("refresh", localStorage.getItem("refresh"));
-    console.log("access", localStorage.getItem("access"));
     return response.data; // Access and refresh tokens
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -137,7 +133,6 @@ export const register = async (
         "Content-Type": "application/json",
       },
     });
-    console.log("Response:", response.data); // Log the response for debugging
     return response.data; // Access and refresh tokens
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -157,7 +152,6 @@ export const getCurrentUser = async (): Promise<User> => {
   try {
     const url = `${import.meta.env.VITE_API_URL}/api/users/`;
     const user = await fetchWithAuth<User>({ url, method: "GET" });
-    console.log(user);
     return user;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -169,7 +163,6 @@ export const getUserInfo = async (id: string | number): Promise<User> => {
   try {
     const url = `${import.meta.env.VITE_API_URL}/api/users/${id}`;
     const response = await axios.get(url);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -188,7 +181,6 @@ export const changePassword = async (
       method: "PATCH",
       data: { oldPassword, newPassword },
     });
-    console.log(user);
     return user;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -207,7 +199,6 @@ export const editUser = async (user: FormData): Promise<User> => {
         "Content-Type": "multipart/form-data", // Important for file uploads
       },
     });
-    console.log(editedUser);
     return editedUser;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -226,7 +217,6 @@ export const getAllUsers = async (search?: string): Promise<UsersResponse> => {
       search || ""
     }`;
     const response = await axios.get(url);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user data:", error);

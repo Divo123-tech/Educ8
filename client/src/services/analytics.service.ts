@@ -13,7 +13,6 @@ export const getNumberOfPublishedCourses = async () => {
       url,
       method: "GET",
     });
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -35,7 +34,6 @@ export const getCoursesRevenue = async () => {
       url,
       method: "GET",
     });
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching user data:", error);

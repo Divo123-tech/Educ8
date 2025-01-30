@@ -28,7 +28,6 @@ const ShoppingCart = () => {
   useEffect(() => {
     (async () => {
       const response = await getCartItems(currentPage);
-      console.log(response.results);
       setCartItems(response.results);
       setPreviousPage(response.previous);
       setNextPage(response.next);
@@ -49,7 +48,6 @@ const ShoppingCart = () => {
     return total + Number(item.course.price);
   }, 0);
   const handleCheckout = async () => {
-    console.log(cartItems);
     await checkoutCartItems(cartItems || []);
     setCartItems([]);
     navigate("/my-learning");

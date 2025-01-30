@@ -28,7 +28,6 @@ const StarsSearch = ({ stars, course, handleReviewsFilter }: Props) => {
     if (isNaN(number)) {
       return "0";
     }
-    console.log(number);
 
     return number;
   };

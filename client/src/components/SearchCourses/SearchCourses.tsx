@@ -20,7 +20,6 @@ const SearchCourses = () => {
       setPreviousPage(response.previous);
       setNextPage(response.next);
       setTotal(response.count);
-      console.log(response.results);
     })();
   }, [currentPage, searchQuery]);
   return (
