@@ -1,7 +1,8 @@
 from django.urls import path
 from ..views import CoursePublishedStatusView, CourseRevenueView
 urlpatterns = [
-    path('published-status', CoursePublishedStatusView.as_view(), name="courses"),
+    path('published-status', CoursePublishedStatusView.as_view(),
+         name="courses-published"),
     path('course-revenue', CourseRevenueView.as_view(), name='course-revenue'),
 
 ]

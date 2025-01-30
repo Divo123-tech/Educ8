@@ -27,13 +27,17 @@ class CourseView(ListCreateAPIView):
         """
         Get courses with optional filtering
         """
-        queryset = Course.objects.filter(published=True)
+        queryset = Course.objects.all()
         search_term = self.request.query_params.get('search', None)
         category = self.request.query_params.get(
             'category', None)  # Get category filter
         creator = self.request.query_params.get(
             'creator', None)  # Get category filter
+        published = self.request.query_params.get(
+            'published', False)  # Get category filter
 
+        if published:
+            queryset = queryset.filter(published=True)
         if creator:
             queryset = queryset.filter(
                 # Filter by category (assuming category is a CharField or similar)

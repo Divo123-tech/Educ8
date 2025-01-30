@@ -3,10 +3,10 @@ from ..views import CourseView, SingleCourseView, SectionView, SingleSectionView
 
 urlpatterns = [
     path('', CourseView.as_view(), name="courses"),
-    path('<int:pk>/publish', PublishCourseView.as_view(), name="courses"),
+    path('<int:pk>/publish', PublishCourseView.as_view(), name="publish-course"),
     path('taught', CoursesTaughtView.as_view(), name="courses-taught"),
     path('<int:pk>', SingleCourseView.as_view(), name="single-course"),
-    path('<int:courseId>/reviews',
+    path('<int:courseId>/reviewss',
          ReviewView.as_view(), name="reviews"),
     path('<int:courseId>/reviews/<int:pk>',
          SingleReviewView.as_view(), name="single-review"),
