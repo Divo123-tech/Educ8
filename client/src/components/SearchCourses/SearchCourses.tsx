@@ -2,7 +2,7 @@ import { Course, getCourses } from "@/services/courses.service";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import CourseSearchView from "./CourseSearchView";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import Pagination from "../Pagination";
 
 const SearchCourses = () => {
   const [searchParams] = useSearchParams();
@@ -42,52 +42,13 @@ const SearchCourses = () => {
               return <CourseSearchView key={course.id} course={course} />;
             })}
             {courses?.length != 0 && (
-              <div className="flex flex-col gap-4 py-4 items-center">
-                <div className="flex justify-end gap-4 items-center">
-                  <div
-                    className={`border rounded-full border-black p-1 flex items-center ${
-                      !previousPage && "border-gray-400"
-                    }`}
-                  >
-                    <p>
-                      <ChevronLeft
-                        cursor={previousPage ? "pointer" : "not-allowed"}
-                        opacity={previousPage ? "100%" : "50%"}
-                        strokeWidth={1}
-                        onClick={() =>
-                          setCurrentPage((prevCurrentPage) =>
-                            previousPage
-                              ? (prevCurrentPage -= 1)
-                              : prevCurrentPage
-                          )
-                        }
-                      />
-                    </p>
-                  </div>
-                  <p className="text-green-800 font-bold">
-                    Page {total == 0 ? 0 : currentPage} of{" "}
-                    {Math.ceil(total / 10)}
-                  </p>
-                  <div
-                    className={`border rounded-full border-black p-1 flex items-center ${
-                      !nextPage && "border-gray-400"
-                    }`}
-                  >
-                    <p>
-                      <ChevronRight
-                        cursor={nextPage ? "pointer" : "not-allowed"}
-                        opacity={nextPage ? "100%" : "50%"}
-                        strokeWidth={1}
-                        onClick={() =>
-                          setCurrentPage((prevCurrentPage) =>
-                            nextPage ? (prevCurrentPage += 1) : prevCurrentPage
-                          )
-                        }
-                      />
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <Pagination
+                previousPage={previousPage}
+                currentPage={currentPage}
+                nextPage={nextPage}
+                total={total}
+                setCurrentPage={setCurrentPage}
+              />
             )}
           </div>
         </div>

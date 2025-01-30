@@ -36,7 +36,7 @@ const InstructorCourse = () => {
   return (
     <div className="flex flex-col px-8 lg:px-48 py-12 gap-8">
       <div>
-        <h1 className="text-3xl font-bold">Courses</h1>
+        <h1 className="text-3xl font-bold font-serif">Courses</h1>
       </div>
       <div className="flex flex-col sm:flex-row sm:items-center gap-2 lg:gap-8">
         <div className="flex items-center">

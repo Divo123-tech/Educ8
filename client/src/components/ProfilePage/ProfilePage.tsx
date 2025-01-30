@@ -114,7 +114,9 @@ const ProfilePage = () => {
     <div className="flex flex-col px-8 md:px-32 lg:px-64 py-12 gap-8">
       <div className="flex flex-col gap-4">
         <div className="flex justify-between w-full items-center">
-          <h1 className="text-3xl">Profile Page</h1>
+          <h1 className="text-3xl font-semibold font-serif">
+            Profile & settings
+          </h1>
           <ChangePasswordModal />
         </div>
 

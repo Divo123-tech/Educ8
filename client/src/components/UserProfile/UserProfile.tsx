@@ -4,7 +4,7 @@ import { getUserInfo } from "@/services/users.service";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import CourseHomeScreen from "../HomePage/CourseHomeScreen";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import Pagination from "../Pagination";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -72,7 +72,7 @@ const UserProfile = () => {
             showCoursesTaught
               ? "font-bold text-black underline"
               : "font-medium text-gray-600"
-          } text-xl cursor-pointer`}
+          } text-xl cursor-pointer hover:underline`}
           onClick={toggleCoursesShown}
         >
           Courses Taught
@@ -82,7 +82,7 @@ const UserProfile = () => {
             !showCoursesTaught
               ? "font-bold text-black underline"
               : "font-medium text-gray-500"
-          } text-xl cursor-pointer`}
+          } text-xl cursor-pointer hover:underline`}
           onClick={toggleCoursesShown}
         >
           Courses Taken
@@ -93,34 +93,14 @@ const UserProfile = () => {
           return <CourseHomeScreen course={course} />;
         })}
       </div>
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-end gap-2">
-          <p>
-            <ChevronLeft
-              cursor={previousPage ? "pointer" : "not-allowed"}
-              opacity={previousPage ? "100%" : "50%"}
-              onClick={() =>
-                setCurrentPage((prevCurrentPage) =>
-                  previousPage ? (prevCurrentPage -= 1) : prevCurrentPage
-                )
-              }
-            />
-          </p>
-          <p>
-            Page {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}
-          </p>
-          <p>
-            <ChevronRight
-              cursor={nextPage ? "pointer" : "not-allowed"}
-              opacity={nextPage ? "100%" : "50%"}
-              onClick={() =>
-                setCurrentPage((prevCurrentPage) =>
-                  nextPage ? (prevCurrentPage += 1) : prevCurrentPage
-                )
-              }
-            />
-          </p>
-        </div>
+      <div className="ml-auto">
+        <Pagination
+          previousPage={previousPage}
+          currentPage={currentPage}
+          nextPage={nextPage}
+          total={total}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
     </div>
   );

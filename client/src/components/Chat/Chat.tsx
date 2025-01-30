@@ -37,7 +37,6 @@ const Chat: React.FC = () => {
           const id1 = Number(roomName?.split("-")[0]);
           const id2 = Number(roomName?.split("-")[1]);
           if (user.id != id1 && user.id != id2) {
-            console.log("Not the user");
             navigate("/");
           }
           if (user.id == id1) {
@@ -55,23 +54,20 @@ const Chat: React.FC = () => {
   useEffect(() => {
     (async () => {
       const response = await getMessages(roomName || "");
-      console.log(response);
       setMessages(response);
     })();
     const ws = new WebSocket(`ws://localhost:8000/ws/chat/${roomName}/`);
-    console.log(ws);
     setSocket(ws);
 
     ws.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
       if (data.message) {
-        console.log(data);
         setMessages((prev) => [...prev, data]);
       }
     };
 
     ws.onclose = () => {
-      console.log("WebSocket closed");
+      ("WebSocket closed");
     };
 
     return () => {

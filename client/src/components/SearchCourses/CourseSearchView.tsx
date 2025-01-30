@@ -1,6 +1,5 @@
 import { Course } from "@/services/courses.service";
-import { Star } from "lucide-react";
-import { FaStarHalfAlt } from "react-icons/fa";
+import StarDisplay from "../StarDisplay";
 
 type Props = {
   course: Course;
@@ -23,19 +22,7 @@ const CourseSearchView = ({ course }: Props) => {
               <p className="font-bold">
                 {course?.average_rating?.toFixed(1) || "4.5"}
               </p>
-              <div className="flex gap-1">
-                {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => (
-                  <span key={number}>
-                    {number <= 3.2 ? (
-                      <Star fill="#94751e" color="#94751e" size={14} />
-                    ) : number - 0.5 > 3.2 ? (
-                      <Star fill="#FFFFFF" color="#94751e" size={14} />
-                    ) : (
-                      <FaStarHalfAlt fill="#94751e" color="#94751e" size={14} />
-                    )}
-                  </span>
-                ))}
-              </div>
+              <StarDisplay rating={course?.average_rating || 0} />
               <p className="text-xs underline underline-offset-2 text-green-700">
                 ({course.reviews.length} ratings)
               </p>
