@@ -30,17 +30,21 @@ const CourseInstructorView = ({ course }: Props) => {
   };
 
   return (
-    <div className="flex border border-black">
+    <div className="flex sm:flex-row flex-col border border-black justify-center items-center sm:justify-start ">
       <img
         src={
           typeof course.thumbnail == "string" ? course.thumbnail : NoThumbnail
         }
-        className="w-24 h-24"
+        className="w-40 h-28 sm:w-28 sm:h-24 object-cover object-center pt-2 sm:pt-0"
       />
-      <div className="relative flex flex-col justify-between py-1 px-4 group w-full ">
-        <p className="font-bold">{course.title}</p>
-        <p className="italic">{course.published ? "Published" : "Draft"}</p>
-        <p className="text-gray-500">Date Created: {course.created_at}</p>
+      <div className="relative flex flex-col justify-between gap-3 sm:px-4 group w-full items-center sm:items-start">
+        <p className="font-bold text-sm sm:text-md">{course.title}</p>
+        <p className="italic text-sm ">
+          {course.published ? "Published" : "Draft"}
+        </p>
+        <p className="text-gray-500 text-sm">
+          Date Created: {course.created_at}
+        </p>
         <div
           className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity"
           onClick={() => navigate(`/instructor/courses/${course.id}`)}
@@ -48,7 +52,7 @@ const CourseInstructorView = ({ course }: Props) => {
           <p className="text-green-600 text-lg  font-bold">Edit Course</p>
         </div>
       </div>
-      <div className="px-4 py-3">
+      <div className="">
         <button className="cursor:pointer">
           <Menubar>
             <MenubarMenu>
