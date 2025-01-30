@@ -60,13 +60,15 @@ const InstructorCourse = () => {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <Pagination
-          previousPage={previousPage}
-          currentPage={currentPage}
-          nextPage={nextPage}
-          total={total}
-          setCurrentPage={setCurrentPage}
-        />
+        <div className="ml-auto">
+          <Pagination
+            previousPage={previousPage}
+            currentPage={currentPage}
+            nextPage={nextPage}
+            total={total}
+            setCurrentPage={setCurrentPage}
+          />
+        </div>
         <div className="flex flex-col gap-8">
           {courses?.map((course: Course) => {
             return <CourseInstructorView course={course} key={course.id} />;

@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from ..serializers import CourseSerializer
-from ..models import Course
+from ..models import Course, Section, SectionContent
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from django.db.models import Q
 from rest_framework.pagination import PageNumberPagination
@@ -114,22 +114,41 @@ class PublishCourseView(APIView):
             # Check if the requesting user is the creator of the course
             is_user_creator(request=request, courseId=pk)
 
-            # Modify `published_date` based on `published` field
-            if request.data['published']:
-                request.data['published_at'] = date.today()
-            else:
-                request.data['published_at'] = None
+            # Ensure at least one section exists before publishing
+            sections = Section.objects.filter(course=pk)
+            # Ensure at least one section exists
+            if not sections.exists():
+                return Response(
+                    {"error": "A course must have at least one section before being published!"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
-            # # Partially update the course using the serializer
+            # Ensure every section has at least one section content
+            for section in sections:
+                if not SectionContent.objects.filter(section=section).exists():
+                    return Response(
+                        {"error": f"Section '{section.title}' must have at least one content before publishing!"},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+            # Make request.data mutable
+            mutable_data = request.data.copy()  # <-- This makes it mutable
+
+            # Modify `published_at` based on `published` field
+            if mutable_data.get('published'):
+                mutable_data['published_at'] = date.today()
+            else:
+                mutable_data['published_at'] = None
+
+            # Partially update the course using the serializer
             serializer = CourseSerializer(
-                course, data=request.data, partial=True)
+                course, data=mutable_data, partial=True)
 
             # Validate and save the serializer
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
 
-            # If serializer is not valid, return errors
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         except Course.DoesNotExist:

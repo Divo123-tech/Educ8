@@ -72,7 +72,6 @@ export const deleteReview = async (
       import.meta.env.VITE_API_URL
     }/api/courses/${courseId}/reviews/${reviewId}`;
     const response = await fetchWithAuth({ url, method: "DELETE" });
-    console.log(response);
     return response;
   } catch (error) {
     console.error("Error fetching user data:", error);

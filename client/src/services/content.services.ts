@@ -82,7 +82,7 @@ export const postContent = async (
     const sectionContent = await fetchWithAuth<Content>({
       url,
       method: "POST",
-      data: { title },
+      data: { title, contentType: "text" },
     });
     return sectionContent;
   } catch (error) {

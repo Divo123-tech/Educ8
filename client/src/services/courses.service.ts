@@ -190,7 +190,9 @@ export const publishCourse = async (
   publish: boolean
 ): Promise<Course> => {
   try {
-    const url = `${import.meta.env.VITE_API_URL}/api/courses/${courseId}`;
+    const url = `${
+      import.meta.env.VITE_API_URL
+    }/api/courses/${courseId}/publish`;
     const editedCourse = await fetchWithAuth<Course>({
       url,
       method: "PATCH",
