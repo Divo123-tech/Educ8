@@ -77,7 +77,7 @@ class CoursesTaughtView(ListAPIView):
         search_term = self.request.query_params.get('search', None)
 
         if search_term:
-            queryset = queryset.filter(Q(name__icontains=search_term))
+            queryset = queryset.filter(Q(title__icontains=search_term))
 
         return queryset
 

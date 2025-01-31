@@ -15,7 +15,7 @@ class ReviewViewTests(APITestCase):
 
         # Create a course for testing
         self.course = Course.objects.create(
-            name="Test Course",
+            title="Test Course",
             description="Test description",
             creator=self.user
         )
@@ -66,7 +66,7 @@ class SingleReviewViewTests(APITestCase):
 
         # Create a course for which the review will be created
         self.course = Course.objects.create(
-            name="Test Course",
+            title="Test Course",
             description="Test description",
             creator=self.user
         )

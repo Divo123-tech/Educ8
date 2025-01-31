@@ -144,3 +144,72 @@ class CourseViewTests(APITestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.data['message'], "Course not found")
+
+
+class CoursesTaughtViewTests(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+        # Create two users
+        self.user1 = CustomUser.objects.create_user(
+            username='user1', password='password1')
+        self.user2 = CustomUser.objects.create_user(
+            username='user2', password='password2')
+
+        # Authenticate user1
+        url = reverse('token-request')
+        response = self.client.post(
+            url, {'username': 'user1', 'password': 'password1'}, format='json')
+        self.token = response.data['access']
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
+
+        # Create courses for user1
+        self.course1 = Course.objects.create(
+            title="Django Course", creator=self.user1)
+        self.course2 = Course.objects.create(
+            title="React Course", creator=self.user1)
+
+        # Create a course for user2 (should not appear in user1's results)
+        self.course3 = Course.objects.create(
+            title="Python Course", creator=self.user2)
+
+    def test_get_courses_taught_by_user(self):
+        """Test that the authenticated user sees only their own courses."""
+        url = reverse('courses-taught')
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        # Only user1's courses
+        self.assertEqual(len(response.data['results']), 2)
+        self.assertEqual(response.data['results'][0]['title'], "Django Course")
+        self.assertEqual(response.data['results'][1]['title'], "React Course")
+
+    def test_search_courses_by_title(self):
+        """Test searching for a course by title."""
+        url = reverse('courses-taught') + "?search=django"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]['title'], "Django Course")
+
+    def test_user_cannot_see_other_users_courses(self):
+        """Test that a user cannot see courses they did not create."""
+        # Authenticate as user2
+        self.client.force_authenticate(user=self.user2)
+
+        url = reverse('courses-taught')
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        # Only user2's course
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]['title'], "Python Course")
+
+    def test_unauthenticated_user_cannot_access_courses(self):
+        """Test that an unauthenticated user gets a 401 error."""
+        self.client.force_authenticate(user=None)  # Unauthenticate the client
+        url = reverse('courses-taught')
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 401)  # Unauthorized
