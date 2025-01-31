@@ -129,7 +129,7 @@ export const getCourses = async (
   try {
     const url = `${
       import.meta.env.VITE_API_URL
-    }/api/courses/?page=${page}&search=${search || ""}&creator=${
+    }/api/courses/?published=True&page=${page}&search=${search || ""}&creator=${
       creator || ""
     }`;
     const response = await axios.get(url);
