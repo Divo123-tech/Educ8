@@ -65,15 +65,3 @@ class CheckoutCourse(APIView):
         except Exception as e:
             print(e)
             return Response(False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-# class RemoveCourseFromCartView(DestroyAPIView):
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         # Filter UserCourse records based on the authenticated user
-#         return UserCourse.objects.filter(student=str(self.request.user))
-
-#     def delete(self, request, *args, **kwargs):
-#         course = get_object_or_404(self.get_queryset(), course=pk)
-#         is_course_in_cart(request, courseId=pk)
-#         course.delete()
-#         return Response(True, status=status.HTTP_204_NO_CONTENT)
