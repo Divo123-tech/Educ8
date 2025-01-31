@@ -15,7 +15,7 @@ class UserCourseViewTests(APITestCase):
 
         # Create a course for testing
         self.course = Course.objects.create(
-            name="Test Course",
+            title="Test Course",
             description="Test description",
             creator=self.user
         )
@@ -36,7 +36,7 @@ class UserCourseViewTests(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
 
     def test_create_user_course(self):
-        data = {'course': self.course.id, 'user': self.user.id}
+        data = {'course': self.course.id, 'student': self.user.id}
         url = reverse('my-courses')
         response = self.client.post(
             url, data, format='json')
@@ -63,7 +63,7 @@ class FindUserCourseViewTests(APITestCase):
 
         # Create a course for testing
         self.course = Course.objects.create(
-            name="Test Course",
+            title="Test Course",
             description="Test description",
             creator=self.user
         )
@@ -96,7 +96,8 @@ class FindUserCourseViewTests(APITestCase):
         self.assertEqual(len(response.data['results']), 1)
         self.assertEqual(response.data['results']
                          [0]['student'], self.user.id)
-        self.assertEqual(response.data['results'][0]['course'], self.course.id)
+        self.assertEqual(response.data['results']
+                         [0]['course']['id'], self.course.id)
 
     def test_find_nonexistent_user_course(self):
         url = reverse('users-courses', kwargs={
@@ -108,63 +109,63 @@ class FindUserCourseViewTests(APITestCase):
 class UnregisterUserFromCourseViewTests(APITestCase):
 
     def setUp(self):
-        # Create a user for authentication
+        self.client = APIClient()
+
+        # Create user
         self.user = CustomUser.objects.create_user(
             username='testuser', password='testpassword')
 
-        # Create a course for testing
-        self.course = Course.objects.create(
-            name="Test Course",
-            description="Test description",
-            creator=self.user
-        )
-
-        # Initialize APIClient instance for making requests
-        self.client = APIClient()
-
-        # Obtain a JWT token for the user
-        url = reverse('token-request')  # TokenObtainPairView URL
-        data = {
-            'username': self.user.username,
-            'password': 'testpassword'
-        }
-        response = self.client.post(url, data, format='json')
-        self.token = response.data['access']  # Extract the access token
-
-        # Set the Authorization header for all subsequent requests
+        # Authenticate user
+        url = reverse('token-request')  # Ensure this matches your token URL
+        response = self.client.post(
+            url, {'username': 'testuser', 'password': 'testpassword'}, format='json')
+        self.token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
 
-    def test_unregister_user_from_course(self):
-        UserCourse.objects.create(
-            student=self.user, course=self.course)
-        url = reverse('my-courses-delete', kwargs={"pk": self.course.id})
-        response = self.client.delete(url)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        # The user should no longer be enrolled in the course
-        self.assertEqual(UserCourse.objects.count(), 0)
-
-    def test_unregister_user_from_course_without_auth(self):
-        url = reverse('my-courses-delete', kwargs={"pk": self.course.id})
-
-        response = self.client.delete(url)  # No token
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_unregister_user_from_nonexistent_course(self):
-        url = reverse('my-courses-delete',
-                      kwargs={'pk': 999999})  # Non-existent course
-        response = self.client.delete(
-            url, )
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_unregister_user_from_other_user_course(self):
-        # Create another user and course relation
-        other_user = CustomUser.objects.create_user(
+        # Create another user (to test unauthorized deletion)
+        self.other_user = CustomUser.objects.create_user(
             username='otheruser', password='otherpassword')
-        other_user_course = UserCourse.objects.create(
-            student=other_user, course=self.course)
 
-        url = reverse('my-courses-delete', kwargs={'pk': self.course.id})
-        response = self.client.delete(
-            url)
-        # Shouldn't be able to unregister another user
+        # Create a course
+        self.course = Course.objects.create(
+            title="Django Course", creator=self.user)
+
+        # Enroll user in the course
+        self.user_course = UserCourse.objects.create(
+            student=self.user, course=self.course)
+
+        # Set the delete URL (Ensure it matches your URL patterns)
+        # Adjust name if needed
+        self.delete_url = reverse('my-courses')
+
+    def test_successful_course_unregistration(self):
+        """Test that a user can successfully unregister from a course."""
+        data = {"course": self.course.id}
+        response = self.client.delete(self.delete_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(UserCourse.objects.filter(
+            student=self.user, course=self.course).exists())
+
+    def test_cannot_unregister_if_not_enrolled(self):
+        """Test that a user cannot unregister from a course they are not enrolled in."""
+        UserCourse.objects.filter(
+            student=self.user, course=self.course).delete()  # Remove enrollment
+        data = {"course": self.course.id}
+        response = self.client.delete(self.delete_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_unauthenticated_user_cannot_unregister(self):
+        """Test that an unauthenticated user cannot unregister from a course."""
+        self.client.force_authenticate(user=None)
+        data = {"course": self.course.id}
+        response = self.client.delete(self.delete_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_other_user_cannot_unregister_another_user(self):
+        """Test that another user cannot unregister someone else from a course."""
+        self.client.force_authenticate(
+            user=self.other_user)  # Authenticate as another user
+        data = {"course": self.course.id}
+        response = self.client.delete(self.delete_url, data, format='json')
+        # Course not found for this user
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

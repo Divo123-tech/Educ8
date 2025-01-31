@@ -71,18 +71,6 @@ class CourseInUserCourseExists(APIView):
         return Response(False, status=status.HTTP_200_OK)
 
 
-class UnregisterUserFromCourseView(DestroyAPIView):
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        # Filter UserCourse records based on the authenticated user
-        return UserCourse.objects.filter(student=str(self.request.user))
-
-    def delete(self, request, pk, *args, **kwargs):
-        course = get_object_or_404(self.get_queryset(), course=pk)
-        is_user_registered_to_course(request, courseId=pk)
-        course.delete()
-        return Response(True, status=status.HTTP_204_NO_CONTENT)
 
 
 class RegisterView(CreateAPIView):

@@ -13,7 +13,7 @@ class SectionViewTests(APITestCase):
 
         # Create a course for testing
         self.course = Course.objects.create(
-            name="Test Course",
+            title="Test Course",
             description="Test description",
             creator=self.user
         )
@@ -69,7 +69,7 @@ class SingleSectionViewTests(APITestCase):
 
         # Create a course for testing
         self.course = Course.objects.create(
-            name="Test Course",
+            title="Test Course",
             description="Test description",
             creator=self.user
         )
