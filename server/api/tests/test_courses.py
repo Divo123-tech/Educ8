@@ -1,13 +1,14 @@
+from datetime import date
 from django.urls import reverse
 from django.test import TestCase
 from rest_framework import status
-from ..models import Course, CustomUser
+
+from ..models import Course, CustomUser, Section, SectionContent
 from rest_framework.test import APIClient, APITestCase
 
 
 class CourseViewTests(APITestCase):
     def setUp(self):
-        print("running setup")
         # Create a user for authentication
         self.user = CustomUser.objects.create_user(
             username='testuser', password='testpassword')
@@ -19,8 +20,6 @@ class CourseViewTests(APITestCase):
             description="Test description",
             creator=self.user
         )
-
-        print("Created course:", self.course)
 
         # Initialize APIClient instance for making requests
         self.client = APIClient()
@@ -104,3 +103,44 @@ class CourseViewTests(APITestCase):
         # Try to retrieve the deleted course
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_publish_course_success(self):
+        """Test successful course publishing when all conditions are met."""
+        section = Section.objects.create(
+            course=self.course, title="Section 1", position=1)
+        SectionContent.objects.create(section=section, content="Content 1")
+
+        url = reverse('publish-course', args=[self.course.id])
+        response = self.client.patch(url, {'published': True}, format='json')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['published'], True)
+        self.assertEqual(response.data['published_at'], str(date.today()))
+
+    def test_publish_course_no_sections(self):
+        """Test publishing fails when there are no sections."""
+        url = reverse('publish-course', args=[self.course.id])
+        response = self.client.patch(url, {'published': True}, format='json')
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("A course must have at least one section",
+                      response.data['error'])
+
+    def test_publish_course_section_without_content(self):
+        """Test publishing fails when a section has no content."""
+        Section.objects.create(
+            course=self.course, title="Empty Section", position=1)
+
+        url = reverse('publish-course', args=[self.course.id])
+        response = self.client.patch(url, {'published': True}, format='json')
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("must have at least one content", response.data['error'])
+
+    def test_publish_course_not_found(self):
+        """Test publishing fails when the course does not exist."""
+        url = reverse('publish-course', args=[999])  # Invalid ID
+        response = self.client.patch(url, {'published': True}, format='json')
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.data['message'], "Course not found")
