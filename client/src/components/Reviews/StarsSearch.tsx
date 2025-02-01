@@ -24,12 +24,9 @@ const StarsSearch = ({ stars, course, handleReviewsFilter }: Props) => {
   }, [course, stars]);
 
   const decimalToPercent = () => {
+    if (total === 0) return 0; // Prevent division by zero
     const number = Math.round((totalFiltered / total) * 100);
-    if (isNaN(number)) {
-      return "0";
-    }
-
-    return number;
+    return isNaN(number) ? 0 : number;
   };
 
   return (
@@ -37,18 +34,22 @@ const StarsSearch = ({ stars, course, handleReviewsFilter }: Props) => {
       className="flex items-center cursor-pointer gap-1 sm:gap-4"
       onClick={() => handleReviewsFilter(stars)}
     >
-      <div className="w-16 sm:w-64 lg:w-80 bg-gray-300 h-2">
-        <div className={`h-full bg-gray-600 w-[${decimalToPercent()}%]`}></div>
+      <div className="w-16 sm:w-64 lg:w-80 bg-gray-300 h-2 relative">
+        <div
+          className="h-full bg-gray-600"
+          style={{ width: `${decimalToPercent()}%` }}
+        ></div>
       </div>
       <div className="flex gap-2">
         <div className="flex items-center sm:gap-1">
-          {Array.from({ length: 5 }, (_, i) => i).map((number: number) => {
-            if (number < stars) {
-              return <Star fill="#94751e" color="#94751e" size={14} />;
-            } else {
-              return <Star fill="#FFFFFF" color="#94751e" size={14} />;
-            }
-          })}
+          {Array.from({ length: 5 }, (_, i) => i).map((number: number) => (
+            <Star
+              key={number}
+              fill={number < stars ? "#94751e" : "#FFFFFF"}
+              color="#94751e"
+              size={14}
+            />
+          ))}
         </div>
         <p className="text-green-600 underline underline-offset-2 text-sm">
           {decimalToPercent()}%

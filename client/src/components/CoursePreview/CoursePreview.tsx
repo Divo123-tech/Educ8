@@ -88,6 +88,7 @@ const CoursePreview = () => {
       if (user) {
         setIsCourseInCart(await getCourseInCart(courseId || ""));
         setIsCourseInUserCourse(await getCourseInUserCourse(courseId || ""));
+        console.log(await getCourseInUserCourse(courseId || ""))
       }
     })();
   }, [course?.creator.id, courseId, user]);
