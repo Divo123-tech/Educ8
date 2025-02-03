@@ -206,7 +206,7 @@ const HomePage = () => {
             }}
           >
             <CarouselContent className="">
-              {courses1?.map((course: Course) => {
+              {courses2?.map((course: Course) => {
                 return (
                   <CarouselItem className="basis-auto" key={course.id}>
                     <CourseHomeScreen course={course} />
@@ -228,7 +228,7 @@ const HomePage = () => {
             }}
           >
             <CarouselContent className="">
-              {courses1?.map((course: Course) => {
+              {courses3?.map((course: Course) => {
                 return (
                   <CarouselItem className="basis-auto" key={course.id}>
                     <CourseHomeScreen course={course} />
@@ -250,7 +250,7 @@ const HomePage = () => {
             }}
           >
             <CarouselContent className="">
-              {courses1?.map((course: Course) => {
+              {courses4?.map((course: Course) => {
                 return (
                   <CarouselItem className="basis-auto" key={course.id}>
                     <CourseHomeScreen course={course} />

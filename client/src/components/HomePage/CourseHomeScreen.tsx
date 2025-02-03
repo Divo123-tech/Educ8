@@ -66,7 +66,7 @@ const CourseHomeScreen = ({
                     }`
                   : NoThumbnail
               }
-              className="w-52 h-28 border"
+              className="w-52 h-28 border object-cover object-center"
             ></img>
           </HoverCardTrigger>
           <div className="flex gap-1 flex-col">
@@ -91,9 +91,9 @@ const CourseHomeScreen = ({
             <h2 className="font-bold text-xs">{course.title}</h2>
             <p className="text-xs text-gray-600">
               {course.description
-                ? course.description.slice(0, 200)
+                ? course.subtitle.slice(0, 200)
                 : "No description available"}
-              {course.description.length > 200 && "..."}
+              {course.subtitle.length > 200 && "..."}
             </p>
 
             <button

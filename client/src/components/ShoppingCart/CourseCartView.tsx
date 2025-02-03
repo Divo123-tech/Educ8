@@ -59,7 +59,7 @@ const CourseCartView = ({
                 ? import.meta.env.VITE_API_URL + course.thumbnail
                 : NoThumbnail
             }
-            className="w-32 h-fit"
+            className="w-32 h-fit object-cover object-center"
           ></img>
           <div className="flex flex-col gap-2">
             <h1 className="font-bold text-sm">{course.title}</h1>
