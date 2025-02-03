@@ -90,9 +90,9 @@ const CourseHomeScreen = ({
           <div className="flex justify-center flex-col gap-2 ">
             <h2 className="font-bold text-xs">{course.title}</h2>
             <p className="text-xs text-gray-600">
-              {course.description
+              {course.subtitle
                 ? course.subtitle.slice(0, 200)
-                : "No description available"}
+                : "No subtitle available"}
               {course.subtitle.length > 200 && "..."}
             </p>
 
