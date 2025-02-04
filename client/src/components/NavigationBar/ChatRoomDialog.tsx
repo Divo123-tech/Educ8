@@ -9,9 +9,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { User, UserContext } from "@/context/UserContext";
 import { getAllUsers } from "@/services/users.service";
-import { ChevronLeft, ChevronRight, MessageSquareText } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  MessageSquareText,
+  UserSearch,
+} from "lucide-react";
 import { useState, ChangeEvent, useContext } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 const ChatRoomDialog = () => {
   const [users, setUsers] = useState<User[] | null>(null);
   const [previousPage, setPreviousPage] = useState<string | null>(null);
@@ -48,7 +54,7 @@ const ChatRoomDialog = () => {
     <Dialog>
       <DialogTrigger asChild>
         <div className="text-gray-600  py-2 rounded-md text-sm  font-normal hover:text-green-500 cursor-pointer">
-          <MessageSquareText size={22} />
+          <UserSearch size={24} />
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -68,12 +74,7 @@ const ChatRoomDialog = () => {
         <div className="flex flex-col gap-4">
           {users?.map((userAccount: User) => {
             return (
-              <div
-                className="border border-gray-500 py-2 px-2 rounded-lg flex w-full gap-2 cursor-pointer hover:bg-gray-100"
-                onClick={() =>
-                  navigate(`/chat/${formatIds(user?.id || 0, userAccount.id)}`)
-                }
-              >
+              <div className="border border-gray-500 py-2 px-2 rounded-lg flex w-full gap-2 cursor-pointer items-center">
                 {userAccount.profile_picture &&
                 typeof userAccount.profile_picture == "string" ? (
                   <img
@@ -91,10 +92,22 @@ const ChatRoomDialog = () => {
                     </p>
                   </div>
                 )}
-                <div className="text-left">
+                <Link to={`/user/${userAccount.id}`} className="text-left">
                   <p className="text-md font-bold">{userAccount.username}</p>
                   <p className="text-xs">{userAccount.email}</p>
-                </div>
+                </Link>
+                <p className="ml-auto hover:text-green-500">
+                  {user && (
+                    <MessageSquareText
+                      onClick={() => {
+                        setUsers([]);
+                        navigate(
+                          `/chat/${formatIds(user?.id || 0, userAccount.id)}`
+                        );
+                      }}
+                    />
+                  )}
+                </p>
               </div>
             );
           })}

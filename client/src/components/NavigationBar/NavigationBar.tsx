@@ -1,14 +1,7 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import {
-  Menu,
-  User,
-  ShoppingCart,
-  Compass,
-  BookOpenText,
-  MessageSquareText,
-} from "lucide-react";
+import { Menu, User, ShoppingCart, Compass, BookOpenText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -305,7 +298,7 @@ const NavigationBar = () => {
                   Sign Up
                 </Link>
               )}
-              {user && <ChatRoomDialog />}
+              <ChatRoomDialog />
             </div>
           </div>
           <div className="lg:hidden">
@@ -358,10 +351,9 @@ const NavigationBar = () => {
                 {user && (
                   <div className="flex flex-col gap-4 mt-4">
                     <div className="flex items-center gap-2">
-                      <h1 className="text-lg font-bold">Chat</h1>
-                      <MessageSquareText />
+                      <h1 className="text-lg font-bold">Users</h1>
+                      <ChatRoomDialog />
                     </div>
-                    <Link to="/courses">My Chats</Link>
                   </div>
                 )}
               </SheetContent>

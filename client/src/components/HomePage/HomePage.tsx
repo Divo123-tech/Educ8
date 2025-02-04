@@ -124,9 +124,6 @@ const HomePage = () => {
                   Learn from real-world experts from around the globe. Get
                   courses from S$14.98 through tomorrow.
                 </p>
-                <button className="bg-green-600 rounded-sm py-2 px-3 font-bold text-white text-sm hover:bg-green-500 w-full sm:w-fit">
-                  Browse Courses
-                </button>
               </div>
             </CarouselItem>
             <CarouselItem className="relative">
@@ -146,9 +143,6 @@ const HomePage = () => {
                   Level up your career and who you are everyday all on one
                   platform.
                 </p>
-                <button className="bg-green-600 rounded-sm py-2 px-3 font-bold text-white text-sm hover:bg-green-500 w-full sm:w-fit">
-                  Start Learning
-                </button>
               </div>
             </CarouselItem>
             <CarouselItem className="relative">
