@@ -15,7 +15,6 @@ const CoursePreviewHome = ({ course }: Props) => {
       <div className="flex flex-col gap-2">
         <h1 className="font-bold text-xl">{course?.title}</h1>
         <h1 className="font-bold text-xl">{course?.subtitle}</h1>
-        <p className="text-sm">{course?.description}</p>
         <p className="text-gray-600 text-xs">By {course?.creator.username}</p>
         <div className="flex items-center gap-1">
           <p className="font-bold">{course?.average_rating || "0.0"}</p>

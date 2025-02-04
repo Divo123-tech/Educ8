@@ -247,13 +247,7 @@ const EditCourse = () => {
                   <label className="font-bold text-lg">
                     Course Description
                   </label>
-                  {/* <textarea
-                    className="border border-black px-3 py-2"
-                    value={course?.description}
-                    name="description"
-                    onChange={handleInputChange}
-                    rows={5}
-                  ></textarea> */}
+
                   <ReactQuill
                     theme="snow"
                     value={course?.description}
@@ -274,9 +268,12 @@ const EditCourse = () => {
                     >
                       <option value={"Finance"}>Finance</option>
                       <option value={"Technology"}>Technology</option>
-                      <option value={"Self-development"}>
-                        Self-development
+                      <option value={"Self-Development"}>
+                        Self-Development
                       </option>
+                      <option value={"Accounting"}>Accounting</option>
+                      <option value={"Design"}>Design</option>
+                      <option value={"Marketing"}>Marketing</option>
                     </select>
                     <p className="text-xs text-gray-500">
                       Your title should be a mix of attention-grabbing,

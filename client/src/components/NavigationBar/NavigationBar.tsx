@@ -136,16 +136,34 @@ const NavigationBar = () => {
                           Finance
                         </Link>
                         <Link
-                          to="/"
+                          to="/explore?category=Technology"
                           className="text-gray-600 hover:text-primary px-3 rounded-md text-sm  font-normal"
                         >
                           Technology
                         </Link>
                         <Link
-                          to="/"
+                          to="/explore?category=Self-Development"
                           className="text-gray-600 hover:text-primary px-3 rounded-md text-sm  font-normal"
                         >
                           Self-development
+                        </Link>
+                        <Link
+                          to="/explore?category=Accounting"
+                          className="text-gray-600 hover:text-primary px-3 rounded-md text-sm   font-normal"
+                        >
+                          Accounting
+                        </Link>
+                        <Link
+                          to="/explore?category=Design"
+                          className="text-gray-600 hover:text-primary px-3 rounded-md text-sm  font-normal"
+                        >
+                          Design
+                        </Link>
+                        <Link
+                          to="/explore?category=Marketing"
+                          className="text-gray-600 hover:text-primary px-3 rounded-md text-sm  font-normal"
+                        >
+                          Marketing
                         </Link>
                       </NavigationMenuContent>
                     </NavigationMenuItem>
@@ -316,9 +334,14 @@ const NavigationBar = () => {
                     <Compass />
                   </div>
                   <Link to="/courses">All Courses</Link>
-                  <Link to="/courses">Finance</Link>
-                  <Link to="/courses">Technology</Link>
-                  <Link to="/courses">Self-Development</Link>
+                  <Link to="/explore?category=Finance">Finance</Link>
+                  <Link to="/explore?category=Technology">Technology</Link>
+                  <Link to="/explore?category=Self-Development">
+                    Self-Development
+                  </Link>
+                  <Link to="/explore?category=Accounting">Accounting</Link>
+                  <Link to="/explore?category=Design">Design</Link>
+                  <Link to="/explore?category=Marketing">Marketing</Link>
 
                   {user ? (
                     <div className="flex flex-col gap-4">

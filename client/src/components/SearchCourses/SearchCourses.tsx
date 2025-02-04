@@ -23,16 +23,16 @@ const SearchCourses = () => {
     })();
   }, [currentPage, searchQuery]);
   return (
-    <div className="px-48 py-12">
+    <div className="px-4 md:px-48 py-12">
       {courses?.length != 0 ? (
         <div>
           <div>
-            <h1 className="font-bold text-3xl">
+            <h1 className="font-bold text-2xl sm:text-3xl">
               {total} results for "{searchQuery || category}"
             </h1>
           </div>
 
-          <div className="px-16 flex flex-col gap-4">
+          <div className="md:px-16 flex flex-col gap-4">
             <div className="flex justify-end">
               <p className="text-gray-500 font-semibold">{total} results</p>
             </div>
@@ -40,7 +40,7 @@ const SearchCourses = () => {
             {courses?.map((course: Course) => {
               return <CourseSearchView key={course.id} course={course} />;
             })}
-            {courses?.length != 0 && (
+            {(courses?.length || 0) > 0 && (
               <Pagination
                 previousPage={previousPage}
                 currentPage={currentPage}

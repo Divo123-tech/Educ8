@@ -144,13 +144,7 @@ const CreateCourseModal = () => {
                 <label className="text-black font-medium">
                   Course Description
                 </label>
-                {/* <input
-                  placeholder="Give a quick description!"
-                  name="description"
-                  className="border border-black px-2 py-2 text-sm"
-                  value={courseForm.description}
-                  onChange={handleInputChange}
-                ></input> */}
+
                 <ReactQuill
                   theme="snow"
                   value={courseForm.description}
@@ -170,6 +164,11 @@ const CreateCourseModal = () => {
                     Select Category
                   </option>
                   <option value={"Finance"}>Finance</option>
+                  <option value={"Technology"}>Technology</option>
+                  <option value={"Self-Development"}>Self-Development</option>
+                  <option value={"Accounting"}>Accounting</option>
+                  <option value={"Design"}>Design</option>
+                  <option value={"Marketing"}>Marketing</option>
                 </select>
               </div>
               <div className="flex justify-end">

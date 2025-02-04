@@ -11,7 +11,7 @@ const CourseSearchView = ({ course }: Props) => {
     <Link to={`/preview-course/${course?.id}`}>
       <div className="flex flex-col gap-4 cursor-pointer hover:opacity-70">
         <div className="flex justify-between items-start">
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row  gap-4">
             <img
               src={typeof course.thumbnail == "string" ? course.thumbnail : ""}
               className="w-52 h-fit"
@@ -34,7 +34,7 @@ const CourseSearchView = ({ course }: Props) => {
               </div>
             </div>
           </div>
-          <p className="font-bold text-md">${course?.price}</p>
+          <p className="font-bold text-xl sm:text-md">${course?.price}</p>
         </div>
         <hr className="border"></hr>
       </div>
