@@ -17,8 +17,9 @@ const ProfilePage = () => {
   }
   const { user, setUser } = userContext;
   const [userData, setUserData] = useState<User | null>(user); // Initialize with `user`
-  const [imagePreview, setImagePreview] = useState("");
-
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const maxChars = 150;
   useEffect(() => {
     const checkUserLoggedIn = async () => {
       try {
@@ -60,6 +61,9 @@ const ProfilePage = () => {
       }
       return prevUserData; // or return a default object if null
     });
+    if (event.target.name === "status") {
+      setStatus(event.target.value);
+    }
   };
   const handleQuillChange = (value: string) => {
     setUserData((prevUserData) => {
@@ -91,7 +95,9 @@ const ProfilePage = () => {
         }
       });
       // throw new Error();
+      console.log(formData);
       const editedUser = await editUser(formData); // Pass FormData to API call
+      console.log(editedUser);
       setUser(editedUser);
       toast({
         title: "Status",
@@ -123,38 +129,60 @@ const ProfilePage = () => {
         <hr className="border"></hr>
       </div>
       <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
-        <div className="flex flex-col w-full md:w-2/5 gap-4">
-          {imagePreview ? (
-            <img src={imagePreview} className="rounded-full w-24 h-24"></img>
-          ) : (
-            <>
-              {user?.profile_picture &&
-              typeof user.profile_picture == "string" ? (
-                <img
-                  src={import.meta.env.VITE_API_URL + user.profile_picture}
-                  alt="profile"
-                  className="rounded-full w-24 h-24"
-                />
-              ) : (
-                <div className="bg-black rounded-full w-24 h-24 flex items-center justify-center">
-                  <p className="font-bold text-white text-4xl">
-                    {user?.username
-                      .split(" ")
-                      .map((word) => word[0])
-                      .join("")}
-                  </p>
-                </div>
-              )}
-            </>
-          )}
-          <Input
-            className="border-black"
-            id="picture"
-            type="file"
-            accept="image/*"
-            name="profile_picture"
-            onChange={handleFileChange}
-          />
+        <div className="flex items-end gap-8 md:gap-12 flex-wrap">
+          <div className="flex flex-col w-full md:w-2/5 gap-4">
+            {imagePreview ? (
+              <img src={imagePreview} className="rounded-full w-24 h-24"></img>
+            ) : (
+              <>
+                {user?.profile_picture &&
+                typeof user.profile_picture == "string" ? (
+                  <img
+                    src={import.meta.env.VITE_API_URL + user.profile_picture}
+                    alt="profile"
+                    className="rounded-full w-24 h-24"
+                  />
+                ) : (
+                  <div className="bg-black rounded-full w-24 h-24 flex items-center justify-center">
+                    <p className="font-bold text-white text-4xl">
+                      {user?.username
+                        .split(" ")
+                        .map((word) => word[0])
+                        .join("")}
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+            <Input
+              className="border-black"
+              id="picture"
+              type="file"
+              accept="image/*"
+              name="profile_picture"
+              onChange={handleFileChange}
+            />
+          </div>
+          <div className="flex flex-col w-full md:w-2/5 gap-2">
+            <label className="font-bold">Current Status</label>
+            <div className="relative w-full">
+              <input
+                type="text"
+                value={userData?.status}
+                name="status"
+                onChange={handleInputChange}
+                placeholder="Max 150 Characters"
+                className="border border-black px-2 py-1 w-full pr-12"
+              />
+              <span
+                className={`absolute right-2 top-1/2 transform -translate-y-1/2 text-sm ${
+                  status.length === maxChars ? "text-red-500" : "text-gray-500"
+                }`}
+              >
+                {maxChars - status.length}
+              </span>
+            </div>
+          </div>
         </div>
         <div className="flex gap-8 md:gap-12 flex-wrap">
           <div className="flex flex-col w-full md:w-2/5 gap-2">

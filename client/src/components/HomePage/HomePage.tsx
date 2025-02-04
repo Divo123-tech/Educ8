@@ -117,14 +117,15 @@ const HomePage = () => {
 
               {/* Overlay content */}
               <div className="p-6 bg-white sm:absolute sm:w-1/3 sm:h-auto sm:shadow-lg sm:rounded-lg sm:top-1/2 sm:left-1/4 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2 flex flex-col justify-start items-start space-y-4">
-                <h1 className="text-xl sm:text-4xl font-bold font-serif">
-                  Title Here
+                <h1 className="text-xl sm:text-2xl font-bold font-serif">
+                  Knowledge at your fingertips
                 </h1>
                 <p className="text-sm sm:text-md">
-                  Your content description or message here
+                  Learn from real-world experts from around the globe. Get
+                  courses from S$14.98 through tomorrow.
                 </p>
                 <button className="bg-green-600 rounded-sm py-2 px-3 font-bold text-white text-sm hover:bg-green-500 w-full sm:w-fit">
-                  Click Me!
+                  Browse Courses
                 </button>
               </div>
             </CarouselItem>
@@ -138,14 +139,15 @@ const HomePage = () => {
 
               {/* Overlay content */}
               <div className="p-6 bg-white border-black shadow-md sm:absolute sm:w-1/3 sm:h-auto sm:shadow-lg sm:rounded-lg sm:top-1/2 sm:left-1/4 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2 flex flex-col justify-start items-start space-y-4">
-                <h1 className="text-xl sm:text-4xl font-bold font-serif">
-                  Learning that gets you
+                <h1 className="text-xl sm:text-2xl font-bold font-serif">
+                  Invest in yourself
                 </h1>
                 <p className="text-sm sm:text-md">
-                  Your content description or message here
+                  Level up your career and who you are everyday all on one
+                  platform.
                 </p>
                 <button className="bg-green-600 rounded-sm py-2 px-3 font-bold text-white text-sm hover:bg-green-500 w-full sm:w-fit">
-                  Click Me!
+                  Start Learning
                 </button>
               </div>
             </CarouselItem>
@@ -157,7 +159,7 @@ const HomePage = () => {
                 alt="Carousel Image"
               />
               <div className="p-6 bg-white sm:absolute sm:w-1/3 sm:h-auto sm:shadow-lg sm:rounded-lg sm:top-1/2 sm:left-1/4 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2 flex flex-col justify-start items-start space-y-4">
-                <h1 className="text-xl sm:text-4xl font-bold font-serif">
+                <h1 className="text-xl sm:text-2xl font-bold font-serif">
                   Learning that gets you
                 </h1>
                 <p className="text-sm sm:text-md">

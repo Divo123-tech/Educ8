@@ -5,6 +5,7 @@ from django.forms import ValidationError
 
 class CustomUser(AbstractUser):
     bio = models.TextField(null=True, blank=True)
+    status = models.CharField(max_length=150, null=True, blank=True)
     profile_picture = models.ImageField(
         null=True, blank=True, upload_to='profiles/')
     username = models.CharField(

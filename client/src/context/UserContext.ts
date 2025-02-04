@@ -6,6 +6,7 @@ export interface User {
   email: string;
   courses: [];
   bio?: string;
+  status?: string;
   profile_picture?: File | null;
 }
 

@@ -39,7 +39,7 @@ const UserProfile = () => {
     }
   }, [nextPage, currentPage, previousPage, total, userId, showCoursesTaught]);
   return (
-    <div className="flex flex-col gap-8 px-4 sm:px-28 md:px-16 lg:px-48 xl:px-72 py-8 w-fit">
+    <div className="flex flex-col gap-8 px-4 sm:px-28 md:px-16 lg:px-48 xl:px-72 py-8">
       <div className="flex flex-col sm:flex-row justify-between gap-8 xl:gap-36 items-center">
         <h1 className="text-3xl xl:text-4xl font-bold font-serif">
           {userProfile?.username}
@@ -61,6 +61,10 @@ const UserProfile = () => {
             </p>
           </div>
         )}
+      </div>
+      <div>
+        <h2 className="font-bold text-lg">Current Status</h2>
+        <p>{userProfile?.status}</p>
       </div>
       <div>
         <h2 className="font-bold text-lg">About me</h2>

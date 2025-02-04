@@ -91,9 +91,9 @@ const CourseHomeScreen = ({
             <h2 className="font-bold text-xs">{course.title}</h2>
             <p className="text-xs text-gray-600">
               {course.subtitle
-                ? course.subtitle.slice(0, 200)
+                ? course.subtitle?.slice(0, 200)
                 : "No subtitle available"}
-              {course.subtitle.length > 200 && "..."}
+              {course.subtitle?.length > 200 && "..."}
             </p>
 
             <button

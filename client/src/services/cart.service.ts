@@ -51,6 +51,7 @@ export const getCartItems = async (page: number) => {
       url,
       method: "GET",
     });
+    console.log(course);
     return course;
   } catch (error) {
     console.error("Error fetching user data:", error);

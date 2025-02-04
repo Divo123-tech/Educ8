@@ -29,8 +29,8 @@ const DropdownCourse = ({
         />
         <div className="flex flex-col">
           <p className="font-bold text-xs">
-            {title.slice(0, 35)}
-            {title.length > 35 && "..."}
+            {title.slice(0, 30)}
+            {title.length > 30 && "..."}
           </p>
           <p className="font-semibold text-xs text-gray-400">{creator}</p>
         </div>
