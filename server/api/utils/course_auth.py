@@ -3,8 +3,8 @@ from rest_framework import status
 from ..models import Course, Review, UserCourse, Cart
 
 
-def is_user_creator(request, courseId):
-    course = Course.objects.get(id=courseId)
+def is_user_creator(request, course_id):
+    course = Course.objects.get(id=course_id)
     """Check if the requesting user is the creator of the course."""
     if str(course.creator.id) != str(request.user):
         return Response(
@@ -14,8 +14,8 @@ def is_user_creator(request, courseId):
     return True
 
 
-def is_user_reviewer(request, reviewId):
-    review = Review.objects.get(id=reviewId)
+def is_user_reviewer(request, review_id):
+    review = Review.objects.get(id=review_id)
     """Check if the requesting user is the creator of the review."""
     if str(review.reviewed_by) != str(request.user):
         return Response(
@@ -24,9 +24,9 @@ def is_user_reviewer(request, reviewId):
     return True
 
 
-def is_user_registered_to_course(request, courseId):
+def is_user_registered_to_course(request, course_id):
     userRegistered = UserCourse.objects.filter(
-        student=str(request.user), course=courseId)
+        student=str(request.user), course=course_id)
 
     if userRegistered is None:
         return Response(
@@ -36,9 +36,9 @@ def is_user_registered_to_course(request, courseId):
     return True
 
 
-def is_course_in_cart(request, courseId):
+def is_course_in_cart(request, course_id):
     course_in_cart = Cart.objects.filter(
-        student=str(request.user), course=courseId)
+        student=str(request.user), course=course_id)
 
     if course_in_cart is None:
         return Response(

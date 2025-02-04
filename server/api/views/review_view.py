@@ -20,7 +20,8 @@ class ReviewView(ListCreateAPIView):
         return [IsAuthenticated()]  # Require authentication for GET
 
     def get_queryset(self):
-        course_id = self.kwargs.get('courseId')  # Get courseId from URL kwargs
+        # Get courseId from URL kwargs
+        course_id = self.kwargs.get('course_id')
         queryset = Review.objects.filter(course_id=course_id)
         # Get rating from query parameters
         rating = self.request.query_params.get('rating')
@@ -60,7 +61,7 @@ class SingleReviewView(RetrieveUpdateDestroyAPIView):
 
     def patch(self, request, pk, *args, **kwargs):
         try:
-            is_user_reviewer(request, reviewId=pk)
+            is_user_reviewer(request, review_id=pk)
             review = self.get_object()
             serialized_review = ReviewSerializer(
                 review, data=request.data, partial=True)
@@ -75,7 +76,7 @@ class SingleReviewView(RetrieveUpdateDestroyAPIView):
     def delete(self, request, pk, * args, **kwargs):
         try:
             review = self.get_object()
-            is_user_reviewer(request, reviewId=pk)
+            is_user_reviewer(request, review_id=pk)
             review.delete()
             return Response(True, status=status.HTTP_204_NO_CONTENT)
         except:

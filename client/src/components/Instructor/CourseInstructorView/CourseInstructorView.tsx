@@ -1,12 +1,14 @@
 import { useContext } from "react";
 import { Course, deleteCourse } from "@/services/courses.service";
 import NoThumbnail from "@/assets/NoThumbnail.png";
-import { Settings } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { UserContext } from "@/context/UserContext";
 import { getCurrentUser } from "@/services/users.service";
 import { useNavigate } from "react-router";
 import DeleteDialog from "../../DeleteDialog";
+import StudentsCourseDialog from "./StudentsCourseDialog";
+
 type Props = {
   course: Course;
 };
@@ -52,13 +54,16 @@ const CourseInstructorView = ({ course }: Props) => {
           <p className="text-green-600 text-lg  font-bold">Edit Course</p>
         </div>
       </div>
-      <div className="">
+      <div className="flex items-center">
+        <button className="cursor:pointer">
+          <StudentsCourseDialog />
+        </button>
         <button className="cursor:pointer">
           <Menubar>
             <MenubarMenu>
               <MenubarTrigger>
                 <button className="cursor-pointer">
-                  <Settings />
+                  <Trash2 />
                 </button>
               </MenubarTrigger>
               <DeleteDialog

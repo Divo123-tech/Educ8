@@ -19,7 +19,7 @@ class SectionView(ListCreateAPIView):
         return [IsAuthenticated()]  # Require authentication for POST
 
     def get_queryset(self):
-        course_id = self.kwargs.get("courseId")
+        course_id = self.kwargs.get("course_id")
         return Section.objects.filter(course=course_id).order_by('position')
 
     def list(self, request, *args, **kwargs):
@@ -28,7 +28,7 @@ class SectionView(ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
-        course_id = self.kwargs.get("courseId")
+        course_id = self.kwargs.get("course_id")
         request.data['course'] = course_id
         max_position = Section.objects.filter(
             course=course_id).aggregate(Max('position'))['position__max']
@@ -53,22 +53,22 @@ class SingleSectionView(APIView):
             return [AllowAny()]  # Allow public access for POST
         return [IsAuthenticated()]  # Require authentication for GET
 
-    def get(self, request, sectionId, *args, **kwargs):
+    def get(self, request, section_id, *args, **kwargs):
         try:
-            section = Section.objects.get(id=sectionId)
+            section = Section.objects.get(id=section_id)
             serialized_section = SectionSerializer(section)
             return Response(serialized_section.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"message": "Failed to get section"}, status=status.HTTP_404_NOT_FOUND)
 
-    def put(self, request, courseId, sectionId, *args, **kwargs):
+    def put(self, request, course_id, section_id, *args, **kwargs):
         try:
             # Check if the user is the creator (assuming this is your custom logic)
-            is_user_creator(request, courseId=courseId)
+            is_user_creator(request, course_id=course_id)
 
             # Get the section from the database
-            section = Section.objects.get(id=sectionId)
-            request.data['course'] = courseId
+            section = Section.objects.get(id=section_id)
+            request.data['course'] = course_id
             # Serialize the section with the new data
             serialized_section = SectionSerializer(section, data=request.data)
 
@@ -89,11 +89,11 @@ class SingleSectionView(APIView):
             print(f"Unexpected error: {e}")
             return Response({"message": "An unexpected error occurred"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def patch(self, request, courseId, sectionId, *args, **kwargs):
+    def patch(self, request, course_id, section_id, *args, **kwargs):
         try:
-            is_user_creator(request, courseId=courseId)
-            sections_in_course = Section.objects.filter(course=courseId)
-            section_to_change = Section.objects.get(id=sectionId)
+            is_user_creator(request, course_id=course_id)
+            sections_in_course = Section.objects.filter(course=course_id)
+            section_to_change = Section.objects.get(id=section_id)
             # get the current position from the section to change
             old_position = int(SectionSerializer(
                 section_to_change).data['position'])
@@ -129,12 +129,12 @@ class SingleSectionView(APIView):
             print(e)
             return Response({"message": "No Section Found"}, status=status.HTTP_404_NOT_FOUND)
 
-    def delete(self, request, courseId, sectionId, *args, **kwargs):
+    def delete(self, request, course_id, section_id, *args, **kwargs):
         try:
-            is_user_creator(request, courseId=courseId)
-            section_to_delete = Section.objects.get(id=sectionId)
+            is_user_creator(request, course_id=course_id)
+            section_to_delete = Section.objects.get(id=section_id)
 
-            sections_in_course = Section.objects.filter(course=courseId)
+            sections_in_course = Section.objects.filter(course=course_id)
             section_position = int(SectionSerializer(
                 section_to_delete).data['position'])
             sectionsToChange = sections_in_course.filter(

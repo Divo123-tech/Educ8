@@ -1,23 +1,25 @@
 from django.urls import path
-from ..views import CourseView, SingleCourseView, SectionView, SingleSectionView, SectionContentView, SingleSectionContentView, ReviewView, SingleReviewView, CoursesTaughtView, PublishCourseView, DetailedSectionContentsView
+from ..views import CourseView, SingleCourseView, SectionView, SingleSectionView, SectionContentView, SingleSectionContentView, ReviewView, SingleReviewView, CoursesTaughtView, PublishCourseView, DetailedSectionContentsView, FindStudentsTakingCourse
 
 urlpatterns = [
     path('', CourseView.as_view(), name="courses"),
     path('<int:pk>/publish', PublishCourseView.as_view(), name="publish-course"),
     path('taught', CoursesTaughtView.as_view(), name="courses-taught"),
     path('<int:pk>', SingleCourseView.as_view(), name="single-course"),
-    path('<int:courseId>/reviews',
+    path('<int:course_id>/reviews',
          ReviewView.as_view(), name="reviews"),
-    path('<int:courseId>/reviews/<int:pk>',
+    path('<int:course_id>/students',
+         FindStudentsTakingCourse.as_view(), name="reviews"),
+    path('<int:course_id>/reviews/<int:pk>',
          SingleReviewView.as_view(), name="single-review"),
-    path('<int:courseId>/sections',
+    path('<int:course_id>/sections',
          SectionView.as_view(), name="sections"),
-    path('<int:courseId>/sections/<int:sectionId>',
+    path('<int:course_id>/sections/<int:section_id>',
          SingleSectionView.as_view(), name="single-section"),
-    path('<int:courseId>/sections/<int:sectionId>/contents',
+    path('<int:course_id>/sections/<int:section_id>/contents',
          SectionContentView.as_view(), name="section-content"),
-    path('<int:courseId>/sections/<int:sectionId>/contents/detailed',
+    path('<int:course_id>/sections/<int:section_id>/contents/detailed',
          DetailedSectionContentsView.as_view(), name="section-content-detailed"),
-    path('<int:courseId>/sections/<int:sectionId>/contents/<int:contentId>',
+    path('<int:course_id>/sections/<int:section_id>/contents/<int:content_id>',
          SingleSectionContentView.as_view(), name="section-content"),
 ]

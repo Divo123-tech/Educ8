@@ -39,10 +39,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        userId = text_data_json['user']
+        user_id = text_data_json['user']
 
         # Save the message to the database
-        user = await sync_to_async(CustomUser.objects.get)(id=userId)
+        user = await sync_to_async(CustomUser.objects.get)(id=user_id)
         chat_message = await sync_to_async(Chat.objects.create)(
             room_name=self.room_name,
             sent_by=user,
@@ -55,7 +55,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': message,
-                'sent_by': userId,
+                'sent_by': user_id,
                 'sent_at': chat_message.sent_at.isoformat()
             }
         )

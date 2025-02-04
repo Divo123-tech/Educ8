@@ -3,7 +3,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import NotFound
-from ..models import CustomUser, UserCourse
+
+from ..models import CustomUser, UserCourse, Course
 from ..serializers import UserSerializer, UserCourseSerializer
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, DestroyAPIView, get_object_or_404, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
@@ -23,6 +24,25 @@ class FindUserCourseView(ListAPIView):
         user_id = self.kwargs['pk']
         return UserCourse.objects.filter(student_id=user_id)
 
+
+class FindStudentsTakingCourse(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
+    pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        course_id = self.kwargs["course_id"]  # Get course_id from URL
+        course = get_object_or_404(Course, id=course_id)  # Fetch course
+        queryset = CustomUser.objects.filter(courses=course)
+        search_term = self.request.query_params.get('search', None)
+
+        if search_term:
+            # Use the double underscore to query related model fields
+            queryset = queryset.filter(
+                Q(course__name__icontains=search_term) |
+                Q(course__creator__username__icontains=search_term)
+            )
+        return queryset
 
 class UserCourseView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -51,7 +71,7 @@ class UserCourseView(ListCreateAPIView):
         if search_term:
             # Use the double underscore to query related model fields
             queryset = queryset.filter(
-                Q(course__name__icontains=search_term) |
+                Q(course__title__icontains=search_term) |
                 Q(course__creator__username__icontains=search_term)
             )
         return queryset
