@@ -1,0 +1,11 @@
+# Ignore media files
+server/api/media/
+
+# Ignore SQLite database
+server/db.sqlite3
+
+# Other unnecessary files
+*.log
+*.bak
+*.pyc
+__pycache__/
