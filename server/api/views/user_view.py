@@ -101,12 +101,8 @@ class RemoveStudentFromCourse(DestroyAPIView):
         return queryset
 
     def delete(self, request, *args, **kwargs):
-        # student = get_object_or_404(
-        #     self.get_queryset(), student=self.kwargs['user_id'])
-        print(self.kwargs['user_id'])
-        student = UserCourse.objects.filter(
-            course=self.kwargs['course_id'])
-        print(student)
+        student = get_object_or_404(
+            self.get_queryset(), student=self.kwargs['user_id'])
         if (is_user_creator(request, course_id=self.kwargs['course_id'])):
             student.delete()
             return Response(True, status=status.HTTP_204_NO_CONTENT)

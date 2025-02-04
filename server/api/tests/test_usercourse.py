@@ -95,9 +95,38 @@ class FindUserCourseViewTests(APITestCase):
         # Assuming only one course
         self.assertEqual(len(response.data['results']), 1)
         self.assertEqual(response.data['results']
-                         [0]['student'], self.user.id)
+                         [0]['student']['id'], self.user.id)
         self.assertEqual(response.data['results']
                          [0]['course']['id'], self.course.id)
+
+    def test_find_students_in_course(self):
+        UserCourse.objects.create(
+            student=self.user, course=self.course)
+        url = reverse('students-in-course',
+                      kwargs={'course_id': self.course.id})
+        response = self.client.get(url, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results']
+                         [0]['student']['id'], self.user.id)
+        self.assertEqual(response.data['results']
+                         [0]['course']['id'], self.course.id)
+
+    def test_find_student_by_search(self):
+        UserCourse.objects.create(
+            student=self.user, course=self.course)
+        url = reverse('students-in-course',
+                      kwargs={'course_id': self.course.id}) + "?search=testuser"
+        response = self.client.get(url, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results']
+                         [0]['student']['id'], self.user.id)
+        self.assertEqual(response.data['results']
+                         [0]['student']['username'], self.user.username)
+
 
     def test_find_nonexistent_user_course(self):
         url = reverse('users-courses', kwargs={
@@ -137,6 +166,8 @@ class UnregisterUserFromCourseViewTests(APITestCase):
         # Set the delete URL (Ensure it matches your URL patterns)
         # Adjust name if needed
         self.delete_url = reverse('my-courses')
+        self.remove_url = reverse("remove-student-from-course", kwargs={
+                                  'course_id': self.course.id, 'user_id': self.other_user.id})
 
     def test_successful_course_unregistration(self):
         """Test that a user can successfully unregister from a course."""
@@ -146,6 +177,28 @@ class UnregisterUserFromCourseViewTests(APITestCase):
         self.assertFalse(UserCourse.objects.filter(
             student=self.user, course=self.course).exists())
 
+    def test_successful_student_removal(self):
+        """Test that a user can successfully unregister from a course."""
+        data = {"userId": self.other_user.id}
+        UserCourse.objects.create(
+            student=self.other_user, course=self.course)
+        response = self.client.delete(self.remove_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(UserCourse.objects.filter(
+            student=self.other_user, course=self.course).exists())
+
+    def test_failed_student_removal(self):
+        """Test that a user can successfully unregister from a course."""
+        url = reverse('token-request')  # Ensure this matches your token URL
+        response = self.client.post(
+            url, {'username': 'otheruser', 'password': 'otherpassword'}, format='json')
+        self.token = response.data['access']
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
+        data = {"userId": self.user.id}
+        response = self.client.delete(self.remove_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertTrue(UserCourse.objects.filter(
+            student=self.user, course=self.course).exists())
     def test_cannot_unregister_if_not_enrolled(self):
         """Test that a user cannot unregister from a course they are not enrolled in."""
         UserCourse.objects.filter(
@@ -169,3 +222,4 @@ class UnregisterUserFromCourseViewTests(APITestCase):
         response = self.client.delete(self.delete_url, data, format='json')
         # Course not found for this user
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
