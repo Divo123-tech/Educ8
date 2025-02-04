@@ -7,10 +7,7 @@ def is_user_creator(request, course_id):
     course = Course.objects.get(id=course_id)
     """Check if the requesting user is the creator of the course."""
     if str(course.creator.id) != str(request.user):
-        return Response(
-            {"message": "You are not authorized to update this course."},
-            status=status.HTTP_403_FORBIDDEN
-        )
+        return False
     return True
 
 
@@ -29,10 +26,7 @@ def is_user_registered_to_course(request, course_id):
         student=str(request.user), course=course_id)
 
     if userRegistered is None:
-        return Response(
-            {"message": "You are not authorized to see this content."},
-            status=status.HTTP_403_FORBIDDEN
-        )
+        return False
     return True
 
 

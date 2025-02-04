@@ -6,12 +6,13 @@ from django.db.models import Avg
 class UserSerializer(serializers.ModelSerializer):
     # Add password field with write-only restriction
     # password = serializers.CharField(write_only=True)
-    courses = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    courses_taught = serializers.PrimaryKeyRelatedField(
+        read_only=True, many=True)
 
     class Meta:
         model = CustomUser
         fields = ('username', 'id', 'email', "password",
-                  "courses", "bio", "profile_picture", "status")
+                  "courses_taught", "bio", "profile_picture", "status")
         # fields = "__all__"
         extra_kwargs = {
             # Ensure the password is write-only
@@ -55,6 +56,9 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class UserCourseSerializer(serializers.ModelSerializer):
     course = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all())
+    student = serializers.PrimaryKeyRelatedField(
+        queryset=CustomUser.objects.all())
+
 
     class Meta:
         model = UserCourse
@@ -64,6 +68,8 @@ class UserCourseSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         # Replace the course ID with the serialized course object
         representation['course'] = CourseSerializer(instance.course).data
+        representation['student'] = UserSerializer(instance.student).data
+
         return representation
 
 

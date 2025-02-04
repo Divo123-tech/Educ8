@@ -1,5 +1,6 @@
 import axios from "axios";
 import { fetchWithAuth } from "./users.service";
+import { User } from "@/context/UserContext";
 export interface Course {
   id: number;
   creator: {
@@ -70,7 +71,7 @@ export const getCoursesTaught = async (
 
 export type UserCourseItem = {
   id: string;
-  student: string;
+  student: User;
   course: Course;
   joined_at: string;
 };
@@ -216,6 +217,48 @@ export const refundCourse = async (courseId: string | number) => {
       data: { course: courseId },
     });
     return refundCourse;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
+  }
+};
+
+export const getStudentsInCourse = async (
+  courseId: number | string,
+  search?: string | number
+): Promise<UserCourseResponse> => {
+  try {
+    const url = `${
+      import.meta.env.VITE_API_URL
+    }/api/courses/${courseId}/students${
+      search != undefined ? `?search=${search}` : ""
+    }`;
+    const response = await fetchWithAuth<UserCourseResponse>({
+      url,
+      method: "GET",
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
+  }
+};
+
+export const removeStudentFromCourse = async (
+  courseId: number | string,
+  userId: string | number
+) => {
+  try {
+    const url = `${
+      import.meta.env.VITE_API_URL
+    }/api/courses/${courseId}/student/${userId}`;
+    const student = await fetchWithAuth<boolean>({
+      url,
+      method: "DELETE",
+    });
+    console.log(student);
+    return student;
   } catch (error) {
     console.error("Error fetching user data:", error);
     throw error;

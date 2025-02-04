@@ -1,5 +1,5 @@
 from django.urls import path
-from ..views import CourseView, SingleCourseView, SectionView, SingleSectionView, SectionContentView, SingleSectionContentView, ReviewView, SingleReviewView, CoursesTaughtView, PublishCourseView, DetailedSectionContentsView, FindStudentsTakingCourse
+from ..views import CourseView, SingleCourseView, SectionView, SingleSectionView, SectionContentView, SingleSectionContentView, ReviewView, SingleReviewView, CoursesTaughtView, PublishCourseView, DetailedSectionContentsView, FindStudentsTakingCourse, RemoveStudentFromCourse
 
 urlpatterns = [
     path('', CourseView.as_view(), name="courses"),
@@ -9,7 +9,9 @@ urlpatterns = [
     path('<int:course_id>/reviews',
          ReviewView.as_view(), name="reviews"),
     path('<int:course_id>/students',
-         FindStudentsTakingCourse.as_view(), name="reviews"),
+         FindStudentsTakingCourse.as_view(), name="students-in-course"),
+    path('<int:course_id>/student/<int:user_id>',
+         RemoveStudentFromCourse.as_view(), name="remove-student-from-course"),
     path('<int:course_id>/reviews/<int:pk>',
          SingleReviewView.as_view(), name="single-review"),
     path('<int:course_id>/sections',

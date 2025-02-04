@@ -9,16 +9,19 @@ import {
 } from "@/components/ui/dialog";
 import { MenubarContent, MenubarItem } from "@/components/ui/menubar";
 import { Trash2 } from "lucide-react";
+import { ElementType } from "react";
 type Props = {
   handleDelete: () => void;
   deleteMessage: string;
   deleteButtonMessage: string;
+  Icon?: ElementType<{ size?: number | string; color?: string }>; // Supports any icon component
 };
 
 const DeleteDialog = ({
   handleDelete,
   deleteMessage,
   deleteButtonMessage,
+  Icon = Trash2,
 }: Props) => {
   return (
     <Dialog>
@@ -29,7 +32,7 @@ const DeleteDialog = ({
               <p className="text-md text-red-400 font-semibold">
                 {deleteButtonMessage}
               </p>
-              <Trash2 size={20} color="red" />
+              <Icon size={20} color="red" />
             </div>
           </MenubarItem>
         </MenubarContent>

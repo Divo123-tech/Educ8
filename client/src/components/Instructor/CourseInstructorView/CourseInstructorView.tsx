@@ -56,7 +56,7 @@ const CourseInstructorView = ({ course }: Props) => {
       </div>
       <div className="flex items-center">
         <button className="cursor:pointer">
-          <StudentsCourseDialog />
+          <StudentsCourseDialog courseId={course.id} />
         </button>
         <button className="cursor:pointer">
           <Menubar>

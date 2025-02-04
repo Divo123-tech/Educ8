@@ -8,7 +8,7 @@ from ..models import CustomUser, UserCourse, Course
 from ..serializers import UserSerializer, UserCourseSerializer
 from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, DestroyAPIView, get_object_or_404, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
-from ..utils import is_user_registered_to_course
+from ..utils import is_user_registered_to_course, is_user_creator
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db.models import Q
 
@@ -27,20 +27,23 @@ class FindUserCourseView(ListAPIView):
 
 class FindStudentsTakingCourse(ListAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = UserSerializer
+    serializer_class = UserCourseSerializer
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        course_id = self.kwargs["course_id"]  # Get course_id from URL
-        course = get_object_or_404(Course, id=course_id)  # Fetch course
-        queryset = CustomUser.objects.filter(courses=course)
+        # Get course_id from the URL to filter users based on the course
+
+        course_id = self.kwargs['course_id']
+
+        queryset = UserCourse.objects.filter(course=course_id)
         search_term = self.request.query_params.get('search', None)
 
         if search_term:
-            # Use the double underscore to query related model fields
             queryset = queryset.filter(
-                Q(course__name__icontains=search_term) |
-                Q(course__creator__username__icontains=search_term)
+                # Filter based on the related student (CustomUser)
+                Q(student__username__icontains=search_term) |
+                # Filter based on email of the related student
+                Q(student__email__icontains=search_term)
             )
         return queryset
 
@@ -79,10 +82,38 @@ class UserCourseView(ListCreateAPIView):
     def delete(self, request, *args, **kwargs):
         course = get_object_or_404(
             self.get_queryset(), course=request.data['course'])
-        is_user_registered_to_course(request, courseId=request.data['course'])
-        course.delete()
-        return Response(True, status=status.HTTP_204_NO_CONTENT)
+        if (is_user_registered_to_course(request, course_id=request.data['course'])):
+            course.delete()
+            return Response(True, status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"message": "You are not authorized to see this content."},
+            status=status.HTTP_403_FORBIDDEN
+        )
 
+
+class RemoveStudentFromCourse(DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        queryset = UserCourse.objects.filter(
+            course=self.kwargs['course_id'])
+        return queryset
+
+    def delete(self, request, *args, **kwargs):
+        # student = get_object_or_404(
+        #     self.get_queryset(), student=self.kwargs['user_id'])
+        print(self.kwargs['user_id'])
+        student = UserCourse.objects.filter(
+            course=self.kwargs['course_id'])
+        print(student)
+        if (is_user_creator(request, course_id=self.kwargs['course_id'])):
+            student.delete()
+            return Response(True, status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"message": "You are not authorized to remove this student."},
+            status=status.HTTP_403_FORBIDDEN
+        )
 
 class CourseInUserCourseExists(APIView):
     def get(self, request, course_id, *args, **kwargs):

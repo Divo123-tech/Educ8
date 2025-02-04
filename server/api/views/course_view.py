@@ -93,19 +93,26 @@ class SingleCourseView(RetrieveUpdateDestroyAPIView):
         return [IsAuthenticated()]  # Require authentication for GET
 
     def destroy(self, request, pk, *args, **kwargs):
-        is_user_creator(request, courseId=pk)
-        return super().destroy(request, *args, **kwargs)
+        if (is_user_creator(request, course_id=pk)):
+            return super().destroy(request, *args, **kwargs)
+        return Response(
+            {"message": "You are not authorized to update this course."},
+            status=status.HTTP_403_FORBIDDEN
+        )
 
     def patch(self, request, pk, *args, **kwargs):
         course = Course.objects.get(id=pk)
-        is_user_creator(request=request, courseId=pk)
+        if (not is_user_creator(request=request, course_id=pk)):
+            return Response(
+                {"message": "You are not authorized to update this course."},
+                status=status.HTTP_403_FORBIDDEN
+            )
 
         serializer = CourseSerializer(
             course, data=request.data, partial=True)  # Partial update
         if serializer.is_valid():
             serializer.save()  # Save the updated user
             return Response(serializer.data, status=status.HTTP_200_OK)
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -116,7 +123,11 @@ class PublishCourseView(APIView):
             course = Course.objects.get(id=pk)
 
             # Check if the requesting user is the creator of the course
-            is_user_creator(request=request, courseId=pk)
+            if (not is_user_creator(request=request, course_id=pk)):
+                return Response(
+                    {"message": "You are not authorized to update this course."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
 
             # Ensure at least one section exists before publishing
             sections = Section.objects.filter(course=pk)
