@@ -168,7 +168,7 @@ const ProfilePage = () => {
             <div className="relative w-full">
               <input
                 type="text"
-                value={userData?.status}
+                value={userData?.status != "null" ? userData?.status : ""}
                 name="status"
                 onChange={handleInputChange}
                 placeholder="Max 150 Characters"
