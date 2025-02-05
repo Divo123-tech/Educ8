@@ -1,6 +1,7 @@
 from django.urls import include, path
 from .views import UserView, RegisterView, FetchMessagesView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 urlpatterns = [
     path('courses/', include('api.urls_folder.course')),
@@ -11,5 +12,8 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name="register-user"),
     path("token/", TokenObtainPairView.as_view(), name="token-request"),
     path("token/refresh", TokenRefreshView.as_view(), name="token-refresh"),
-    path("auth/", include("rest_framework.urls"))
+    path("auth/", include("rest_framework.urls")),
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
