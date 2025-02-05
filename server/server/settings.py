@@ -14,17 +14,42 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 import os
-
+import logging
+logging.getLogger('boto3').setLevel(logging.DEBUG)
+logging.getLogger('botocore').setLevel(logging.DEBUG)
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MEDIA_URL = "/api/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "api/media")
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "access_key": os.getenv("AWS_ACCESS_KEY_ID"),
+            "secret_key": os.getenv("AWS_SECRET_ACCESS_KEY"),
+            "bucket_name": os.getenv("AWS_STORAGE_BUCKET_NAME"),
+            "region_name": os.getenv("AWS_S3_REGION_NAME"),
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
 
+    }
+}
+AWS_S3_CUSTOM_DOMAIN = f"https://{os.getenv('AWS_STORAGE_BUCKET_NAME')}.s3.{os.getenv('AWS_S3_REGION_NAME')}.amazonaws.com"
+# Static files settings
+# STATIC_URL = f"{AWS_S3_CUSTOM_DOMAIN}/admin/"
+# Media settings
+MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/"
+# Media settings
+# MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/"
+print(os.getenv("AWS_STORAGE_BUCKET_NAME"))
+# MEDIA_URL = "/api/media/"
+# MEDIA_ROOT = os.path.join(BASE_DIR, "api/media")
+STATIC_URL = "/static/"
+# Ensures local storage for static files
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-x1+_#uvi61snd#blmgbmi*sffkbex_$sk$%&-2aana$nl%a-=c'
@@ -44,7 +69,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-
 }
 
 SIMPLE_JWT = {
@@ -66,7 +90,8 @@ INSTALLED_APPS = [
     'corsheaders',
     "channels",
     'api',
-    'drf_spectacular',
+    'storages',
+    "drf_spectacular"
 
 ]
 
@@ -163,7 +188,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -172,3 +197,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWS_CREDENTIALS = True
 AUTH_USER_MODEL = 'api.CustomUser'
+
+# # AWS S3 Storage Settings
+# AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+# AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+# AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+# AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
+# AWS_S3_SIGNATURE_NAME = 's3v4',
+# AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+# print(AWS_S3_CUSTOM_DOMAIN)
+# # Optional Settings
+# AWS_QUERYSTRING_AUTH = False  # Make media files publicly accessible
+# AWS_S3_FILE_OVERWRITE = False  # Prevent overwriting files with the same name
+# AWS_DEFAULT_ACL = None
+# AWS_S3_VERITY = True
+# # Use S3 for media files
+# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# MEDIA_URL = f"//{AWS_S3_CUSTOM_DOMAIN}/"
