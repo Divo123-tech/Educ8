@@ -21,4 +21,4 @@ class Course(models.Model):
 
 
 def __str__(self):
-    return str(self.id)
+    return str(self.title)

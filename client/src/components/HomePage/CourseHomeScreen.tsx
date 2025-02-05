@@ -59,13 +59,14 @@ const CourseHomeScreen = ({
         <div className="flex flex-col w-48 gap-1 cursor-pointer hover:opacity-80 py-4">
           <HoverCardTrigger>
             <img
-              src={
-                typeof course.thumbnail == "string"
-                  ? `${addedThumbnailLink ? import.meta.env.VITE_API_URL : ""}${
-                      course.thumbnail
-                    }`
-                  : NoThumbnail
-              }
+              // src={
+              //   typeof course.thumbnail == "string"
+              //     ? `${addedThumbnailLink ? import.meta.env.VITE_API_URL : ""}${
+              //         course.thumbnail
+              //       }`
+              //     : NoThumbnail
+              // }
+              src="https://educ8-media.s3.ap-northeast-1.amazonaws.com/Bar_Chart.png"
               className="w-52 h-28 border object-cover object-center"
             ></img>
           </HoverCardTrigger>
