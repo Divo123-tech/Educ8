@@ -49,12 +49,7 @@ print(os.getenv("AWS_STORAGE_BUCKET_NAME"))
 STATIC_URL = "/static/"
 # Ensures local storage for static files
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-# print("Bucket exists:", bool(AWS_STORAGE_BUCKET_NAME))
-# print("Region exists:", bool(AWS_S3_REGION_NAME))
-# print("Access key exists:", bool(AWS_ACCESS_KEY_ID))
-# print("Secret exists:", bool(AWS_SECRET_ACCESS_KEY))
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-x1+_#uvi61snd#blmgbmi*sffkbex_$sk$%&-2aana$nl%a-=c'
