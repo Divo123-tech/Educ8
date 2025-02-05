@@ -6,7 +6,7 @@ from ..models import Course, Review, UserCourse, Cart
 def is_user_creator(request, course_id):
     course = Course.objects.get(id=course_id)
     """Check if the requesting user is the creator of the course."""
-    if str(course.creator.id) != str(request.user):
+    if str(course.creator.id) != str(request.user.id):
         return False
     return True
 
@@ -14,7 +14,7 @@ def is_user_creator(request, course_id):
 def is_user_reviewer(request, review_id):
     review = Review.objects.get(id=review_id)
     """Check if the requesting user is the creator of the review."""
-    if str(review.reviewed_by) != str(request.user):
+    if str(review.reviewed_by) != str(request.user.id):
         return Response(
             {"message": "You are not authorized to update this review."},
             status=status.HTTP_403_FORBIDDEN)

@@ -1,5 +1,10 @@
 import { User } from "@/context/UserContext";
-import { Course, getCourses } from "@/services/courses.service";
+import {
+  Course,
+  getCourses,
+  getCoursesOfStudent,
+  UserCourseItem,
+} from "@/services/courses.service";
 import { getUserInfo } from "@/services/users.service";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -10,7 +15,9 @@ const UserProfile = () => {
   const { userId } = useParams();
   const [userProfile, setUserProfile] = useState<User | null>(null);
   const [showCoursesTaught, setShowCoursesTaught] = useState<boolean>(true);
+  // const [showCoursesTaken, setShowCoursesTaken] = useState<boolean>(true);
   const [courses, setCourses] = useState<Course[] | null>(null);
+  // const [coursesTaken, setCoursesTaken] = useState<UserCourseItem[] | null>(null);
   const [previousPage, setPreviousPage] = useState<string | null>(null);
   const [nextPage, setNextPage] = useState<string | null>(null);
   const [total, setTotal] = useState<number>(0);
@@ -32,6 +39,18 @@ const UserProfile = () => {
       (async () => {
         const response = await getCourses(currentPage, "", userId);
         setCourses(response.results);
+        setPreviousPage(response.previous);
+        setNextPage(response.next);
+        setTotal(response.count);
+      })();
+    } else {
+      (async () => {
+        const response = await getCoursesOfStudent(userId || "");
+        setCourses(
+          response.results.map((userCourse: UserCourseItem) => {
+            return userCourse.course;
+          })
+        );
         setPreviousPage(response.previous);
         setNextPage(response.next);
         setTotal(response.count);
@@ -64,7 +83,11 @@ const UserProfile = () => {
       </div>
       <div>
         <h2 className="font-bold text-lg">Current Status</h2>
-        <p>{userProfile?.status}</p>
+        <p>
+          {userProfile?.status != "null"
+            ? userProfile?.status
+            : "No Status Yet!"}
+        </p>
       </div>
       <div>
         <h2 className="font-bold text-lg">About me</h2>
@@ -94,7 +117,12 @@ const UserProfile = () => {
       </div>
       <div className="flex gap-4 flex-wrap">
         {courses?.map((course: Course) => {
-          return <CourseHomeScreen course={course} />;
+          return (
+            <CourseHomeScreen
+              course={course}
+              addedThumbnailLink={!showCoursesTaught}
+            />
+          );
         })}
       </div>
       <div className="ml-auto">

@@ -21,16 +21,16 @@ class CartView(ListCreateAPIView):
 
     def get_queryset(self):
         # Override to ensure users can only access their own cart
-        return Cart.objects.filter(student=str(self.request.user))
+        return Cart.objects.filter(student=str(self.request.user.id))
 
     def post(self, request, *args, **kwargs):
         # Assign the authenticated user to the 'student' field in the request
-        request.data['student'] = str(request.user)
+        request.data['student'] = str(request.user.id)
         # Get the course ID from the request data
         course_id = request.data.get('course')
 
         # Check if the course is already in the cart or if the user is already enrolled in the course
-        if Cart.objects.filter(student=request.user, course=course_id).exists() or UserCourse.objects.filter(student=str(request.user), course=course_id).exists():
+        if Cart.objects.filter(student=request.user.id, course=course_id).exists() or UserCourse.objects.filter(student=str(request.user.id), course=course_id).exists():
             # If so, return a 400 response indicating the error
             return Response(
                 {"detail": "This course is already in your cart or you've already taken this course."},
@@ -85,7 +85,7 @@ class CheckoutCourse(APIView):
                 course.delete()
                 # Serialize the course data for creating a UserCourse
                 serialized_course = UserCourseSerializer(
-                    data={"student": str(request.user), "course": item['course']['id']})
+                    data={"student": str(request.user.id), "course": item['course']['id']})
                 if serialized_course.is_valid():
                     # If valid, save the UserCourse object (register the student for the course)
                     serialized_course.save()

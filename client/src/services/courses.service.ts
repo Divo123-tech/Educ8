@@ -245,6 +245,23 @@ export const getStudentsInCourse = async (
   }
 };
 
+export const getCoursesOfStudent = async (
+  userId: number | string
+): Promise<UserCourseResponse> => {
+  try {
+    const url = `${import.meta.env.VITE_API_URL}/api/users/${userId}/courses`;
+    const response = await fetchWithAuth<UserCourseResponse>({
+      url,
+      method: "GET",
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
+  }
+};
+
 export const removeStudentFromCourse = async (
   courseId: number | string,
   userId: string | number

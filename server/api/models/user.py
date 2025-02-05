@@ -24,4 +24,4 @@ class CustomUser(AbstractUser):
             raise ValidationError("Username cannot contain spaces.")
 
     def __str__(self):
-        return str(self.id)
+        return str(self.username)

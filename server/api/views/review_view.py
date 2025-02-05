@@ -36,12 +36,13 @@ class ReviewView(ListCreateAPIView):
         # Filter by course ID
         return queryset
 
-    def post(self, request, courseId, *args, **kwargs):
+    def post(self, request, course_id, *args, **kwargs):
         try:
-            request.data['course'] = courseId
-            request.data['reviewed_by'] = str(request.user)
+            request.data['course'] = course_id
+            request.data['reviewed_by'] = str(request.user.id)
+            print(request.data)
             review = ReviewSerializer(data=request.data)
-            if not Review.objects.filter(reviewed_by=request.user, course=courseId).exists():
+            if not Review.objects.filter(reviewed_by=request.user, course=course_id).exists():
                 if review.is_valid():
                     review.save()
                     return Response(review.data, status=status.HTTP_201_CREATED)

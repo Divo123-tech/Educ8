@@ -113,7 +113,7 @@ class RemoveStudentFromCourse(DestroyAPIView):
 
 class CourseInUserCourseExists(APIView):
     def get(self, request, course_id, *args, **kwargs):
-        if UserCourse.objects.filter(student=str(request.user), course=course_id).exists():
+        if UserCourse.objects.filter(student=str(request.user.id), course=course_id).exists():
             return Response(True, status=status.HTTP_200_OK)
         return Response(False, status=status.HTTP_200_OK)
 
@@ -160,7 +160,7 @@ class UserView(APIView):
     def get(self, request, *args, **kwargs):
         try:
             users = CustomUser.objects.get(
-                id=str(request.user), is_active=True, )
+                id=str(request.user.id), is_active=True, )
 
             serialized_users = UserSerializer(users)
             return Response(serialized_users.data, status=status.HTTP_200_OK)
@@ -173,7 +173,7 @@ class UserView(APIView):
             )
 
     def patch(self, request, *args, **kwargs):
-        user = CustomUser.objects.get(id=str(request.user))
+        user = CustomUser.objects.get(id=str(request.user.id))
         serializer = UserSerializer(
             user, data=request.data, partial=True)  # Partial update
         if serializer.is_valid():
@@ -183,7 +183,7 @@ class UserView(APIView):
 
     def delete(self, request, *args, **kwargs):
         try:
-            user = CustomUser.objects.get(id=str(request.user))
+            user = CustomUser.objects.get(id=str(request.user.id))
             user.delete()
             return Response(True, status=status.HTTP_200_OK)
         except CustomUser.DoesNotExist:
@@ -198,7 +198,7 @@ class ChangePasswordView(APIView):
     def patch(self, request, *args, **kwargs):
         try:
             # get the user based on the current request's user
-            user = CustomUser.objects.get(id=str(request.user))
+            user = CustomUser.objects.get(id=str(request.user.id))
             # check if they've included the right password
             if user.check_password(request.data['oldPassword']):
                 user.set_password(request.data['newPassword'])
