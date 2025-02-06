@@ -74,8 +74,8 @@ export const login = async (
   password: string
 ): Promise<LoginResponse> => {
   const url = `${import.meta.env.VITE_API_URL}/api/token/`;
-  const data: LoginRequest = {
-    email,
+  const data = {
+    username: email,
     password,
   };
 
