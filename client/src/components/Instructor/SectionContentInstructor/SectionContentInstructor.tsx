@@ -19,6 +19,7 @@ import { Menubar, MenubarMenu, MenubarTrigger } from "../../ui/menubar";
 import { useState } from "react";
 import { Input } from "../../ui/input";
 import { toast } from "@/hooks/use-toast";
+import ReactQuill from "react-quill";
 
 type Props = {
   courseId: string | number;
@@ -48,13 +49,11 @@ const SectionContentInstructor = ({
     }
   };
 
-  const handleContentTextChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleQuillChange = (value: string) => {
     setContentState((prevContentState: Content) => {
       return {
         ...prevContentState,
-        content: e.target.value,
+        content: value,
       };
     });
   };
@@ -266,11 +265,12 @@ const SectionContentInstructor = ({
             )}
             <div className="flex w-full">
               {contentState.contentType == "text" && (
-                <textarea
-                  className="border border-black w-full px-2 py-1"
-                  onChange={handleContentTextChange}
+                <ReactQuill
+                  theme="snow"
                   value={contentState.content}
-                ></textarea>
+                  onChange={handleQuillChange}
+                  className="h-64 overflow-y-auto"
+                />
               )}
               {contentState.contentType == "video" && (
                 <Input
