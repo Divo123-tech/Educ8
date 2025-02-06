@@ -24,7 +24,6 @@ import CoursePreviewReview from "./CoursePreviewReview";
 import StarsSearch from "../Reviews/StarsSearch";
 import Pagination from "../Pagination";
 import StarDisplay from "../StarDisplay";
-
 const CoursePreview = () => {
   const navigate = useNavigate();
   const { courseId } = useParams();
@@ -88,7 +87,7 @@ const CoursePreview = () => {
       if (user) {
         setIsCourseInCart(await getCourseInCart(courseId || ""));
         setIsCourseInUserCourse(await getCourseInUserCourse(courseId || ""));
-        console.log(await getCourseInUserCourse(courseId || ""))
+        console.log(await getCourseInUserCourse(courseId || ""));
       }
     })();
   }, [course?.creator.id, courseId, user]);
@@ -127,7 +126,7 @@ const CoursePreview = () => {
         <div className=" mt-4 flex flex-col justify-center items-center">
           <img
             src={typeof course?.thumbnail == "string" ? course.thumbnail : ""}
-            className="w-56"
+            className="w-56 h-36 object-cover object-center"
           ></img>
           <div className="px-2 py-4 flex flex-col gap-2 bg-white w-56">
             <p className="font-bold text-lg">${course?.price}</p>
