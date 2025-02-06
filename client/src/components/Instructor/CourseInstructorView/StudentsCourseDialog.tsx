@@ -50,7 +50,12 @@ const StudentsCourseDialog = ({ courseId }: Props) => {
     })();
   }, [courseId, currentInput, currentPage]);
   const searchUsers = async (e: ChangeEvent<HTMLInputElement>) => {
-    setCurrentInput(e.target.value);
+    if (e.target.value.length > 2) {
+      setCurrentInput(e.target.value);
+    } else {
+      setTotal(0);
+      setUsers([]);
+    }
   };
 
   const userContext = useContext(UserContext);
