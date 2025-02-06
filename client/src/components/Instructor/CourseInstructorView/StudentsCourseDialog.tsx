@@ -29,10 +29,15 @@ const StudentsCourseDialog = ({ courseId }: Props) => {
   const [nextPage, setNextPage] = useState<string | null>(null);
   const [total, setTotal] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentInput, setCurrentInput] = useState<string>("");
   useEffect(() => {
     (async () => {
       try {
-        const response = await getStudentsInCourse(courseId);
+        const response = await getStudentsInCourse(
+          courseId,
+          currentInput,
+          currentPage
+        );
         setUsers(response.results);
         setPreviousPage(response.previous);
         setNextPage(response.next);
@@ -43,14 +48,10 @@ const StudentsCourseDialog = ({ courseId }: Props) => {
         setUsers([]);
       }
     })();
-  }, [courseId]);
+  }, [courseId, currentInput, currentPage]);
   const searchUsers = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 2) {
-      const response = await getStudentsInCourse(courseId, e.target.value);
-      setUsers(response.results);
-      setPreviousPage(response.previous);
-      setNextPage(response.next);
-      setTotal(response.count);
+      setCurrentInput(e.target.value);
     } else {
       setTotal(0);
       setUsers([]);
@@ -104,7 +105,10 @@ const StudentsCourseDialog = ({ courseId }: Props) => {
                 {userAccount.student.profile_picture &&
                 typeof userAccount.student.profile_picture == "string" ? (
                   <img
-                    src={userAccount.student.profile_picture}
+                    src={
+                      import.meta.env.VITE_API_URL +
+                      userAccount.student.profile_picture
+                    }
                     alt="profile"
                     className="rounded-full w-8 h-8 xl:w-12 xl:h-12"
                   />

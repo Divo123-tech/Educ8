@@ -226,14 +226,15 @@ export const refundCourse = async (courseId: string | number) => {
 
 export const getStudentsInCourse = async (
   courseId: number | string,
-  search?: string | number
+  search?: string | number,
+  page?: number
 ): Promise<UserCourseResponse> => {
   try {
     const url = `${
       import.meta.env.VITE_API_URL
     }/api/courses/${courseId}/students${
       search != undefined ? `?search=${search}` : ""
-    }`;
+    }&page=${page}`;
     const response = await fetchWithAuth<UserCourseResponse>({
       url,
       method: "GET",
