@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import CourseHomeScreen from "../HomePage/CourseHomeScreen";
 import { Search } from "lucide-react";
 import Pagination from "../Pagination";
+import CourseHomePageSkeleton from "../Skeleton/CourseHomePageSkeleton";
 
 const MyLearning = () => {
   const [userCourses, setUserCourses] = useState<UserCourseItem[] | null>(null);
@@ -12,8 +13,10 @@ const MyLearning = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchInput, setSearchInput] = useState<string>("");
   const [category, setCategory] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const response = await getCoursesTaken(
         currentPage,
         searchInput,
@@ -23,6 +26,7 @@ const MyLearning = () => {
       setPreviousPage(response.previous);
       setNextPage(response.next);
       setTotal(response.count);
+      setLoading(false);
     })();
   }, [nextPage, currentPage, previousPage, total, searchInput, category]);
 
@@ -51,6 +55,11 @@ const MyLearning = () => {
               Categories
             </option>
             <option value="Finance">Finance</option>
+            <option value="Technology">Technology</option>
+            <option value="Self-Development">Self-Development</option>
+            <option value="Accounting">Accounting</option>
+            <option value="Design">Design</option>
+            <option value="Marketing">Marketing</option>
           </select>
         </div>
         <div className="flex items-center ml-auto">
@@ -65,16 +74,24 @@ const MyLearning = () => {
         </div>
       </div>
       <div className="px-8 sm:px-16 md:px-32 xl:px-80 flex gap-4 flex-wrap">
-        {userCourses?.map((item: UserCourseItem) => {
-          return (
-            <CourseHomeScreen
-              course={item.course}
-              addedThumbnailLink={true}
-              showAddToCart={false}
-              preview={false}
-            />
-          );
-        })}
+        {loading ? (
+          Array.from({ length: 5 }, (_, i) => i + 1).map((number: number) => {
+            return <CourseHomePageSkeleton key={number} />;
+          })
+        ) : (
+          <>
+            {userCourses?.map((item: UserCourseItem) => {
+              return (
+                <CourseHomeScreen
+                  course={item.course}
+                  addedThumbnailLink={true}
+                  showAddToCart={false}
+                  preview={false}
+                />
+              );
+            })}
+          </>
+        )}
       </div>
       {(userCourses?.length || 0) == 0 && (
         <h1 className="text-xl sm:text-2xl font-bold text-center">
