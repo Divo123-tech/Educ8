@@ -124,17 +124,18 @@ export const getCourseInUserCourse = async (courseId: number | string) => {
 export const getCourses = async (
   page: number,
   search?: string,
-  creator?: string
+  creator?: string,
+  category?: string
 ): Promise<CoursesResponse> => {
   try {
     const url = `${
       import.meta.env.VITE_API_URL
     }/api/courses/?published=True&page=${page}&search=${search || ""}&creator=${
       creator || ""
-    }`;
+    }&category=${category || ""}`;
     const response = await axios.get(url);
     return response.data;
-  } catch (err) {
+  } catch (err: unknown) {
     console.error(err);
     throw err;
   }
