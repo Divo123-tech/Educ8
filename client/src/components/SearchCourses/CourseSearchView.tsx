@@ -14,7 +14,7 @@ const CourseSearchView = ({ course }: Props) => {
           <div className="flex flex-col sm:flex-row  gap-4">
             <img
               src={typeof course.thumbnail == "string" ? course.thumbnail : ""}
-              className="w-52 h-fit"
+              className="w-52 h-fit object-cover object-center"
             ></img>
             <div className="flex flex-col justify-between">
               <h1 className="font-bold text-md">{course?.title}</h1>
@@ -25,7 +25,7 @@ const CourseSearchView = ({ course }: Props) => {
               </p>
               <div className="flex items-center gap-2">
                 <p className="font-bold">
-                  {course?.average_rating?.toFixed(1) || "4.5"}
+                  {course?.average_rating?.toFixed(1) || "0.0"}
                 </p>
                 <StarDisplay rating={course?.average_rating || 0} />
                 <p className="text-xs underline underline-offset-2 text-green-700">
