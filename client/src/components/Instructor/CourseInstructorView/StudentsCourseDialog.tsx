@@ -29,10 +29,15 @@ const StudentsCourseDialog = ({ courseId }: Props) => {
   const [nextPage, setNextPage] = useState<string | null>(null);
   const [total, setTotal] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentInput, setCurrentInput] = useState<string>("");
   useEffect(() => {
     (async () => {
       try {
-        const response = await getStudentsInCourse(courseId);
+        const response = await getStudentsInCourse(
+          courseId,
+          currentInput,
+          currentPage
+        );
         setUsers(response.results);
         setPreviousPage(response.previous);
         setNextPage(response.next);
@@ -43,18 +48,9 @@ const StudentsCourseDialog = ({ courseId }: Props) => {
         setUsers([]);
       }
     })();
-  }, [courseId]);
+  }, [courseId, currentInput, currentPage]);
   const searchUsers = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length > 2) {
-      const response = await getStudentsInCourse(courseId, e.target.value);
-      setUsers(response.results);
-      setPreviousPage(response.previous);
-      setNextPage(response.next);
-      setTotal(response.count);
-    } else {
-      setTotal(0);
-      setUsers([]);
-    }
+    setCurrentInput(e.target.value);
   };
 
   const userContext = useContext(UserContext);
