@@ -60,7 +60,7 @@ export const fetchWithAuth = async <T>(
 };
 
 export type LoginRequest = {
-  username: string;
+  email: string;
   password: string;
 };
 
@@ -70,12 +70,12 @@ type LoginResponse = {
 };
 
 export const login = async (
-  username: string,
+  email: string,
   password: string
 ): Promise<LoginResponse> => {
   const url = `${import.meta.env.VITE_API_URL}/api/token/`;
   const data: LoginRequest = {
-    username,
+    email,
     password,
   };
 

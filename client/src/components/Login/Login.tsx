@@ -9,7 +9,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userLogin, setUserLogin] = useState<LoginRequest>({
-    username: "",
+    email: "",
     password: "",
   });
   const [loginFailed, setLoginFailed] = useState<boolean>(false);
@@ -42,7 +42,7 @@ const Login = () => {
 
   const loginUser = async () => {
     try {
-      await login(userLogin.username, userLogin.password);
+      await login(userLogin.email, userLogin.password);
       const userDetails = await getCurrentUser();
       setUser(userDetails);
       navigate("/");
@@ -58,7 +58,7 @@ const Login = () => {
         <div className="bg-red-200 w-2/3 md:w-1/3 lg:w-1/4 px-4 py-4 flex items-center gap-4 ">
           <CircleAlert className="flex-shrink-0" />
           <h1 className="text-sm font-bold">
-            There was a problem logging in. Check your username and password or
+            There was a problem logging in. Check your email and password or
             create an account.
           </h1>
         </div>
@@ -69,8 +69,8 @@ const Login = () => {
           type="text"
           onChange={changeUserLogin}
           className="border border-black w-2/3 md:w-1/3 lg:w-1/4 h-12 px-2 py-2"
-          placeholder="Username"
-          name="username"
+          placeholder="Email"
+          name="email"
         ></input>
         <div className="relative w-2/3 md:w-1/3 lg:w-1/4">
           <input
