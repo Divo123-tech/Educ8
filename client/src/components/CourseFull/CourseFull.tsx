@@ -19,7 +19,7 @@ import Pagination from "../Pagination";
 import useCourseContent from "./hooks/useCourseContent";
 import useReviews from "./hooks/useReviews";
 import useCourseAccess from "./hooks/useCourseAccess";
-import Logo from "@/assets/Logo.png";
+import Logo from "@/assets/LogoLight.png";
 const CourseFull = () => {
   const [courseInfoShown, setCourseInfoShown] = useState<string>("content");
   const { courseId } = useParams();
