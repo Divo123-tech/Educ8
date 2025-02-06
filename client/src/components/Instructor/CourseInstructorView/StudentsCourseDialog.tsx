@@ -30,25 +30,28 @@ const StudentsCourseDialog = ({ courseId }: Props) => {
   const [total, setTotal] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentInput, setCurrentInput] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await getStudentsInCourse(
-          courseId,
-          currentInput,
-          currentPage
-        );
-        setUsers(response.results);
-        setPreviousPage(response.previous);
-        setNextPage(response.next);
-        setTotal(response.count);
-      } catch (err: unknown) {
-        console.error(err);
-        setTotal(0);
-        setUsers([]);
-      }
-    })();
-  }, [courseId, currentInput, currentPage]);
+    if (isOpen) {
+      (async () => {
+        try {
+          const response = await getStudentsInCourse(
+            courseId,
+            currentInput,
+            currentPage
+          );
+          setUsers(response.results);
+          setPreviousPage(response.previous);
+          setNextPage(response.next);
+          setTotal(response.count);
+        } catch (err: unknown) {
+          console.error(err);
+          setTotal(0);
+          setUsers([]);
+        }
+      })();
+    }
+  }, [courseId, currentInput, currentPage, isOpen]);
   const searchUsers = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 2) {
       setCurrentInput(e.target.value);
@@ -79,7 +82,10 @@ const StudentsCourseDialog = ({ courseId }: Props) => {
   };
   return (
     <Dialog>
-      <DialogTrigger asChild>
+      <DialogTrigger
+        asChild
+        onClick={() => setIsOpen((prevIsOpen) => !prevIsOpen)}
+      >
         <div className="py-2 rounded-md text-sm  font-normal hover:text-green-500 cursor-pointer">
           <UserSearch size={22} />
         </div>

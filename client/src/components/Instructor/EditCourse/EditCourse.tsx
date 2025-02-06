@@ -17,12 +17,15 @@ import { Link } from "react-router-dom";
 import SectionInstructorView from "../SectionInstructorView";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import the Quill theme
+import { Skeleton } from "@/components/ui/skeleton";
 const EditCourse = () => {
   const [showNewSection, setShowNewSection] = useState<boolean>(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [view, setView] = useState<string>("landing");
   const [course, setCourse] = useState<Course | null>(null);
   const [sections, setSections] = useState<Section[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingSections, setLoadingSections] = useState<boolean>(true);
   const { courseId } = useParams();
   const navigate = useNavigate();
 
@@ -30,14 +33,19 @@ const EditCourse = () => {
     (async () => {
       const course = await getSingleCourse(courseId || "");
       const user = await getCurrentUser();
-      const sections = await getSections(courseId || "");
-      setSections(sections);
+      if (view != "landing") {
+        setLoadingSections(true);
+        const sections = await getSections(courseId || "");
+        setSections(sections);
+        setLoadingSections(false);
+      }
+
       if (user?.id !== course.creator.id) {
         navigate("/");
       }
       setCourse(course);
     })();
-  }, [courseId, navigate]);
+  }, [courseId, navigate, view]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -85,6 +93,7 @@ const EditCourse = () => {
     if (!course) return;
 
     try {
+      setLoading(true);
       const formData = new FormData();
       Object.entries(course).forEach(([key, value]) => {
         if (key === "thumbnail" && value instanceof File) {
@@ -112,6 +121,7 @@ const EditCourse = () => {
         variant: "destructive",
       });
     }
+    setLoading(false);
   };
 
   const handleInputChange = (
@@ -194,15 +204,11 @@ const EditCourse = () => {
             <div className="flex px-12 py-8 items-center justify-between">
               <h1 className="text-2xl font-bold">Course Landing Page</h1>
               <button
-                className={`bg-green-500 text-white px-4 py-1 text-lg font-bold ${
-                  isFormEmpty
-                    ? "opacity-60 cursor-not-allowed"
-                    : "cursor-pointer"
-                }`}
+                className={`bg-green-500 text-white px-4 py-1 text-lg font-bold cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed`}
                 onClick={handleLandingFormSubmit}
-                disabled={isFormEmpty}
+                disabled={isFormEmpty || loading}
               >
-                Save
+                {loading ? "Saving..." : "Save"}
               </button>
             </div>
             <hr></hr>
@@ -357,17 +363,33 @@ const EditCourse = () => {
                 you're intending to offer your course for free, the total length
                 of video content must be less than 2 hours.
               </p>
-              {sections?.map((section: Section) => {
-                return (
-                  <SectionInstructorView
-                    section={section}
-                    courseId={courseId || ""}
-                    key={section.position}
-                    setSections={setSections}
-                    maxPosition={sections.length}
-                  />
-                );
-              })}
+              <div className="flex flex-col gap-4 py-3 cursor-pointer">
+              {loadingSections ? (
+                <>
+                  <Skeleton className="w-full h-16" />
+                  <Skeleton className="w-full h-16" />
+                  <Skeleton className="w-full h-16" />
+                  <Skeleton className="w-full h-16" />
+                  <Skeleton className="w-full h-16" />
+                </>
+              ) : (
+                <>
+                  {sections?.map((section: Section) => {
+                    return (
+                      <SectionInstructorView
+                        section={section}
+                        courseId={courseId || ""}
+                        key={section.position}
+                        setSections={setSections}
+                        maxPosition={sections.length}
+                      />
+                    );
+                  })}
+                </>
+              )}
+                </div>
+
+
               {!showNewSection ? (
                 <div>
                   <button
@@ -386,7 +408,6 @@ const EditCourse = () => {
                 </div>
               ) : (
                 <NewSectionMenu
-                  setCourse={setCourse}
                   courseId={courseId || ""}
                   setShowNewSection={setShowNewSection}
                   setSections={setSections}

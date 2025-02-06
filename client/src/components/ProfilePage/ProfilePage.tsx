@@ -19,6 +19,7 @@ const ProfilePage = () => {
   const [userData, setUserData] = useState<User | null>(user); // Initialize with `user`
   const [imagePreview, setImagePreview] = useState<string>("");
   const [status, setStatus] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const maxChars = 150;
   useEffect(() => {
     const checkUserLoggedIn = async () => {
@@ -83,6 +84,7 @@ const ProfilePage = () => {
     if (!userData) return;
 
     try {
+      setLoading(true);
       const formData = new FormData();
 
       // Append all fields from userData
@@ -94,16 +96,14 @@ const ProfilePage = () => {
           formData.append(key, value as string); // Add other fields (excluding profile_picture)
         }
       });
-      // throw new Error();
-      console.log(formData);
       const editedUser = await editUser(formData); // Pass FormData to API call
-      console.log(editedUser);
       setUser(editedUser);
       toast({
         title: "Status",
         description: "Successfully edited user profile!",
         variant: "success",
       });
+      setLoading(false);
     } catch (error) {
       console.error("Error updating user:", error);
       toast({
@@ -111,6 +111,7 @@ const ProfilePage = () => {
         description: "Failed to update user profile",
         variant: "destructive",
       });
+      setLoading(false);
     }
   };
 
@@ -216,12 +217,10 @@ const ProfilePage = () => {
         </div>
         <div>
           <button
-            className={`bg-black text-white px-4 font-bold py-2 ${
-              !formChanged && "opacity-60 cursor-not-allowed"
-            }`}
-            disabled={!formChanged}
+            className={`bg-black text-white px-4 font-bold py-2 disabled:opacity-50 disabled:cursor-not-allowed `}
+            disabled={!formChanged || loading}
           >
-            Save
+            {loading ? "Saving..." : "Save"}
           </button>
         </div>
       </form>

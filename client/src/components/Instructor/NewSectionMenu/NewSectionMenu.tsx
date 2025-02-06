@@ -1,22 +1,20 @@
 import { useState } from "react";
 import { addSection, getSections, Section } from "@/services/sections.services";
-import { Course, getSingleCourse } from "@/services/courses.service";
 import { X } from "lucide-react";
 
 type Props = {
   courseId: string;
-  setCourse: React.Dispatch<React.SetStateAction<Course | null>>;
   setShowNewSection: React.Dispatch<React.SetStateAction<boolean>>;
   setSections: React.Dispatch<React.SetStateAction<Section[] | null>>;
 };
 
 const NewSectionMenu = ({
   courseId,
-  setCourse,
   setShowNewSection,
   setSections,
 }: Props) => {
   const [sectionTitle, setSectionTitle] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const handleSectionTitleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -27,14 +25,15 @@ const NewSectionMenu = ({
     event: React.ChangeEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
+    setLoading(true);
     try {
       await addSection(sectionTitle, courseId);
-      setCourse(await getSingleCourse(courseId));
       setSections(await getSections(courseId));
     } catch (err) {
       console.log(err);
     }
     toggleNewSection();
+    setLoading(false);
   };
 
   const toggleNewSection = () => {
@@ -67,9 +66,9 @@ const NewSectionMenu = ({
           </button>
           <button
             className="bg-black text-white font-bold px-2 py-1 text-sm hover:opacity-70 disabled:opacity-70 disabled:cursor-not-allowed"
-            disabled={sectionTitle == ""}
+            disabled={sectionTitle == "" || loading}
           >
-            Add Section
+            {loading ? "Adding Section..." : "Add Section"}
           </button>
         </div>
       </form>

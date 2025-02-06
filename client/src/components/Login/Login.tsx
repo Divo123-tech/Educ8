@@ -13,6 +13,7 @@ const Login = () => {
     password: "",
   });
   const [loginFailed, setLoginFailed] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const userContext = useContext(UserContext);
 
@@ -42,6 +43,7 @@ const Login = () => {
 
   const loginUser = async () => {
     try {
+      setLoading(true);
       await login(userLogin.email, userLogin.password);
       const userDetails = await getCurrentUser();
       setUser(userDetails);
@@ -49,6 +51,7 @@ const Login = () => {
     } catch (err: unknown) {
       console.log(err);
       setLoginFailed(true);
+      setLoading(false);
     }
   };
   return (
@@ -89,10 +92,11 @@ const Login = () => {
           </button>
         </div>
         <Button
-          className="w-2/3 md:w-1/3 lg:w-1/4 py-6 text-lg bg-green-600 hover:bg-green-700"
+          className="w-2/3 md:w-1/3 lg:w-1/4 py-6 text-lg bg-green-600 hover:bg-green-700 disabled:opacity-50"
           onClick={loginUser}
+          disabled={loading}
         >
-          Log in
+          {loading ? "Logging in..." : "Log in"}
         </Button>
       </div>
 
