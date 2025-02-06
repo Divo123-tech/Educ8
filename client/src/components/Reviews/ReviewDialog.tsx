@@ -68,6 +68,7 @@ const ReviewDialog = ({ courseId, fetchAllReviews }: Props) => {
         rating: 0,
       });
       fetchAllReviews();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e: unknown) {
       setReviewSuccess(false);
     }

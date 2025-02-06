@@ -14,7 +14,6 @@ import Carousel2 from "@/assets/Carousel2.png";
 import Carousel3 from "@/assets/Carousel3.png";
 import { Link } from "react-router-dom";
 import CoursePreviewHome from "./CoursePreviewHome";
-
 const HomePage = () => {
   const userContext = useContext(UserContext);
   if (!userContext) {
@@ -26,36 +25,59 @@ const HomePage = () => {
   const [courses2, setCourses2] = useState<Course[] | null>(null);
   const [courses3, setCourses3] = useState<Course[] | null>(null);
   const [courses4, setCourses4] = useState<Course[] | null>(null);
+  const [courses1Loading, setCourses1Loading] = useState<boolean>(true);
+  const [courses2Loading, setCourses2Loading] = useState<boolean>(true);
+  const [courses3Loading, setCourses3Loading] = useState<boolean>(true);
+  const [courses4Loading, setCourses4Loading] = useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await getCourses(1);
+        const response = await getCourses(1, undefined, undefined, "Finance");
         setCourses1(response.results);
+        setCourses1Loading(false);
       } catch (error) {
         console.log(error);
       }
     })();
     (async () => {
       try {
-        const response = await getCourses(1);
+        const response = await getCourses(
+          1,
+          undefined,
+          undefined,
+          "Technology"
+        );
         setCourses2(response.results);
+        setCourses2Loading(false);
       } catch (error) {
         console.log(error);
       }
     })();
     (async () => {
       try {
-        const response = await getCourses(1);
+        const response = await getCourses(
+          1,
+          undefined,
+          undefined,
+          "Self-Development"
+        );
         setCourses3(response.results);
+        setCourses3Loading(false);
       } catch (error) {
         console.log(error);
       }
     })();
     (async () => {
       try {
-        const response = await getCourses(1);
+        const response = await getCourses(
+          1,
+          undefined,
+          undefined,
+          "Accounting"
+        );
         setCourses4(response.results);
+        setCourses4Loading(false);
       } catch (error) {
         console.log(error);
       }
@@ -69,7 +91,7 @@ const HomePage = () => {
             {user?.profile_picture &&
             typeof user.profile_picture == "string" ? (
               <img
-                src={import.meta.env.VITE_API_URL + user.profile_picture}
+                src={user.profile_picture}
                 alt="profile"
                 className="rounded-full w-16 h-16 xl:w-14 xl:h-14"
               />
@@ -180,13 +202,27 @@ const HomePage = () => {
             }}
           >
             <CarouselContent className="">
-              {courses1?.map((course: Course) => {
-                return (
-                  <CarouselItem className="basis-auto" key={course.id}>
-                    <CourseHomeScreen course={course} />
-                  </CarouselItem>
-                );
-              })}
+              {courses1Loading ? (
+                Array.from({ length: 5 }, (_, i) => i + 1).map(
+                  (number: number) => {
+                    return (
+                      <CarouselItem className="basis-auto" key={number}>
+                        <CourseHomePageSkeleton />
+                      </CarouselItem>
+                    );
+                  }
+                )
+              ) : (
+                <div>
+                  {courses1?.map((course: Course) => {
+                    return (
+                      <CarouselItem className="basis-auto" key={course.id}>
+                        <CourseHomeScreen course={course} />
+                      </CarouselItem>
+                    );
+                  })}
+                </div>
+              )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />
             <CarouselNext className="bg-black text-white -translate-y-12" />
@@ -202,13 +238,27 @@ const HomePage = () => {
             }}
           >
             <CarouselContent className="">
-              {courses2?.map((course: Course) => {
-                return (
-                  <CarouselItem className="basis-auto" key={course.id}>
-                    <CourseHomeScreen course={course} />
-                  </CarouselItem>
-                );
-              })}
+              {courses2Loading ? (
+                Array.from({ length: 5 }, (_, i) => i + 1).map(
+                  (number: number) => {
+                    return (
+                      <CarouselItem className="basis-auto" key={number}>
+                        <CourseHomePageSkeleton />
+                      </CarouselItem>
+                    );
+                  }
+                )
+              ) : (
+                <div>
+                  {courses2?.map((course: Course) => {
+                    return (
+                      <CarouselItem className="basis-auto" key={course.id}>
+                        <CourseHomeScreen course={course} />
+                      </CarouselItem>
+                    );
+                  })}
+                </div>
+              )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />
             <CarouselNext className="bg-black text-white -translate-y-12" />
@@ -224,13 +274,27 @@ const HomePage = () => {
             }}
           >
             <CarouselContent className="">
-              {courses3?.map((course: Course) => {
-                return (
-                  <CarouselItem className="basis-auto" key={course.id}>
-                    <CourseHomeScreen course={course} />
-                  </CarouselItem>
-                );
-              })}
+              {courses3Loading ? (
+                Array.from({ length: 5 }, (_, i) => i + 1).map(
+                  (number: number) => {
+                    return (
+                      <CarouselItem className="basis-auto" key={number}>
+                        <CourseHomePageSkeleton />
+                      </CarouselItem>
+                    );
+                  }
+                )
+              ) : (
+                <div>
+                  {courses3?.map((course: Course) => {
+                    return (
+                      <CarouselItem className="basis-auto" key={course.id}>
+                        <CourseHomeScreen course={course} />
+                      </CarouselItem>
+                    );
+                  })}
+                </div>
+              )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />
             <CarouselNext className="bg-black text-white -translate-y-12" />
@@ -246,13 +310,27 @@ const HomePage = () => {
             }}
           >
             <CarouselContent className="">
-              {courses4?.map((course: Course) => {
-                return (
-                  <CarouselItem className="basis-auto" key={course.id}>
-                    <CourseHomeScreen course={course} />
-                  </CarouselItem>
-                );
-              })}
+              {courses4Loading ? (
+                Array.from({ length: 5 }, (_, i) => i + 1).map(
+                  (number: number) => {
+                    return (
+                      <CarouselItem className="basis-auto" key={number}>
+                        <CourseHomePageSkeleton />
+                      </CarouselItem>
+                    );
+                  }
+                )
+              ) : (
+                <div>
+                  {courses4?.map((course: Course) => {
+                    return (
+                      <CarouselItem className="basis-auto" key={course.id}>
+                        <CourseHomeScreen course={course} />
+                      </CarouselItem>
+                    );
+                  })}
+                </div>
+              )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />
             <CarouselNext className="bg-black text-white -translate-y-12" />
