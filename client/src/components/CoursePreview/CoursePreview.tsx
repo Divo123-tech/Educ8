@@ -1,10 +1,5 @@
-import {
-  Course,
-  getCourseInUserCourse,
-  getSingleCourse,
-} from "@/services/courses.service";
 import { Star } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useParams, useNavigate } from "react-router";
 import { BadgeAlert } from "lucide-react";
 import { TbBrandVolkswagen } from "react-icons/tb";
@@ -12,117 +7,89 @@ import { BsMicrosoft } from "react-icons/bs";
 import { SiMercedes } from "react-icons/si";
 import { FaAmazon, FaGoogle } from "react-icons/fa";
 import { Accordion } from "@/components/ui/accordion";
-import { getSections, Section } from "@/services/sections.services";
+import { Section } from "@/services/sections.services";
 import SectionPreview from "./SectionPreview";
-import { User, UserContext } from "@/context/UserContext";
-import { getCurrentUser, getUserInfo } from "@/services/users.service";
-import { toast } from "@/hooks/use-toast";
+import { UserContext } from "@/context/UserContext";
 import { Link } from "react-router-dom";
-import { getCourseInCart, postCourseToCart } from "@/services/cart.service";
-import { getReviews, Review } from "@/services/review.services";
 import CoursePreviewReview from "./CoursePreviewReview";
 import StarsSearch from "../Reviews/StarsSearch";
 import Pagination from "../Pagination";
 import StarDisplay from "../StarDisplay";
+import { Skeleton } from "../ui/skeleton";
+import useCourseData from "./hooks/useCourseData";
+import useReviews from "./hooks/useReviews";
+import useUserCourseData from "./hooks/useUserCourseData";
+
 const CoursePreview = () => {
   const navigate = useNavigate();
   const { courseId } = useParams();
-  const [course, setCourse] = useState<Course | null>(null);
-  const [sections, setSections] = useState<Section[] | null>(null);
-  const [instructor, setInstructor] = useState<User | null>(null);
-  const [isCourseInCart, setIsCourseInCart] = useState<boolean>(false);
-  const [reviews, setReviews] = useState<Review[] | null>(null);
-  const [previousPage, setPreviousPage] = useState<string | null>(null);
-  const [nextPage, setNextPage] = useState<string | null>(null);
-  const [total, setTotal] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isCourseInUserCourse, setIsCourseInUserCourse] =
-    useState<boolean>(false);
   const userContext = useContext(UserContext);
 
   if (!userContext) {
-    throw new Error("YourComponent must be used within a Provider");
+    throw new Error("CoursePreview must be used within a UserContext Provider");
   }
 
-  const { user, setUser } = userContext;
-  const handleReviewsFilter = async (rating: number) => {
-    const response = await getReviews(courseId || "", rating);
-    setReviews(response.results);
-    setPreviousPage(response.previous);
-    setNextPage(response.next);
-    setTotal(response.count);
-  };
-  const addCourseToCart = async () => {
-    try {
-      await postCourseToCart(courseId || 0);
+  const { user } = userContext;
 
-      setUser(await getCurrentUser());
-      toast({
-        title: "Status",
-        description: "Succesfully added course to cart!",
-        variant: "success",
-      });
-    } catch (error) {
-      console.error("Error updating user:", error);
-      toast({
-        title: "Status",
-        description: "Failed to add course to cart!",
-        variant: "destructive",
-      });
-    }
-  };
+  // Use custom hooks
+  const { course, sections, instructor, loading } = useCourseData(
+    courseId || ""
+  );
+  const {
+    reviews,
+    previousPage,
+    nextPage,
+    total,
+    currentPage,
+    setCurrentPage,
+    handleReviewsFilter,
+  } = useReviews(courseId || "");
+  const { isCourseInCart, isCourseInUserCourse, addCourseToCart } =
+    useUserCourseData(courseId || "", user);
 
-  useEffect(() => {
-    (async () => {
-      setCourse(await getSingleCourse(courseId || ""));
-      const sections = await getSections(courseId || "");
-      setSections(sections);
-      setInstructor(await getUserInfo(course?.creator.id || ""));
-      const reviewsResponse = await getReviews(courseId || "");
-      setReviews(reviewsResponse.results);
-      setReviews(reviewsResponse.results);
-      setPreviousPage(reviewsResponse.previous);
-      setNextPage(reviewsResponse.next);
-      setTotal(reviewsResponse.count);
-      if (user) {
-        setIsCourseInCart(await getCourseInCart(courseId || ""));
-        setIsCourseInUserCourse(await getCourseInUserCourse(courseId || ""));
-        console.log(await getCourseInUserCourse(courseId || ""));
-      }
-    })();
-  }, [course?.creator.id, courseId, user]);
   return (
     <div className="flex flex-col gap-8 pb-4">
       <div className="flex flex-col md:flex-row justify-center bg-[#1c1d1f] pb-8 gap-16">
-        <div className="flex flex-col gap-5 px-3 md:w-1/3 pt-12 ">
-          <h1 className="text-3xl font-bold text-white">{course?.title}</h1>
-          <p className="text-white">{course?.subtitle}</p>
-          <div className="flex gap-2">
-            <p className="font-bold text-xs text-[#e1a03b]">
-              {course?.average_rating?.toFixed(1) || "4.6"}
-            </p>
-            <StarDisplay rating={course?.average_rating || 0} />
-            <p className="text-xs underline underline-offset-2 text-green-400">
-              ({course?.reviews.length} ratings)
-            </p>
-            <p className="text-xs text-white">156 Students</p>
+        {loading ? (
+          <div className="flex flex-col gap-5 px-3 md:w-1/3 pt-12">
+            <Skeleton className="w-full h-4 bg-white dark:bg-zinc-50/5" />
+            <Skeleton className="w-2/3 h-4 bg-white dark:bg-zinc-50/5" />
+            <Skeleton className="w-1/2 h-4 bg-white dark:bg-zinc-50/5" />
+            <Skeleton className="w-1/2 h-4 bg-white dark:bg-zinc-50/5" />
+            <Skeleton className="w-1/2 h-4 bg-white dark:bg-zinc-50/5" />
           </div>
-          <Link to={`/user/${instructor?.id}`}>
-            <p className="text-xs text-white">
-              Created By{" "}
-              <span className=" underline underline-offset-2 text-green-400">
-                {course?.creator.username}
-              </span>
-            </p>
-          </Link>
-          <div className="flex gap-2 items-center">
-            <BadgeAlert color="white" size={14} />
+        ) : (
+          <div className="flex flex-col gap-5 px-3 md:w-1/3 pt-12 ">
+            <h1 className="text-3xl font-bold text-white">{course?.title}</h1>
+            <p className="text-white">{course?.subtitle}</p>
+            <div className="flex gap-2">
+              <p className="font-bold text-xs text-[#e1a03b]">
+                {course?.average_rating?.toFixed(1) || "4.6"}
+              </p>
+              <StarDisplay rating={course?.average_rating || 0} />
+              <p className="text-xs underline underline-offset-2 text-green-400">
+                ({course?.reviews.length} ratings)
+              </p>
+              <p className="text-xs text-white">156 Students</p>
+            </div>
+            <Link to={`/user/${instructor?.id}`}>
+              <p className="text-xs text-white">
+                Created By{" "}
+                <span className=" underline underline-offset-2 text-green-400">
+                  {course?.creator.username}
+                </span>
+              </p>
+            </Link>
+            <div className="flex gap-2 items-center">
+              <BadgeAlert color="white" size={14} />
 
-            <p className="text-white text-xs">
-              Last Updated at: {course?.last_updated_at}
-            </p>
+              <p className="text-white text-xs">
+                Last Updated at: {course?.last_updated_at}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
+
         <div className=" mt-4 flex flex-col justify-center items-center">
           <img
             src={typeof course?.thumbnail == "string" ? course.thumbnail : ""}
@@ -131,9 +98,14 @@ const CoursePreview = () => {
           <div className="px-2 py-4 flex flex-col gap-2 bg-white w-56">
             <p className="font-bold text-lg">${course?.price}</p>
 
-            <div className="flex justify-center border-black border cursor-pointer hover:bg-gray-200">
+            <div
+              className={`flex justify-center border-black border cursor-pointer hover:bg-gray-200 ${
+                loading ? "opacity-50" : ""
+              }`}
+            >
               <button
-                className="py-2 font-bold"
+                className="py-2 font-bold "
+                disabled={loading}
                 onClick={
                   isCourseInUserCourse
                     ? () => navigate(`/course/${courseId}`)
@@ -142,11 +114,17 @@ const CoursePreview = () => {
                     : addCourseToCart
                 }
               >
-                {isCourseInUserCourse
-                  ? "Go to Course"
-                  : isCourseInCart
-                  ? "Go to Cart"
-                  : "Add to Cart"}
+                {loading ? (
+                  "Loading..."
+                ) : (
+                  <>
+                    {isCourseInUserCourse
+                      ? "Go to Course"
+                      : isCourseInCart
+                      ? "Go to Cart"
+                      : "Add to Cart"}
+                  </>
+                )}
               </button>
             </div>
             <div className="flex flex-col gap-1">
@@ -181,29 +159,46 @@ const CoursePreview = () => {
       <div className="px-4 sm:px-28 md:px-36 xl:px-96 flex flex-col gap-6">
         <div className=" flex flex-col gap-4">
           <h1 className="font-bold text-2xl">Course Content</h1>
-          <div className="flex flex-col gap-2">
-            <p className="text-sm text-gray-600">
-              {course?.sections.length} sections
-            </p>
-            <Accordion type="multiple" className="w-full border bg-[#f8f9fa] ">
-              {sections?.map((section: Section, index: number) => {
-                return (
-                  <SectionPreview
-                    value={index}
-                    section={section}
-                    courseId={course?.id || 0}
-                    key={section.id}
-                  />
-                );
-              })}
-            </Accordion>
-          </div>
+          {loading ? (
+            <Skeleton className="w-full h-4" />
+          ) : (
+            <>
+              <div className="flex flex-col gap-2">
+                <p className="text-sm text-gray-600">
+                  {course?.sections.length} sections
+                </p>
+                <Accordion
+                  type="multiple"
+                  className="w-full border bg-[#f8f9fa] "
+                >
+                  {sections?.map((section: Section, index: number) => {
+                    return (
+                      <SectionPreview
+                        value={index}
+                        section={section}
+                        courseId={course?.id || 0}
+                        key={section.id}
+                      />
+                    );
+                  })}
+                </Accordion>
+              </div>
+            </>
+          )}
         </div>
         <div className="flex flex-col gap-4">
           <p className="font-bold text-2xl">Description</p>
-          <p
-            dangerouslySetInnerHTML={{ __html: course?.description || "" }}
-          ></p>
+          {loading ? (
+            <div className="flex flex-col gap-4">
+              <Skeleton className="w-full h-4" />
+              <Skeleton className="w-2/3 h-4" />
+              <Skeleton className="w-1/2 h-4" />
+            </div>
+          ) : (
+            <p
+              dangerouslySetInnerHTML={{ __html: course?.description || "" }}
+            ></p>
+          )}
         </div>
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold">Instructor</h1>
