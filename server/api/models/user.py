@@ -4,6 +4,7 @@ from django.forms import ValidationError
 
 
 class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)  # Ensure email is unique
     bio = models.TextField(null=True, blank=True)
     status = models.CharField(max_length=150, null=True, blank=True)
     profile_picture = models.ImageField(
@@ -16,12 +17,6 @@ class CustomUser(AbstractUser):
         },
     )
     REQUIRED_FIELDS = ['email']
-
-    def clean(self):
-        super().clean()
-        # Add your custom validation logic here
-        if ' ' in self.username:
-            raise ValidationError("Username cannot contain spaces.")
 
     def __str__(self):
         return str(self.username)

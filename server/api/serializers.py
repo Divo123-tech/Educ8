@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import Course, Section, SectionContent, Review, CustomUser, UserCourse, Cart, Chat
 from django.db.models import Avg
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth import get_user_model
 
 class UserSerializer(serializers.ModelSerializer):
     # Add password field with write-only restriction
@@ -153,3 +154,24 @@ class ChatSerializer(serializers.ModelSerializer):
         model = Chat
         # Customize this based on your model
         fields = ['sent_by', 'message', 'sent_at']
+User = get_user_model()
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        email = attrs.get("username")  # DRF SimpleJWT expects "username" by default
+        password = attrs.get("password")
+
+        if email and password:
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                raise serializers.ValidationError("No active account found with this email.")
+
+            if not user.check_password(password):
+                raise serializers.ValidationError("Incorrect credentials.")
+
+            attrs["username"] = user.username  # SimpleJWT expects a username field
+        else:
+            raise serializers.ValidationError("Must include 'email' and 'password'.")
+
+        return super().validate(attrs)

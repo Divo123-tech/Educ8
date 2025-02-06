@@ -6,3 +6,4 @@ from .user_view import UserView, RegisterView, UserCourseView, ChangePasswordVie
 from .cart_view import CartView, CourseInCartExists, CheckoutCourse
 from .analytics_view import CoursePublishedStatusView, CourseRevenueView
 from .chat_view import FetchMessagesView
+from .auth_view import CustomTokenObtainPairView
