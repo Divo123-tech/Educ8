@@ -59,7 +59,7 @@ class CourseView(ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            request.data['creator'] = str(request.user)
+            request.data['creator'] = str(request.user.id)
             return self.create(request, *args, **kwargs)
         except Exception as e:
             print(e)

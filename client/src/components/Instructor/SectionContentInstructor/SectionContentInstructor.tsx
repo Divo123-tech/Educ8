@@ -269,7 +269,7 @@ const SectionContentInstructor = ({
                   theme="snow"
                   value={contentState.content}
                   onChange={handleQuillChange}
-                  className="h-64 overflow-y-auto"
+                  className="h-64 overflow-y-auto w-full"
                 />
               )}
               {contentState.contentType == "video" && (

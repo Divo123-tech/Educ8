@@ -232,7 +232,7 @@ const HomePage = () => {
         <div className="flex flex-col gap-2 px-4">
           <h1 className="font-bold text-xl ">Popular Courses</h1>
           <Carousel
-            className="flex w-full"
+            className="flex w-full h-72"
             opts={{
               align: "start",
               loop: true,
@@ -268,7 +268,7 @@ const HomePage = () => {
         <div className="flex flex-col gap-2 px-4">
           <h1 className="font-bold text-xl ">Learners are Viewing</h1>
           <Carousel
-            className="flex w-full"
+            className="flex w-full h-72"
             opts={{
               align: "start",
               loop: true,
@@ -304,7 +304,7 @@ const HomePage = () => {
         <div className="flex flex-col gap-2 px-4">
           <h1 className="font-bold text-xl ">Invest In Your Self!</h1>
           <Carousel
-            className="flex w-full"
+            className="flex w-full h-72"
             opts={{
               align: "start",
               loop: true,
