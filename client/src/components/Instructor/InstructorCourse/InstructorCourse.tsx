@@ -6,6 +6,8 @@ import { UserContext } from "@/context/UserContext";
 import CourseInstructorView from "../CourseInstructorView";
 import { Link } from "react-router-dom";
 import Pagination from "@/components/Pagination";
+import { Skeleton } from "@/components/ui/skeleton";
+
 const InstructorCourse = () => {
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [previousPage, setPreviousPage] = useState<string | null>(null);
@@ -13,6 +15,7 @@ const InstructorCourse = () => {
   const [total, setTotal] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchInput, setSearchInput] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const userContext = useContext(UserContext);
   if (!userContext) {
     throw new Error("YourComponent must be used within a Provider");
@@ -21,11 +24,13 @@ const InstructorCourse = () => {
   const { user } = userContext;
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const response = await getCoursesTaught(currentPage, searchInput);
       setCourses(response.results);
       setPreviousPage(response.previous);
       setNextPage(response.next);
       setTotal(response.count);
+      setLoading(false);
     })();
   }, [user, nextPage, currentPage, previousPage, total, searchInput]);
 
@@ -70,9 +75,27 @@ const InstructorCourse = () => {
           />
         </div>
         <div className="flex flex-col gap-8">
-          {courses?.map((course: Course) => {
-            return <CourseInstructorView course={course} key={course.id} />;
-          })}
+          {loading ? (
+            Array.from({ length: 5 }, (_, i) => i + 1).map((number: number) => (
+              <div
+                className="flex gap-4 w-full border-b p-2 py-4 rounded-xl"
+                key={number}
+              >
+                <Skeleton className="w-40 h-28 sm:w-28 sm:h-24 object-cover object-center pt-2 sm:pt-0" />
+                <div className="flex flex-col justify-between w-full">
+                  <Skeleton className="h-4 w-1/6" />
+                  <Skeleton className="h-4 w-1/3" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
+              </div>
+            ))
+          ) : (
+            <>
+              {courses?.map((course: Course) => {
+                return <CourseInstructorView course={course} key={course.id} />;
+              })}
+            </>
+          )}
         </div>
       </div>
     </div>
