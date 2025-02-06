@@ -1,6 +1,6 @@
 from django.urls import include, path
-from .views import UserView, RegisterView, FetchMessagesView, CustomTokenObtainPairView
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .views import RegisterView, FetchMessagesView, CustomTokenObtainPairView
+from rest_framework_simplejwt.views import TokenRefreshView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 urlpatterns = [
     path('courses/', include('api.urls_folder.course')),
