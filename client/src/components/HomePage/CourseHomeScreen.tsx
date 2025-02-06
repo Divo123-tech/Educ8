@@ -14,14 +14,12 @@ import { postCourseToCart } from "@/services/cart.service";
 import StarDisplay from "../StarDisplay";
 type Props = {
   course: Course;
-  addedThumbnailLink?: boolean;
   showAddToCart?: boolean;
   preview?: boolean;
 };
 
 const CourseHomeScreen = ({
   course,
-  addedThumbnailLink = false,
   showAddToCart = true,
   preview = true,
 }: Props) => {
@@ -61,9 +59,7 @@ const CourseHomeScreen = ({
             <img
               src={
                 typeof course.thumbnail == "string"
-                  ? `${addedThumbnailLink ? import.meta.env.VITE_API_URL : ""}${
-                      course.thumbnail
-                    }`
+                  ? course.thumbnail
                   : NoThumbnail
               }
               className="w-52 h-28 border object-cover object-center"

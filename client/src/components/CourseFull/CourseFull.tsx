@@ -149,11 +149,7 @@ const CourseFull = () => {
             <img
               src={
                 typeof currentContent.media === "string"
-                  ? (currentContent.media as string).includes(
-                      import.meta.env.VITE_API_URL
-                    )
-                    ? currentContent.media
-                    : import.meta.env.VITE_API_URL + currentContent.media
+                  ? currentContent.media
                   : ""
               }
               alt="Content"
@@ -172,11 +168,7 @@ const CourseFull = () => {
             <video
               src={
                 typeof currentContent.media === "string"
-                  ? (currentContent.media as string).includes(
-                      import.meta.env.VITE_API_URL
-                    )
-                    ? currentContent.media
-                    : import.meta.env.VITE_API_URL + currentContent.media
+                  ? currentContent.media
                   : ""
               }
               controls

@@ -22,7 +22,7 @@ STORAGES = {
 
     }
 }
-AWS_S3_CUSTOM_DOMAIN = f"https://{os.getenv('AWS_STORAGE_BUCKET_NAME')}.s3.{os.getenv('AWS_S3_REGION_NAME')}.amazonaws.com"
+AWS_S3_CUSTOM_DOMAIN = f"{os.getenv('AWS_STORAGE_BUCKET_NAME')}.s3.{os.getenv('AWS_S3_REGION_NAME')}.amazonaws.com"
 
 # Media settings
 MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/"

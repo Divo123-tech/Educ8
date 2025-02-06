@@ -56,7 +56,7 @@ const CourseCartView = ({
           <img
             src={
               typeof course.thumbnail == "string"
-                ? import.meta.env.VITE_API_URL + course.thumbnail
+                ? course.thumbnail
                 : NoThumbnail
             }
             className="w-32 h-fit object-cover object-center"

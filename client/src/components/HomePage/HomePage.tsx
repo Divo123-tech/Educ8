@@ -69,7 +69,7 @@ const HomePage = () => {
             {user?.profile_picture &&
             typeof user.profile_picture == "string" ? (
               <img
-                src={import.meta.env.VITE_API_URL + user.profile_picture}
+                src={user.profile_picture}
                 alt="profile"
                 className="rounded-full w-16 h-16 xl:w-14 xl:h-14"
               />

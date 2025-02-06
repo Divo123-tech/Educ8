@@ -117,12 +117,7 @@ const UserProfile = () => {
       </div>
       <div className="flex gap-4 flex-wrap">
         {courses?.map((course: Course) => {
-          return (
-            <CourseHomeScreen
-              course={course}
-              addedThumbnailLink={!showCoursesTaught}
-            />
-          );
+          return <CourseHomeScreen course={course} />;
         })}
       </div>
       <div className="ml-auto">

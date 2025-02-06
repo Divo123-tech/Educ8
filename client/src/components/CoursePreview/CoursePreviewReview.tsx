@@ -32,9 +32,7 @@ const CoursePreviewReview = ({ review }: Props) => {
         {review.reviewed_by?.profile_picture &&
         typeof review.reviewed_by.profile_picture == "string" ? (
           <img
-            src={
-              import.meta.env.VITE_API_URL + review.reviewed_by.profile_picture
-            }
+            src={review.reviewed_by.profile_picture}
             alt="profile"
             className="rounded-full w-8 h-8 xl:w-12 xl:h-12"
           />

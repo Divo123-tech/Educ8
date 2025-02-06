@@ -22,9 +22,7 @@ const DropdownCourse = ({
     >
       <div className="flex items-start gap-2">
         <img
-          src={
-            typeof image == "string" ? import.meta.env.VITE_API_URL + image : ""
-          }
+          src={typeof image == "string" ? image : ""}
           className="w-20 h-fit"
         />
         <div className="flex flex-col">

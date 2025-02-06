@@ -69,7 +69,6 @@ const MyLearning = () => {
           return (
             <CourseHomeScreen
               course={item.course}
-              addedThumbnailLink={true}
               showAddToCart={false}
               preview={false}
             />
