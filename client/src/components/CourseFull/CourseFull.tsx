@@ -61,7 +61,7 @@ const CourseFull = () => {
     <div className="h-screen">
       <div className="bg-[#1c1d1f] flex items-center gap-2 lg:gap-6 px-2 sm:px-8 py-4 border-b border-gray-600">
         <Link to="/" className="text-white text-sm">
-          <img src={Logo} className="h-8 sm:h-10"></img>
+          <img src={Logo} className="h-6 sm:h-6"></img>
         </Link>
         {/* Vertical Divider */}
         <div className="h-4 border-l border-gray-400"></div>
@@ -91,9 +91,13 @@ const CourseFull = () => {
       </div>
       <div className="h-1/3 sm:h-2/3 border border-[#1c1d1f]">
         {currentContent?.contentType == "text" && (
-          <div className="flex flex-col items-center py-8 gap-8 overflow-y-scroll">
+          <div className="flex flex-col items-center py-8 px-24 gap-8 overflow-y-scroll">
             <h1 className="font-bold text-3xl">{currentContent?.title}</h1>
-            <p>{currentContent?.content}</p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: currentContent?.content || "",
+              }}
+            ></p>
           </div>
         )}
         {currentContent?.contentType == "image" && (

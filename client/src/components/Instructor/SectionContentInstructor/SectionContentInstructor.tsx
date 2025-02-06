@@ -19,6 +19,7 @@ import { Menubar, MenubarMenu, MenubarTrigger } from "../../ui/menubar";
 import { useState } from "react";
 import { Input } from "../../ui/input";
 import { toast } from "@/hooks/use-toast";
+import ReactQuill from "react-quill";
 
 type Props = {
   courseId: string | number;
@@ -36,6 +37,7 @@ const SectionContentInstructor = ({
   const [showEditContent, setShowEditContent] = useState<boolean>(false);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
   const [contentState, setContentState] = useState<Content>(content);
+  const [loading, setLoading] = useState<boolean>(false);
   const toggleEditContent = () => {
     setShowEditContent((prevShowEditContent) => !prevShowEditContent);
   };
@@ -48,13 +50,11 @@ const SectionContentInstructor = ({
     }
   };
 
-  const handleContentTextChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleQuillChange = (value: string) => {
     setContentState((prevContentState: Content) => {
       return {
         ...prevContentState,
-        content: e.target.value,
+        content: value,
       };
     });
   };
@@ -107,7 +107,7 @@ const SectionContentInstructor = ({
   ) => {
     event.preventDefault();
     if (!contentState) return;
-
+    setLoading(true);
     try {
       const formData = new FormData();
       Object.entries(contentState).forEach(([key, value]) => {
@@ -135,6 +135,7 @@ const SectionContentInstructor = ({
         variant: "destructive",
       });
     }
+    setLoading(false);
   };
 
   const isFormEmpty =
@@ -266,11 +267,12 @@ const SectionContentInstructor = ({
             )}
             <div className="flex w-full">
               {contentState.contentType == "text" && (
-                <textarea
-                  className="border border-black w-full px-2 py-1"
-                  onChange={handleContentTextChange}
+                <ReactQuill
+                  theme="snow"
                   value={contentState.content}
-                ></textarea>
+                  onChange={handleQuillChange}
+                  className="h-64 overflow-y-auto w-full"
+                />
               )}
               {contentState.contentType == "video" && (
                 <Input
@@ -298,9 +300,9 @@ const SectionContentInstructor = ({
               </button>
               <button
                 className="bg-black text-white font-bold px-2 py-1 text-sm hover:opacity-70 disabled:opacity-70 disabled:cursor-not-allowed"
-                disabled={isFormEmpty}
+                disabled={isFormEmpty || loading}
               >
-                Edit Content
+                {loading ? "Editing..." : "Edit Content"}
               </button>
             </div>
           </form>

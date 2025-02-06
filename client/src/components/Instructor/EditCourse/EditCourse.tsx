@@ -26,6 +26,7 @@ const EditCourse = () => {
   const [sections, setSections] = useState<Section[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingSections, setLoadingSections] = useState<boolean>(true);
+  const [publishing, setPublishing] = useState<boolean>(false);
   const { courseId } = useParams();
   const navigate = useNavigate();
 
@@ -64,6 +65,7 @@ const EditCourse = () => {
   };
 
   const handlePublish = async () => {
+    setPublishing(true);
     try {
       const editedCourse = await publishCourse(
         course?.id || 0,
@@ -87,6 +89,7 @@ const EditCourse = () => {
         variant: "destructive",
       });
     }
+    setPublishing(false);
   };
 
   const handleLandingFormSubmit = async () => {
@@ -192,10 +195,15 @@ const EditCourse = () => {
           Curriculum
         </p>
         <button
-          className="ml-auto text-white font-bold bg-black px-4 py-1"
+          className="ml-auto text-white font-bold bg-black px-4 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handlePublish}
+          disabled={publishing}
         >
-          {course?.published ? "Unpublish" : "Publish"}
+          {publishing ? (
+            "Loading..."
+          ) : (
+            <>{course?.published ? "Unpublish" : "Publish"}</>
+          )}
         </button>
       </div>
       <div className="border shadow-xl">
@@ -364,31 +372,30 @@ const EditCourse = () => {
                 of video content must be less than 2 hours.
               </p>
               <div className="flex flex-col gap-4 py-3 cursor-pointer">
-              {loadingSections ? (
-                <>
-                  <Skeleton className="w-full h-16" />
-                  <Skeleton className="w-full h-16" />
-                  <Skeleton className="w-full h-16" />
-                  <Skeleton className="w-full h-16" />
-                  <Skeleton className="w-full h-16" />
-                </>
-              ) : (
-                <>
-                  {sections?.map((section: Section) => {
-                    return (
-                      <SectionInstructorView
-                        section={section}
-                        courseId={courseId || ""}
-                        key={section.position}
-                        setSections={setSections}
-                        maxPosition={sections.length}
-                      />
-                    );
-                  })}
-                </>
-              )}
-                </div>
-
+                {loadingSections ? (
+                  <>
+                    <Skeleton className="w-full h-16" />
+                    <Skeleton className="w-full h-16" />
+                    <Skeleton className="w-full h-16" />
+                    <Skeleton className="w-full h-16" />
+                    <Skeleton className="w-full h-16" />
+                  </>
+                ) : (
+                  <>
+                    {sections?.map((section: Section) => {
+                      return (
+                        <SectionInstructorView
+                          section={section}
+                          courseId={courseId || ""}
+                          key={section.position}
+                          setSections={setSections}
+                          maxPosition={sections.length}
+                        />
+                      );
+                    })}
+                  </>
+                )}
+              </div>
 
               {!showNewSection ? (
                 <div>
