@@ -1,109 +1,67 @@
-import { getSections, Section } from "@/services/sections.services";
-import {
-  Course,
-  getCourseInUserCourse,
-  getSingleCourse,
-  refundCourse,
-} from "@/services/courses.service";
-import { useContext, useEffect, useState } from "react";
+import { Section } from "@/services/sections.services";
+import { refundCourse } from "@/services/courses.service";
+import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import SectionFull from "./SectionFull";
 import { Accordion } from "../ui/accordion";
-import { Content, getSingleContent } from "@/services/content.services";
 import { BadgeAlert, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FaStarHalfAlt } from "react-icons/fa";
 import ReviewDialog from "../Reviews/ReviewDialog";
-import { getReviews, Review } from "@/services/review.services";
+import { Review } from "@/services/review.services";
 import StarsSearch from "../Reviews/StarsSearch";
 import ReviewComponent from "../Reviews/Review";
 import { Menubar, MenubarMenu, MenubarTrigger } from "../ui/menubar";
 import DeleteDialog from "../DeleteDialog";
-import { getCurrentUser, getUserInfo } from "@/services/users.service";
-import { User, UserContext } from "@/context/UserContext";
+import { getCurrentUser } from "@/services/users.service";
+import { UserContext } from "@/context/UserContext";
 import Pagination from "../Pagination";
-
+import useCourseContent from "./hooks/useCourseContent";
+import useReviews from "./hooks/useReviews";
+import useCourseAccess from "./hooks/useCourseAccess";
+import Logo from "@/assets/Logo.png";
 const CourseFull = () => {
   const [courseInfoShown, setCourseInfoShown] = useState<string>("content");
-  const [course, setCourse] = useState<Course | null>(null);
-  const [sections, setSections] = useState<Section[] | null>(null);
-  const [currentContent, setCurrentContent] = useState<Content | null>(null);
-  const [reviews, setReviews] = useState<Review[] | null>(null);
-  const [previousPage, setPreviousPage] = useState<string | null>(null);
-  const [nextPage, setNextPage] = useState<string | null>(null);
-  const [total, setTotal] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [instructor, setInstructor] = useState<User | null>(null);
-
   const { courseId } = useParams();
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
 
   if (!userContext) {
-    throw new Error("YourComponent must be used within a Provider");
+    throw new Error("CourseFull must be used within a UserContext Provider");
   }
 
   const { setUser } = userContext;
-  const selectSectionContent = (content: Content) => {
-    setCurrentContent(content);
-  };
-  const fetchAllReviews = async () => {
-    setCourse(await getSingleCourse(courseId || ""));
-    const response = await getReviews(courseId || "");
-    setReviews(response.results);
-    setPreviousPage(response.previous);
-    setNextPage(response.next);
-    setTotal(response.count);
-  };
-  useEffect(() => {
-    (async () => {
-      if (!(await getCourseInUserCourse(courseId || ""))) navigate("/");
-      setCourse(await getSingleCourse(courseId || ""));
-      setInstructor(await getUserInfo(course?.creator.id || ""));
-      const sections = await getSections(courseId || "");
-      setSections(sections);
-      const firstContentId = sections[0].contents[0];
-      const content = await getSingleContent(
-        courseId || "",
-        sections[0].id,
-        firstContentId
-      );
-      setCurrentContent(content);
-    })();
-  }, [course?.creator.id, courseId, navigate]);
 
-  useEffect(() => {
-    if (courseInfoShown == "review") {
-      (async () => {
-        await fetchAllReviews();
-      })();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courseId, courseInfoShown]);
-
-  const handleReviewsFilter = async (rating: number) => {
-    const response = await getReviews(courseId || "", rating);
-    setReviews(response.results);
-    setPreviousPage(response.previous);
-    setNextPage(response.next);
-    setTotal(response.count);
-  };
+  // Use custom hooks
+  useCourseAccess(courseId || "");
+  const { course, sections, currentContent, instructor, selectSectionContent } =
+    useCourseContent(courseId || "");
+  const {
+    reviews,
+    previousPage,
+    nextPage,
+    total,
+    currentPage,
+    setCurrentPage,
+    handleReviewsFilter,
+    fetchAllReviews,
+  } = useReviews(courseId || "", courseInfoShown);
 
   const handleDelete = async () => {
     try {
       await refundCourse(course?.id || "");
-      setUser(await getCurrentUser());
+      const updatedUser = await getCurrentUser();
+      setUser(updatedUser);
       navigate("/my-learning");
     } catch (err) {
       console.error(err);
     }
   };
-
   return (
     <div className="h-screen">
       <div className="bg-[#1c1d1f] flex items-center gap-2 lg:gap-6 px-2 sm:px-8 py-4 border-b border-gray-600">
         <Link to="/" className="text-white text-sm">
-          Logo
+          <img src={Logo} className="h-8 sm:h-10"></img>
         </Link>
         {/* Vertical Divider */}
         <div className="h-4 border-l border-gray-400"></div>
