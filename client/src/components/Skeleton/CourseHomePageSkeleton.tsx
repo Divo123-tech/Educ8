@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const CourseHomeScreenSkeleton = () => {
+const CourseHomePageSkeleton = () => {
   return (
     <div className="flex flex-col space-y-3">
       <Skeleton className="h-[125px] w-48" />
@@ -12,4 +12,4 @@ const CourseHomeScreenSkeleton = () => {
   );
 };
 
-export default CourseHomeScreenSkeleton;
+export default CourseHomePageSkeleton;

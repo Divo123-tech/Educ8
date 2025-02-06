@@ -14,7 +14,7 @@ import Carousel2 from "@/assets/Carousel2.png";
 import Carousel3 from "@/assets/Carousel3.png";
 import { Link } from "react-router-dom";
 import CoursePreviewHome from "./CoursePreviewHome";
-import CourseHomeScreenSkeleton from "../Skeleton/CourseHomeScreenSkeleton";
+import CourseHomePageSkeleton from "../Skeleton/CourseHomePageSkeleton";
 const HomePage = () => {
   const userContext = useContext(UserContext);
   if (!userContext) {
@@ -208,7 +208,7 @@ const HomePage = () => {
                   (number: number) => {
                     return (
                       <CarouselItem className="basis-auto" key={number}>
-                        <CourseHomeScreenSkeleton />
+                        <CourseHomePageSkeleton />
                       </CarouselItem>
                     );
                   }
@@ -244,7 +244,7 @@ const HomePage = () => {
                   (number: number) => {
                     return (
                       <CarouselItem className="basis-auto" key={number}>
-                        <CourseHomeScreenSkeleton />
+                        <CourseHomePageSkeleton />
                       </CarouselItem>
                     );
                   }
@@ -280,7 +280,7 @@ const HomePage = () => {
                   (number: number) => {
                     return (
                       <CarouselItem className="basis-auto" key={number}>
-                        <CourseHomeScreenSkeleton />
+                        <CourseHomePageSkeleton />
                       </CarouselItem>
                     );
                   }
@@ -316,7 +316,7 @@ const HomePage = () => {
                   (number: number) => {
                     return (
                       <CarouselItem className="basis-auto" key={number}>
-                        <CourseHomeScreenSkeleton />
+                        <CourseHomePageSkeleton />
                       </CarouselItem>
                     );
                   }
