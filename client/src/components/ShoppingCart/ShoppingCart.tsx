@@ -27,6 +27,7 @@ const ShoppingCart = () => {
   const [total, setTotal] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState<boolean>(true);
+  const [checkingOut, setCheckingOut] = useState<boolean>(false);
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -52,8 +53,10 @@ const ShoppingCart = () => {
     return total + Number(item.course.price);
   }, 0);
   const handleCheckout = async () => {
+    setCheckingOut(true);
     await checkoutCartItems(cartItems || []);
     setCartItems([]);
+    setCheckingOut(false);
     navigate("/my-learning");
     setPreviousPage(null);
     setNextPage(null);
@@ -120,14 +123,14 @@ const ShoppingCart = () => {
           {loading ? (
             <h1 className="font-bold text-2xl">Calculating price...</h1>
           ) : (
-            <h1 className="font-bold text-3xl">${totalPrice}</h1>
+            <h1 className="font-bold text-3xl">${totalPrice?.toFixed(2)}</h1>
           )}
           <button
-            disabled={loading}
+            disabled={loading || checkingOut}
             className="bg-green-600 text-white px-16 text-md py-2 font-bold w-full hover:opacity-80 disabled:opacity-50"
             onClick={handleCheckout}
           >
-            Checkout
+            {checkingOut ? "Checking Out..." : "Checkout"}
           </button>
         </div>
       </div>

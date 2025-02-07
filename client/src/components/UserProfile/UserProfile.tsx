@@ -10,18 +10,18 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import CourseHomeScreen from "../HomePage/CourseHomeScreen";
 import Pagination from "../Pagination";
+import CourseHomePageSkeleton from "../Skeleton/CourseHomePageSkeleton";
 
 const UserProfile = () => {
   const { userId } = useParams();
   const [userProfile, setUserProfile] = useState<User | null>(null);
   const [showCoursesTaught, setShowCoursesTaught] = useState<boolean>(true);
-  // const [showCoursesTaken, setShowCoursesTaken] = useState<boolean>(true);
   const [courses, setCourses] = useState<Course[] | null>(null);
-  // const [coursesTaken, setCoursesTaken] = useState<UserCourseItem[] | null>(null);
   const [previousPage, setPreviousPage] = useState<string | null>(null);
   const [nextPage, setNextPage] = useState<string | null>(null);
   const [total, setTotal] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState<boolean>(true);
   const toggleCoursesShown = () => {
     setShowCoursesTaught((prevCourseTaught) => !prevCourseTaught);
     setCourses([]);
@@ -35,6 +35,7 @@ const UserProfile = () => {
     })();
   }, [userId]);
   useEffect(() => {
+    setLoading(true);
     if (showCoursesTaught) {
       (async () => {
         const response = await getCourses(currentPage, "", userId);
@@ -56,6 +57,7 @@ const UserProfile = () => {
         setTotal(response.count);
       })();
     }
+    setLoading(false);
   }, [nextPage, currentPage, previousPage, total, userId, showCoursesTaught]);
   return (
     <div className="flex flex-col gap-8 px-4 sm:px-28 md:px-16 lg:px-48 xl:px-72 py-8">
@@ -116,9 +118,17 @@ const UserProfile = () => {
         </h1>
       </div>
       <div className="flex gap-4 flex-wrap">
-        {courses?.map((course: Course) => {
-          return <CourseHomeScreen course={course} />;
-        })}
+        {loading ? (
+          Array.from({ length: 5 }, (_, i) => i + 1).map((number: number) => {
+            return <CourseHomePageSkeleton key={number} />;
+          })
+        ) : (
+          <div>
+            {courses?.map((course: Course) => {
+              return <CourseHomeScreen course={course} key={course.id} />;
+            })}
+          </div>
+        )}
       </div>
       <div className="ml-auto">
         <Pagination

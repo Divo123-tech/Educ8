@@ -80,7 +80,6 @@ class CheckoutCourse(APIView):
                 # Get the Cart object by its ID
                 course = Cart.objects.get(id=item['id'])
                 # Print the course object (for debugging purposes)
-                print(course)
                 # Delete the course from the Cart
                 course.delete()
                 # Serialize the course data for creating a UserCourse

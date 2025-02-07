@@ -15,6 +15,7 @@ STORAGES = {
             "secret_key": os.getenv("AWS_SECRET_ACCESS_KEY"),
             "bucket_name": os.getenv("AWS_STORAGE_BUCKET_NAME"),
             "region_name": os.getenv("AWS_S3_REGION_NAME"),
+            "max_memory_size": 10 * 1024 * 1024,  # 10MB limit (Custom option)
         },
     },
     "staticfiles": {

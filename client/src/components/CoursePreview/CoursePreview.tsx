@@ -44,8 +44,12 @@ const CoursePreview = () => {
     setCurrentPage,
     handleReviewsFilter,
   } = useReviews(courseId || "");
-  const { isCourseInCart, isCourseInUserCourse, addCourseToCart } =
-    useUserCourseData(courseId || "", user);
+  const {
+    isCourseInCart,
+    isCourseInUserCourse,
+    addCourseToCart,
+    addingToCart,
+  } = useUserCourseData(courseId || "", user);
 
   return (
     <div className="flex flex-col gap-8 pb-4">
@@ -99,13 +103,11 @@ const CoursePreview = () => {
             <p className="font-bold text-lg">${course?.price}</p>
 
             <div
-              className={`flex justify-center border-black border cursor-pointer hover:bg-gray-200 ${
-                loading ? "opacity-50" : ""
-              }`}
+              className={`flex justify-center border-black border cursor-pointer hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               <button
                 className="py-2 font-bold "
-                disabled={loading}
+                disabled={loading || addingToCart}
                 onClick={
                   isCourseInUserCourse
                     ? () => navigate(`/course/${courseId}`)
@@ -122,6 +124,8 @@ const CoursePreview = () => {
                       ? "Go to Course"
                       : isCourseInCart
                       ? "Go to Cart"
+                      : addingToCart
+                      ? "Adding to Cart..."
                       : "Add to Cart"}
                   </>
                 )}
@@ -229,11 +233,11 @@ const CoursePreview = () => {
         <div id="reviews-container" className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <Star fill="#e1a03b" color="#e1a03b" size={18} />
-            <p className="font-bold text-2xl">
-              {course?.average_rating?.toFixed(1) || "4.3"} course rating
+            <p className="font-bold sm:text-2xl">
+              {course?.average_rating?.toFixed(1) || "0.0"} course rating
             </p>
             <span className="w-2 h-2 bg-gray-400 mt-1 rounded-full"></span>
-            <p className="font-bold text-2xl">
+            <p className="font-bold text-md md:text-2xl">
               {course?.reviews.length} reviews
             </p>
             <div className="ml-auto">

@@ -83,7 +83,7 @@ class SingleSectionContentView(APIView):
                 status=status.HTTP_403_FORBIDDEN
             )
         except Exception as e:
-            return Response(serialized_section_content.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "You are not authorized to see this content."}, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, course_id, content_id, *args, **kwargs):
         try:

@@ -32,13 +32,11 @@ class SectionView(ListCreateAPIView):
         request.data['course'] = course_id
         max_position = Section.objects.filter(
             course=course_id).aggregate(Max('position'))['position__max']
-        print(max_position)
         if max_position is not None:
             # Example: incrementing position for a new section
             request.data['position'] = max_position + 1
         else:
             request.data['position'] = 1
-        print(request.data)
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

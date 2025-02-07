@@ -347,17 +347,6 @@ const EditCourse = () => {
           <div>
             <div className="flex px-12 py-8 items-center justify-between">
               <h1 className="text-2xl font-bold">Course Curriculum</h1>
-              <button
-                className={`bg-green-500 text-white px-4 py-1 text-lg font-bold ${
-                  isFormEmpty
-                    ? "opacity-60 cursor-not-allowed"
-                    : "cursor-pointer"
-                }`}
-                onClick={handleLandingFormSubmit}
-                disabled={isFormEmpty}
-              >
-                Save
-              </button>
             </div>
             <hr></hr>
             <div className="px-12 py-6 flex flex-col gap-8 text-sm">

@@ -111,10 +111,7 @@ const StudentsCourseDialog = ({ courseId }: Props) => {
                 {userAccount.student.profile_picture &&
                 typeof userAccount.student.profile_picture == "string" ? (
                   <img
-                    src={
-                      import.meta.env.VITE_API_URL +
-                      userAccount.student.profile_picture
-                    }
+                    src={userAccount.student.profile_picture}
                     alt="profile"
                     className="rounded-full w-8 h-8 xl:w-12 xl:h-12"
                   />

@@ -48,13 +48,13 @@ const ReviewComponent = ({ review, fetchAllReviews }: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-4">
-        <div>
+        <>
           {review.reviewed_by?.profile_picture &&
           typeof review.reviewed_by.profile_picture == "string" ? (
             <img
               src={review.reviewed_by.profile_picture}
               alt="profile"
-              className="rounded-full w-8 h-8 xl:w-12 xl:h-12"
+              className="rounded-full  w-10 h-10 xl:w-12 xl:h-12"
             />
           ) : (
             <div className="bg-black rounded-full w-10 h-10 xl:w-12 xl:h-12 flex items-center justify-center">
@@ -66,7 +66,7 @@ const ReviewComponent = ({ review, fetchAllReviews }: Props) => {
               </p>
             </div>
           )}
-        </div>
+        </>
         <div>
           <p className="text-sm font-bold">{review.reviewed_by.username}</p>
           <div className="flex gap-2">

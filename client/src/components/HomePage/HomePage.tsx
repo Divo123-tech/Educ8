@@ -202,7 +202,7 @@ const HomePage = () => {
               loop: true,
             }}
           >
-            <CarouselContent className="">
+            <CarouselContent>
               {courses1Loading ? (
                 Array.from({ length: 5 }, (_, i) => i + 1).map(
                   (number: number) => {
@@ -214,15 +214,15 @@ const HomePage = () => {
                   }
                 )
               ) : (
-                <div>
+                <>
                   {courses1?.map((course: Course) => {
                     return (
-                      <CarouselItem className="basis-auto" key={course.id}>
+                      <CarouselItem className="basis-auto flex" key={course.id}>
                         <CourseHomeScreen course={course} />
                       </CarouselItem>
                     );
                   })}
-                </div>
+                </>
               )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />
@@ -238,7 +238,7 @@ const HomePage = () => {
               loop: true,
             }}
           >
-            <CarouselContent className="">
+            <CarouselContent>
               {courses2Loading ? (
                 Array.from({ length: 5 }, (_, i) => i + 1).map(
                   (number: number) => {
@@ -250,15 +250,15 @@ const HomePage = () => {
                   }
                 )
               ) : (
-                <div>
+                <>
                   {courses2?.map((course: Course) => {
                     return (
-                      <CarouselItem className="basis-auto" key={course.id}>
+                      <CarouselItem className="basis-auto flex" key={course.id}>
                         <CourseHomeScreen course={course} />
                       </CarouselItem>
                     );
                   })}
-                </div>
+                </>
               )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />
@@ -274,7 +274,7 @@ const HomePage = () => {
               loop: true,
             }}
           >
-            <CarouselContent className="">
+            <CarouselContent>
               {courses3Loading ? (
                 Array.from({ length: 5 }, (_, i) => i + 1).map(
                   (number: number) => {
@@ -286,7 +286,7 @@ const HomePage = () => {
                   }
                 )
               ) : (
-                <div>
+                <>
                   {courses3?.map((course: Course) => {
                     return (
                       <CarouselItem className="basis-auto" key={course.id}>
@@ -294,7 +294,7 @@ const HomePage = () => {
                       </CarouselItem>
                     );
                   })}
-                </div>
+                </>
               )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />
@@ -310,7 +310,7 @@ const HomePage = () => {
               loop: true,
             }}
           >
-            <CarouselContent className="">
+            <CarouselContent>
               {courses4Loading ? (
                 Array.from({ length: 5 }, (_, i) => i + 1).map(
                   (number: number) => {
@@ -322,7 +322,7 @@ const HomePage = () => {
                   }
                 )
               ) : (
-                <div>
+                <>
                   {courses4?.map((course: Course) => {
                     return (
                       <CarouselItem className="basis-auto" key={course.id}>
@@ -330,7 +330,7 @@ const HomePage = () => {
                       </CarouselItem>
                     );
                   })}
-                </div>
+                </>
               )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />

@@ -79,7 +79,7 @@ const MyLearning = () => {
             return <CourseHomePageSkeleton key={number} />;
           })
         ) : (
-          <div>
+          <>
             {userCourses?.map((item: UserCourseItem) => {
               return (
                 <CourseHomeScreen
@@ -89,7 +89,7 @@ const MyLearning = () => {
                 />
               );
             })}
-          </div>
+          </>
         )}
       </div>
       {(userCourses?.length || 0) == 0 && (

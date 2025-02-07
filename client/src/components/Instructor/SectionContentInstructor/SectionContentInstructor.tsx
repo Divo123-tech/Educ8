@@ -185,7 +185,7 @@ const SectionContentInstructor = ({
           >
             <div className="flex w-full gap-2 lg:gap-4 items-start lg:items-center flex-col lg:flex-row">
               <label className="font-bold text-nowrap">
-                Edit Section Content:
+                Edit Section Content: (Max 10MB)
               </label>
               <input
                 placeholder="Enter a title"

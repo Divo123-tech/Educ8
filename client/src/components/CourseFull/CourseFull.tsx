@@ -20,6 +20,7 @@ import useCourseContent from "./hooks/useCourseContent";
 import useReviews from "./hooks/useReviews";
 import useCourseAccess from "./hooks/useCourseAccess";
 import Logo from "@/assets/LogoLight.png";
+import CourseHomePageSkeleton from "../Skeleton/CourseHomePageSkeleton";
 const CourseFull = () => {
   const [courseInfoShown, setCourseInfoShown] = useState<string>("content");
   const { courseId } = useParams();
@@ -45,6 +46,7 @@ const CourseFull = () => {
     setCurrentPage,
     handleReviewsFilter,
     fetchAllReviews,
+    reviewLoading,
   } = useReviews(courseId || "", courseInfoShown);
 
   const handleDelete = async () => {
@@ -89,9 +91,9 @@ const CourseFull = () => {
           </Menubar>
         </div>
       </div>
-      <div className="h-1/3 sm:h-2/3 border border-[#1c1d1f]">
+      <div className="h-1/3 sm:h-2/3 border border-[#1c1d1f] overflow-y-scroll">
         {currentContent?.contentType == "text" && (
-          <div className="flex flex-col items-center py-8 px-24 gap-8 overflow-y-scroll">
+          <div className="flex flex-col items-center py-8 px-24 gap-8 ">
             <h1 className="font-bold text-3xl">{currentContent?.title}</h1>
             <p
               dangerouslySetInnerHTML={{
@@ -312,15 +314,23 @@ const CourseFull = () => {
                 All Reviews ({total})
               </h1>
               <div className="flex flex-col gap-4">
-                {reviews?.map((review: Review) => {
-                  return (
-                    <ReviewComponent
-                      review={review}
-                      key={review.id}
-                      fetchAllReviews={fetchAllReviews}
-                    />
-                  );
-                })}
+                {reviewLoading ? (
+                  <>
+                    <CourseHomePageSkeleton />
+                  </>
+                ) : (
+                  <>
+                    {reviews?.map((review: Review) => {
+                      return (
+                        <ReviewComponent
+                          review={review}
+                          key={review.id}
+                          fetchAllReviews={fetchAllReviews}
+                        />
+                      );
+                    })}
+                  </>
+                )}
               </div>
             </div>
           </div>

@@ -21,6 +21,7 @@ const NewContentMenu = ({
   setContents,
 }: Props) => {
   const [contentTitle, setContentTitle] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const toggleContentSection = () => {
     setShowNewContent((prevShowNewContent) => !prevShowNewContent);
@@ -32,6 +33,7 @@ const NewContentMenu = ({
 
   const createNewContent = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await postContent(courseId, sectionId, contentTitle);
       setContents(await getContentsDetailed(courseId, sectionId));
@@ -39,6 +41,7 @@ const NewContentMenu = ({
     } catch (err: unknown) {
       console.log(err);
     }
+    setLoading(false);
   };
 
   const isFormEmpty = contentTitle == "";
@@ -70,9 +73,9 @@ const NewContentMenu = ({
           </button>
           <button
             className="bg-black text-white font-bold px-2 py-1 text-sm hover:opacity-70 disabled:opacity-70 disabled:cursor-not-allowed"
-            disabled={isFormEmpty}
+            disabled={isFormEmpty || loading}
           >
-            Add Content
+            {loading ? "Adding..." : "Add Content"}
           </button>
         </div>
       </form>

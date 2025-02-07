@@ -32,7 +32,7 @@ const SearchCourses = () => {
           <div>
             <h1 className="font-bold text-2xl sm:text-3xl">
               {loading ? (
-                `Searching for  "${searchQuery}"`
+                `Searching...`
               ) : (
                 <>
                   {total} results for "{searchQuery || category}"

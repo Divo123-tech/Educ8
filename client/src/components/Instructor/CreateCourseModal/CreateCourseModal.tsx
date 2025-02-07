@@ -21,6 +21,7 @@ const CreateCourseModal = () => {
     description: "",
     category: "",
   });
+  const [loading, setLoading] = useState<boolean>(false);
 
   const userContext = useContext(UserContext);
   if (!userContext) {
@@ -61,6 +62,7 @@ const CreateCourseModal = () => {
 
   const handleFormSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await addCourse(
         courseForm.title,
@@ -80,6 +82,7 @@ const CreateCourseModal = () => {
       console.error(e);
       setcourseCreateSuccess(false);
     }
+    setLoading(false);
   };
   const isFormEmpty =
     courseForm?.title == "" ||
@@ -149,9 +152,10 @@ const CreateCourseModal = () => {
                   theme="snow"
                   value={courseForm.description}
                   onChange={handleQuillChange}
+                  className="w-full h-32"
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 pt-8">
                 <label className="text-black font-medium">
                   Course Category
                 </label>
@@ -173,12 +177,10 @@ const CreateCourseModal = () => {
               </div>
               <div className="flex justify-end">
                 <button
-                  className={`bg-black text-white px-3 py-2 font-bold ${
-                    isFormEmpty ? "opacity-60 cursor-not-allowed" : ""
-                  }`}
-                  disabled={isFormEmpty}
+                  className={`bg-black text-white px-3 py-2 font-bold disabled:opacity-60 disabled:cursor-not-allowed`}
+                  disabled={isFormEmpty || loading}
                 >
-                  Create Course!
+                  {loading ? "Creating..." : "Create Course"}
                 </button>
               </div>
             </form>

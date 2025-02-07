@@ -82,9 +82,12 @@ const CourseHomeScreen = ({
         </div>
       </Link>
       {showAddToCart && (
-        <HoverCardContent className="w-52" side="bottom" sideOffset={-50}>
+        <HoverCardContent className="w-52" side="bottom" sideOffset={-100}>
           <div className="flex justify-center flex-col gap-2 ">
-            <h2 className="font-bold text-xs">{course.title}</h2>
+            <h2 className="font-bold text-xs">
+              {course.title.slice(0, 40)}
+              {course.title?.length > 40 && "..."}
+            </h2>
             <p className="text-xs text-gray-600">
               {course.subtitle
                 ? course.subtitle?.slice(0, 200)

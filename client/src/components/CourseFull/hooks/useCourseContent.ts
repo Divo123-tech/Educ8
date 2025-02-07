@@ -19,10 +19,13 @@ const useCourseContent = (courseId: string) => {
           getSingleCourse(courseId),
           getSections(courseId),
         ]);
-
+        
         setCourse(courseData);
         setSections(sectionsData);
-
+        if (courseData?.creator.id) {
+          const instructorData = await getUserInfo(courseData.creator.id);
+          setInstructor(instructorData);
+        }
         if (sectionsData?.length > 0) {
           const firstContentId = sectionsData[0].contents[0];
           const content = await getSingleContent(
@@ -33,10 +36,7 @@ const useCourseContent = (courseId: string) => {
           setCurrentContent(content);
         }
 
-        if (courseData?.creator.id) {
-          const instructorData = await getUserInfo(courseData.creator.id);
-          setInstructor(instructorData);
-        }
+
       } catch (error) {
         console.error("Error fetching course content:", error);
       }

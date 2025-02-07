@@ -40,7 +40,6 @@ class ReviewView(ListCreateAPIView):
         try:
             request.data['course'] = course_id
             request.data['reviewed_by'] = str(request.user.id)
-            print(request.data)
             review = ReviewSerializer(data=request.data)
             if not Review.objects.filter(reviewed_by=request.user, course=course_id).exists():
                 if review.is_valid():

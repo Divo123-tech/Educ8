@@ -10,6 +10,7 @@ const useUserCourseData = (courseId: string, user: User | null) => {
   const [isCourseInCart, setIsCourseInCart] = useState<boolean>(false);
   const [isCourseInUserCourse, setIsCourseInUserCourse] =
     useState<boolean>(false);
+  const [addingToCart, setAddingToCart] = useState<boolean>(false);
   const userContext = useContext(UserContext);
 
   if (!userContext) {
@@ -38,6 +39,7 @@ const useUserCourseData = (courseId: string, user: User | null) => {
   }, [courseId, user]);
 
   const addCourseToCart = async () => {
+    setAddingToCart(true);
     try {
       await postCourseToCart(Number(courseId));
       const updatedUser = await getCurrentUser();
@@ -56,8 +58,14 @@ const useUserCourseData = (courseId: string, user: User | null) => {
         variant: "destructive",
       });
     }
+    setAddingToCart(false);
   };
 
-  return { isCourseInCart, isCourseInUserCourse, addCourseToCart };
+  return {
+    isCourseInCart,
+    isCourseInUserCourse,
+    addCourseToCart,
+    addingToCart,
+  };
 };
 export default useUserCourseData;

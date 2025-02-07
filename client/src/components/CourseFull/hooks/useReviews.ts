@@ -8,8 +8,10 @@ const useReviews = (courseId: string, courseInfoShown: string) => {
   const [nextPage, setNextPage] = useState<string | null>(null);
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [reviewLoading, setReviewLoading] = useState<boolean>(true);
 
   const fetchAllReviews = async () => {
+    setReviewLoading(true);
     try {
       const [courseData, reviewsResponse] = await Promise.all([
         getSingleCourse(courseId),
@@ -20,10 +22,12 @@ const useReviews = (courseId: string, courseInfoShown: string) => {
       setPreviousPage(reviewsResponse.previous);
       setNextPage(reviewsResponse.next);
       setTotal(reviewsResponse.count);
+      setReviewLoading(false);
       return courseData;
     } catch (error) {
       console.error("Error fetching reviews:", error);
     }
+    setReviewLoading(false);
   };
 
   useEffect(() => {
@@ -34,10 +38,13 @@ const useReviews = (courseId: string, courseInfoShown: string) => {
   }, [courseId, courseInfoShown, currentPage]);
 
   const handleReviewsFilter = async (rating: number) => {
+    setReviewLoading(true);
+
     const response = await getReviews(courseId, rating);
     setReviews(response.results);
     setPreviousPage(response.previous);
     setNextPage(response.next);
+    setReviewLoading(false);
     setTotal(response.count);
   };
 
@@ -50,6 +57,7 @@ const useReviews = (courseId: string, courseInfoShown: string) => {
     setCurrentPage,
     handleReviewsFilter,
     fetchAllReviews,
+    reviewLoading,
   };
 };
 
