@@ -92,7 +92,7 @@ const MyLearning = () => {
           </>
         )}
       </div>
-      {(userCourses?.length || 0) == 0 && (
+      {(userCourses?.length || 1) == 0 && (
         <h1 className="text-xl sm:text-2xl font-bold text-center">
           No Courses Yet! Start browsing to start learning!
         </h1>

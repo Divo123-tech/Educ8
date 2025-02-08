@@ -171,8 +171,7 @@ const CreateCourseModal = () => {
                   <option value={"Technology"}>Technology</option>
                   <option value={"Self-Development"}>Self-Development</option>
                   <option value={"Accounting"}>Accounting</option>
-                  <option value={"Design"}>Design</option>
-                  <option value={"Marketing"}>Marketing</option>
+
                 </select>
               </div>
               <div className="flex justify-end">

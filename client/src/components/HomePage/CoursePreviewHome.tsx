@@ -1,5 +1,6 @@
 import { Course } from "@/services/courses.service";
 import StarDisplay from "../StarDisplay";
+import { Link } from "react-router-dom";
 
 type Props = {
   course: Course | null;
@@ -7,7 +8,10 @@ type Props = {
 
 const CoursePreviewHome = ({ course }: Props) => {
   return (
-    <div className="p-4 flex border gap-4 cursor-pointer hover:opacity-70">
+    <Link
+      to={`/preview-course/${course?.id}`}
+      className="p-4 flex border gap-4 cursor-pointer hover:opacity-70"
+    >
       <img
         src={typeof course?.thumbnail == "string" ? course.thumbnail : ""}
         className="w-1/3 h-fit"
@@ -22,7 +26,7 @@ const CoursePreviewHome = ({ course }: Props) => {
         </div>
         <p className="mt-auto font-bold text-md">${course?.price}</p>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -286,8 +286,6 @@ const EditCourse = () => {
                         Self-Development
                       </option>
                       <option value={"Accounting"}>Accounting</option>
-                      <option value={"Design"}>Design</option>
-                      <option value={"Marketing"}>Marketing</option>
                     </select>
                     <p className="text-xs text-gray-500">
                       Your title should be a mix of attention-grabbing,
