@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY server /app
 
 # Run makemigrations (if needed) and migrate
-RUN python manage.py makemigrations && python manage.py migrate
+# RUN python manage.py makemigrations && python manage.py migrate
 
 # Expose the port
 EXPOSE 8000

@@ -29,7 +29,6 @@ AWS_S3_CUSTOM_DOMAIN = f"{os.getenv('AWS_STORAGE_BUCKET_NAME')}.s3.{os.getenv('A
 MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/"
 # Media settings
 
-print(os.getenv("AWS_STORAGE_BUCKET_NAME"))
 
 STATIC_URL = "/static/"
 # Ensures local storage for static files
@@ -40,7 +39,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 SECRET_KEY = 'django-insecure-x1+_#uvi61snd#blmgbmi*sffkbex_$sk$%&-2aana$nl%a-=c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = ['*']
 
