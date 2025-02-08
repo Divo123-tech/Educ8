@@ -14,7 +14,7 @@ const CoursePreviewHome = ({ course }: Props) => {
     >
       <img
         src={typeof course?.thumbnail == "string" ? course.thumbnail : ""}
-        className="w-1/3 h-fit"
+        className="w-1/3 h-fit object-cover object-center"
       ></img>
       <div className="flex flex-col gap-2">
         <h1 className="font-bold text-xl">{course?.title}</h1>

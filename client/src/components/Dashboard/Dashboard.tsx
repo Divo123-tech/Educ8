@@ -2,7 +2,7 @@ import {
   getNumberOfPublishedCourses,
   PublishedAmount,
 } from "@/services/analytics.service";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { pieArcLabelClasses, PieChart } from "@mui/x-charts/PieChart";
 import CoursesTable from "./CoursesTable";
 import CoursesChart from "./CoursesChart";

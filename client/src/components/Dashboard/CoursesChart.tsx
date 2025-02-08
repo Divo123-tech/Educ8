@@ -33,13 +33,14 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomXAxisTick = ({ x, y, payload }: any) => {
   const words = payload.value.split(" "); // Split words for wrapping
   const lines = [];
   let line = "";
 
   // Split text into lines with max 10 characters per line
-  words.forEach((word) => {
+  words.forEach((word: string) => {
     if ((line + word).length <= 28) {
       line = `${line} ${word}`.trim();
     } else {
