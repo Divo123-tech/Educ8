@@ -74,7 +74,9 @@ const CoursePreview = () => {
               <p className="text-xs underline underline-offset-2 text-green-400">
                 ({course?.reviews.length} ratings)
               </p>
-              <p className="text-xs text-white">156 Students</p>
+              <p className="text-xs text-white">
+                {course?.students.length} Students
+              </p>
             </div>
             <Link to={`/user/${instructor?.id}`}>
               <p className="text-xs text-white">

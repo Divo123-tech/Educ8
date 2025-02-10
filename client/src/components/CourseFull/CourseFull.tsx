@@ -213,7 +213,7 @@ const CourseFull = () => {
             </div>
             <div>
               <div className="flex gap-1 items-center">
-                <p className="font-bold">{course?.students}</p>
+                <p className="font-bold">{course?.students.length}</p>
               </div>
               <p className="text-gray-600 text-xs">Students</p>
             </div>
