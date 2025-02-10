@@ -58,6 +58,10 @@ const useUserCourseData = (courseId: string, user: User | null) => {
     }
   };
 
-  return { isCourseInCart, isCourseInUserCourse, addCourseToCart };
+  return {
+    isCourseInCart,
+    isCourseInUserCourse,
+    addCourseToCart,
+  };
 };
 export default useUserCourseData;

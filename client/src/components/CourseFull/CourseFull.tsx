@@ -89,7 +89,7 @@ const CourseFull = () => {
           </Menubar>
         </div>
       </div>
-      <div className="h-1/3 sm:h-2/3 border border-[#1c1d1f]">
+      <div className="h-1/3 sm:h-2/3 border border-[#1c1d1f] overflow-y-scroll">
         {currentContent?.contentType == "text" && (
           <div className="flex flex-col items-center py-8 px-24 gap-8 overflow-y-scroll">
             <h1 className="font-bold text-3xl">{currentContent?.title}</h1>
@@ -111,7 +111,7 @@ const CourseFull = () => {
             <img
               src={
                 typeof currentContent.media === "string"
-                  ? currentContent.media
+                  ? import.meta.env.VITE_API_URL + currentContent.media
                   : ""
               }
               alt="Content"
@@ -211,7 +211,7 @@ const CourseFull = () => {
             </div>
             <div>
               <div className="flex gap-1 items-center">
-                <p className="font-bold">{course?.students}</p>
+                <p className="font-bold">{course?.students.length}</p>
               </div>
               <p className="text-gray-600 text-xs">Students</p>
             </div>

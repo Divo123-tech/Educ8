@@ -22,6 +22,7 @@ const EditCourse = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [view, setView] = useState<string>("landing");
   const [course, setCourse] = useState<Course | null>(null);
+  const [publishing, setPublishing] = useState<boolean>(false);
   const [sections, setSections] = useState<Section[] | null>(null);
   const { courseId } = useParams();
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ const EditCourse = () => {
   };
 
   const handlePublish = async () => {
+    setPublishing(true);
     try {
       const editedCourse = await publishCourse(
         course?.id || 0,
@@ -79,6 +81,7 @@ const EditCourse = () => {
         variant: "destructive",
       });
     }
+    setPublishing(false);
   };
 
   const handleLandingFormSubmit = async () => {
@@ -182,10 +185,15 @@ const EditCourse = () => {
           Curriculum
         </p>
         <button
-          className="ml-auto text-white font-bold bg-black px-4 py-1"
+          className="ml-auto text-white font-bold bg-black px-4 py-1 disabled:opacity-50"
           onClick={handlePublish}
+          disabled={publishing}
         >
-          {course?.published ? "Unpublish" : "Publish"}
+          {publishing ? (
+            "Loading..."
+          ) : (
+            <>{course?.published ? "Unpublish" : "Publish"}</>
+          )}
         </button>
       </div>
       <div className="border shadow-xl">
@@ -194,11 +202,7 @@ const EditCourse = () => {
             <div className="flex px-12 py-8 items-center justify-between">
               <h1 className="text-2xl font-bold">Course Landing Page</h1>
               <button
-                className={`bg-green-500 text-white px-4 py-1 text-lg font-bold ${
-                  isFormEmpty
-                    ? "opacity-60 cursor-not-allowed"
-                    : "cursor-pointer"
-                }`}
+                className={`bg-green-500 text-white px-4 py-1 text-lg font-bold disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed`}
                 onClick={handleLandingFormSubmit}
                 disabled={isFormEmpty}
               >
@@ -272,8 +276,6 @@ const EditCourse = () => {
                         Self-Development
                       </option>
                       <option value={"Accounting"}>Accounting</option>
-                      <option value={"Design"}>Design</option>
-                      <option value={"Marketing"}>Marketing</option>
                     </select>
                     <p className="text-xs text-gray-500">
                       Your title should be a mix of attention-grabbing,
@@ -333,17 +335,6 @@ const EditCourse = () => {
           <div>
             <div className="flex px-12 py-8 items-center justify-between">
               <h1 className="text-2xl font-bold">Course Curriculum</h1>
-              <button
-                className={`bg-green-500 text-white px-4 py-1 text-lg font-bold ${
-                  isFormEmpty
-                    ? "opacity-60 cursor-not-allowed"
-                    : "cursor-pointer"
-                }`}
-                onClick={handleLandingFormSubmit}
-                disabled={isFormEmpty}
-              >
-                Save
-              </button>
             </div>
             <hr></hr>
             <div className="px-12 py-6 flex flex-col gap-8 text-sm">

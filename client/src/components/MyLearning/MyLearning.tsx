@@ -87,6 +87,7 @@ const MyLearning = () => {
                   addedThumbnailLink={true}
                   showAddToCart={false}
                   preview={false}
+                  key={item.id}
                 />
               );
             })}

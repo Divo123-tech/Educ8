@@ -92,7 +92,7 @@ const HomePage = () => {
             {user?.profile_picture &&
             typeof user.profile_picture == "string" ? (
               <img
-                src={user.profile_picture}
+                src={import.meta.env.VITE_API_URL + user.profile_picture}
                 alt="profile"
                 className="rounded-full w-16 h-16 xl:w-14 xl:h-14"
               />
@@ -214,7 +214,7 @@ const HomePage = () => {
                   }
                 )
               ) : (
-                <div>
+                <>
                   {courses1?.map((course: Course) => {
                     return (
                       <CarouselItem className="basis-auto" key={course.id}>
@@ -222,7 +222,7 @@ const HomePage = () => {
                       </CarouselItem>
                     );
                   })}
-                </div>
+                </>
               )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />
@@ -250,7 +250,7 @@ const HomePage = () => {
                   }
                 )
               ) : (
-                <div>
+                <>
                   {courses2?.map((course: Course) => {
                     return (
                       <CarouselItem className="basis-auto" key={course.id}>
@@ -258,7 +258,7 @@ const HomePage = () => {
                       </CarouselItem>
                     );
                   })}
-                </div>
+                </>
               )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />
@@ -286,7 +286,7 @@ const HomePage = () => {
                   }
                 )
               ) : (
-                <div>
+                <>
                   {courses3?.map((course: Course) => {
                     return (
                       <CarouselItem className="basis-auto" key={course.id}>
@@ -294,7 +294,7 @@ const HomePage = () => {
                       </CarouselItem>
                     );
                   })}
-                </div>
+                </>
               )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />
@@ -322,7 +322,7 @@ const HomePage = () => {
                   }
                 )
               ) : (
-                <div>
+                <>
                   {courses4?.map((course: Course) => {
                     return (
                       <CarouselItem className="basis-auto" key={course.id}>
@@ -330,7 +330,7 @@ const HomePage = () => {
                       </CarouselItem>
                     );
                   })}
-                </div>
+                </>
               )}
             </CarouselContent>
             <CarouselPrevious className="bg-black text-white -translate-y-12" />

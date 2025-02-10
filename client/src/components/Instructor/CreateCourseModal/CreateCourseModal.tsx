@@ -149,9 +149,10 @@ const CreateCourseModal = () => {
                   theme="snow"
                   value={courseForm.description}
                   onChange={handleQuillChange}
+                  className="w-full h-36"
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 mt-10">
                 <label className="text-black font-medium">
                   Course Category
                 </label>
@@ -167,8 +168,6 @@ const CreateCourseModal = () => {
                   <option value={"Technology"}>Technology</option>
                   <option value={"Self-Development"}>Self-Development</option>
                   <option value={"Accounting"}>Accounting</option>
-                  <option value={"Design"}>Design</option>
-                  <option value={"Marketing"}>Marketing</option>
                 </select>
               </div>
               <div className="flex justify-end">

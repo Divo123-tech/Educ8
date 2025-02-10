@@ -86,7 +86,7 @@ const CourseHomeScreen = ({
         </div>
       </Link>
       {showAddToCart && (
-        <HoverCardContent className="w-52" side="bottom" sideOffset={-50}>
+        <HoverCardContent className="w-52" side="bottom" sideOffset={-100}>
           <div className="flex justify-center flex-col gap-2 ">
             <h2 className="font-bold text-xs">{course.title}</h2>
             <p className="text-xs text-gray-600">

@@ -64,13 +64,15 @@ const CoursePreview = () => {
             <p className="text-white">{course?.subtitle}</p>
             <div className="flex gap-2">
               <p className="font-bold text-xs text-[#e1a03b]">
-                {course?.average_rating?.toFixed(1) || "4.6"}
+                {course?.average_rating?.toFixed(1) || "0.0"}
               </p>
               <StarDisplay rating={course?.average_rating || 0} />
               <p className="text-xs underline underline-offset-2 text-green-400">
                 ({course?.reviews.length} ratings)
               </p>
-              <p className="text-xs text-white">156 Students</p>
+              <p className="text-xs text-white">
+                {course?.students.length} Students
+              </p>
             </div>
             <Link to={`/user/${instructor?.id}`}>
               <p className="text-xs text-white">
@@ -230,7 +232,7 @@ const CoursePreview = () => {
           <div className="flex items-center gap-2">
             <Star fill="#e1a03b" color="#e1a03b" size={18} />
             <p className="font-bold text-2xl">
-              {course?.average_rating?.toFixed(1) || "4.3"} course rating
+              {course?.average_rating?.toFixed(1) || "0.0"} course rating
             </p>
             <span className="w-2 h-2 bg-gray-400 mt-1 rounded-full"></span>
             <p className="font-bold text-2xl">
