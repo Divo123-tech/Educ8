@@ -231,11 +231,11 @@ const CoursePreview = () => {
         <div id="reviews-container" className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <Star fill="#e1a03b" color="#e1a03b" size={18} />
-            <p className="font-bold text-2xl">
+            <p className="font-bold text-lg sm:text-2xl">
               {course?.average_rating?.toFixed(1) || "0.0"} course rating
             </p>
             <span className="w-2 h-2 bg-gray-400 mt-1 rounded-full"></span>
-            <p className="font-bold text-2xl">
+            <p className="font-bold text-lg sm:text-2xl">
               {course?.reviews.length} reviews
             </p>
             <div className="ml-auto">

@@ -71,12 +71,7 @@ const HomePage = () => {
     })();
     (async () => {
       try {
-        const response = await getCourses(
-          1,
-          undefined,
-          undefined,
-          "Accounting"
-        );
+        const response = await getCourses(1, "course", undefined, "");
         setCourses4(response.results);
         setCourses4Loading(false);
       } catch (error) {
@@ -339,7 +334,7 @@ const HomePage = () => {
         </div>
         <div className="flex flex-col gap-4">
           <h1 className="font-bold text-xl">Our top pick for you</h1>
-          <CoursePreviewHome course={courses1 ? courses1[2] : null} />
+          <CoursePreviewHome course={courses2 ? courses2[0] : null} />
         </div>
       </div>
     </div>

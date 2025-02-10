@@ -18,7 +18,7 @@ const Pagination = ({
 }: Props) => {
   return (
     <div className="flex flex-col gap-4 py-4 items-center">
-      <div className="flex justify-end gap-4 items-center">
+      <div className="flex justify-end gap-1 sm:gap-4 items-center">
         <div
           className={`border rounded-full border-black p-1 flex items-center ${
             !previousPage && "border-gray-400"

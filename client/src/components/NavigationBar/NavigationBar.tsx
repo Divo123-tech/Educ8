@@ -153,18 +153,6 @@ const NavigationBar = () => {
                         >
                           Accounting
                         </Link>
-                        <Link
-                          to="/explore?category=Design"
-                          className="text-gray-600 hover:text-primary px-3 rounded-md text-sm  font-normal"
-                        >
-                          Design
-                        </Link>
-                        <Link
-                          to="/explore?category=Marketing"
-                          className="text-gray-600 hover:text-primary px-3 rounded-md text-sm  font-normal"
-                        >
-                          Marketing
-                        </Link>
                       </NavigationMenuContent>
                     </NavigationMenuItem>
                   </NavigationMenuList>

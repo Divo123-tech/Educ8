@@ -1,8 +1,12 @@
-import { getSingleCourse } from "@/services/courses.service";
+import { Course, getSingleCourse } from "@/services/courses.service";
 import { getReviews, Review } from "@/services/review.services";
 import { useEffect, useState } from "react";
 
-const useReviews = (courseId: string, courseInfoShown: string) => {
+const useReviews = (
+  courseId: string,
+  courseInfoShown: string,
+  setCourse: React.Dispatch<React.SetStateAction<Course | null>>
+) => {
   const [reviews, setReviews] = useState<Review[] | null>(null);
   const [previousPage, setPreviousPage] = useState<string | null>(null);
   const [nextPage, setNextPage] = useState<string | null>(null);
@@ -20,6 +24,7 @@ const useReviews = (courseId: string, courseInfoShown: string) => {
       setPreviousPage(reviewsResponse.previous);
       setNextPage(reviewsResponse.next);
       setTotal(reviewsResponse.count);
+      setCourse(courseData);
       return courseData;
     } catch (error) {
       console.error("Error fetching reviews:", error);

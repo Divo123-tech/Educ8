@@ -8,6 +8,7 @@ const SearchCourses = () => {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
   const category = searchParams.get("category");
+  const creator = searchParams.get("creator");
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [previousPage, setPreviousPage] = useState<string | null>(null);
   const [nextPage, setNextPage] = useState<string | null>(null);
@@ -17,14 +18,19 @@ const SearchCourses = () => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const response = await getCourses(currentPage, searchQuery || "");
+      const response = await getCourses(
+        currentPage,
+        searchQuery || "",
+        creator || "",
+        category || ""
+      );
       setCourses(response.results);
       setPreviousPage(response.previous);
       setNextPage(response.next);
       setTotal(response.count);
       setLoading(false);
     })();
-  }, [currentPage, searchQuery]);
+  }, [category, creator, currentPage, searchQuery]);
   return (
     <div className="px-4 md:px-48 py-12">
       {courses?.length != 0 ? (

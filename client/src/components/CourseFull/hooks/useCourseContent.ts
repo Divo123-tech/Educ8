@@ -57,6 +57,7 @@ const useCourseContent = (courseId: string) => {
     currentContent,
     instructor,
     selectSectionContent,
+    setCourse,
   };
 };
 export default useCourseContent;

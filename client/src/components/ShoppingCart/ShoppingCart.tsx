@@ -117,7 +117,7 @@ const ShoppingCart = () => {
         </div>
         <div className="flex flex-col py-2 gap-4">
           <p className="font-bold text-gray-400">Total:</p>
-          <h1 className="font-bold text-3xl">${totalPrice}</h1>
+          <h1 className="font-bold text-3xl">${totalPrice?.toFixed(2)}</h1>
           <button
             className="bg-green-600 text-white px-16 text-md py-2 font-bold w-full hover:opacity-80"
             onClick={handleCheckout}

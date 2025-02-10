@@ -34,8 +34,14 @@ const CourseFull = () => {
 
   // Use custom hooks
   useCourseAccess(courseId || "");
-  const { course, sections, currentContent, instructor, selectSectionContent } =
-    useCourseContent(courseId || "");
+  const {
+    course,
+    sections,
+    currentContent,
+    instructor,
+    selectSectionContent,
+    setCourse,
+  } = useCourseContent(courseId || "");
   const {
     reviews,
     previousPage,
@@ -45,7 +51,7 @@ const CourseFull = () => {
     setCurrentPage,
     handleReviewsFilter,
     fetchAllReviews,
-  } = useReviews(courseId || "", courseInfoShown);
+  } = useReviews(courseId || "", courseInfoShown, setCourse);
 
   const handleDelete = async () => {
     try {
@@ -111,7 +117,7 @@ const CourseFull = () => {
             <img
               src={
                 typeof currentContent.media === "string"
-                  ? import.meta.env.VITE_API_URL + currentContent.media
+                  ? currentContent.media
                   : ""
               }
               alt="Content"
