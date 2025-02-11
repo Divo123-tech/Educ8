@@ -61,8 +61,9 @@ class SingleSectionContentView(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def is_user_registered_to_course(self, request, course_id):
+        print(str(request.user.id))
         userRegistered = UserCourse.objects.filter(
-            student=str(request.user), course=course_id)
+            student=str(request.user.id), course=course_id)
 
         if userRegistered is None:
             return Response(
@@ -83,7 +84,8 @@ class SingleSectionContentView(APIView):
                 status=status.HTTP_403_FORBIDDEN
             )
         except Exception as e:
-            return Response(serialized_section_content.errors, status=status.HTTP_400_BAD_REQUEST)
+            print(e)
+            return Response({"message": "You are not authorized to see this content."}, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, course_id, content_id, *args, **kwargs):
         try:

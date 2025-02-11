@@ -32,7 +32,7 @@ def is_user_registered_to_course(request, course_id):
 
 def is_course_in_cart(request, course_id):
     course_in_cart = Cart.objects.filter(
-        student=str(request.user), course=course_id)
+        student=str(request.user.id), course=course_id)
 
     if course_in_cart is None:
         return Response(

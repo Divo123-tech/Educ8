@@ -34,8 +34,10 @@ const useCourseContent = (courseId: string) => {
         }
 
         if (courseData?.creator.id) {
-          const instructorData = await getUserInfo(courseData.creator.id);
-          setInstructor(instructorData);
+        console.log(courseData.creator.id);
+        const instructorData = await getUserInfo(courseData.creator.id);
+        console.log(instructorData);
+        setInstructor(instructorData);
         }
       } catch (error) {
         console.error("Error fetching course content:", error);
