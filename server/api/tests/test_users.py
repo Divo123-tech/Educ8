@@ -22,7 +22,7 @@ class UserViewTests(APITestCase):
     def test_user_login(self):
         # This should be the correct path for your TokenObtainPairView
         url = reverse('token-request')
-        data = {'username': 'testuser', 'password': 'password123'}
+        data = {'username': 'testuser@example.com', 'password': 'password123'}
 
         # Send the POST request to obtain the JWT token
         response = self.client.post(url, data, format='json')

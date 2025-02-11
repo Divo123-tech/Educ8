@@ -10,10 +10,10 @@ class CourseStatsAndRevenueTests(APITestCase):
 
         # Create user and authenticate
         self.user = CustomUser.objects.create_user(
-            username='testuser', password='testpassword')
+            username='testuser', password='testpassword', email="user@gmail.com")
         url = reverse('token-request')  # Ensure this matches your token URL
         response = self.client.post(
-            url, {'username': 'testuser', 'password': 'testpassword'}, format='json')
+            url, {'username': 'user@gmail.com', 'password': 'testpassword'}, format='json')
         self.token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
 
@@ -25,7 +25,7 @@ class CourseStatsAndRevenueTests(APITestCase):
 
         # Register another student for revenue testing
         self.student = CustomUser.objects.create_user(
-            username='student', password='studentpassword')
+            username='student', password='studentpassword', email="student@example.com")
         # Enroll student in published course
         UserCourse.objects.create(
             student=self.student, course=self.published_course)

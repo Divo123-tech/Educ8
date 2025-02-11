@@ -11,7 +11,7 @@ class CourseViewTests(APITestCase):
     def setUp(self):
         # Create a user for authentication
         self.user = CustomUser.objects.create_user(
-            username='testuser', password='testpassword')
+            username='testuser', password='testpassword', email="test@gmail.com")
 
         # Create a course for testing
         self.course = Course.objects.create(
@@ -27,7 +27,7 @@ class CourseViewTests(APITestCase):
         # Obtain a JWT token for the user
         url = reverse('token-request')  # TokenObtainPairView URL
         data = {
-            'username': self.user.username,
+            'username': self.user.email,
             'password': 'testpassword'
         }
         response = self.client.post(url, data, format='json')
@@ -145,21 +145,20 @@ class CourseViewTests(APITestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.data['message'], "Course not found")
 
-
 class CoursesTaughtViewTests(APITestCase):
     def setUp(self):
         self.client = APIClient()
 
         # Create two users
         self.user1 = CustomUser.objects.create_user(
-            username='user1', password='password1')
+            username='user1', password='password1', email="user@gmail.com")
         self.user2 = CustomUser.objects.create_user(
-            username='user2', password='password2')
+            username='user2', password='password2', email="user2@gmail.com")
 
         # Authenticate user1
         url = reverse('token-request')
         response = self.client.post(
-            url, {'username': 'user1', 'password': 'password1'}, format='json')
+            url, {'username': 'user@gmail.com', 'password': 'password1'}, format='json')
         self.token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
 

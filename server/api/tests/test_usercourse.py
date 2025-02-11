@@ -11,7 +11,7 @@ class UserCourseViewTests(APITestCase):
     def setUp(self):
         # Create a user for authentication
         self.user = CustomUser.objects.create_user(
-            username='testuser', password='testpassword')
+            username='testuser', password='testpassword', email="testuser@gmail.com")
 
         # Create a course for testing
         self.course = Course.objects.create(
@@ -26,7 +26,7 @@ class UserCourseViewTests(APITestCase):
         # Obtain a JWT token for the user
         url = reverse('token-request')  # TokenObtainPairView URL
         data = {
-            'username': self.user.username,
+            'username': self.user.email,
             'password': 'testpassword'
         }
         response = self.client.post(url, data, format='json')
@@ -59,7 +59,7 @@ class FindUserCourseViewTests(APITestCase):
     def setUp(self):
         # Create a user for authentication
         self.user = CustomUser.objects.create_user(
-            username='testuser', password='testpassword')
+            username='testuser', password='testpassword', email="testuser@example.com")
 
         # Create a course for testing
         self.course = Course.objects.create(
@@ -74,7 +74,7 @@ class FindUserCourseViewTests(APITestCase):
         # Obtain a JWT token for the user
         url = reverse('token-request')  # TokenObtainPairView URL
         data = {
-            'username': self.user.username,
+            'username': self.user.email,
             'password': 'testpassword'
         }
         response = self.client.post(url, data, format='json')
@@ -142,18 +142,18 @@ class UnregisterUserFromCourseViewTests(APITestCase):
 
         # Create user
         self.user = CustomUser.objects.create_user(
-            username='testuser', password='testpassword')
+            username='testuser', password='testpassword', email='testemail@example.com')
 
         # Authenticate user
         url = reverse('token-request')  # Ensure this matches your token URL
         response = self.client.post(
-            url, {'username': 'testuser', 'password': 'testpassword'}, format='json')
+            url, {'username': self.user.email, 'password': 'testpassword'}, format='json')
         self.token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
 
         # Create another user (to test unauthorized deletion)
         self.other_user = CustomUser.objects.create_user(
-            username='otheruser', password='otherpassword')
+            username='otheruser', password='otherpassword', email="otheruser@gmail.com")
 
         # Create a course
         self.course = Course.objects.create(
@@ -191,7 +191,7 @@ class UnregisterUserFromCourseViewTests(APITestCase):
         """Test that a user can successfully unregister from a course."""
         url = reverse('token-request')  # Ensure this matches your token URL
         response = self.client.post(
-            url, {'username': 'otheruser', 'password': 'otherpassword'}, format='json')
+            url, {'username': 'otheruser@gmail.com', 'password': 'otherpassword'}, format='json')
         self.token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
         data = {"userId": self.user.id}

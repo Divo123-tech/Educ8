@@ -9,7 +9,7 @@ class SectionViewTests(APITestCase):
     def setUp(self):
         # Create a user for authentication
         self.user = CustomUser.objects.create_user(
-            username='testuser', password='testpassword')
+            username='testuser', password='testpassword', email="testuser@example.com")
 
         # Create a course for testing
         self.course = Course.objects.create(
@@ -24,7 +24,7 @@ class SectionViewTests(APITestCase):
         # Obtain a JWT token for the user
         url = reverse('token-request')  # TokenObtainPairView URL
         data = {
-            'username': self.user.username,
+            'username': self.user.email,
             'password': 'testpassword'
         }
         response = self.client.post(url, data, format='json')
@@ -41,7 +41,7 @@ class SectionViewTests(APITestCase):
             title="Section 2", position=2, course=self.course)
 
         # Get all sections for the course
-        url = reverse('sections', kwargs={'courseId': self.course.id})
+        url = reverse('sections', kwargs={'course_id': self.course.id})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -49,7 +49,7 @@ class SectionViewTests(APITestCase):
 
     def test_create_section(self):
         # Create a section under the course
-        url = reverse('sections', kwargs={'courseId': self.course.id})
+        url = reverse('sections', kwargs={'course_id': self.course.id})
         data = {
             'title': 'New Section',
             'position': 1,
@@ -65,7 +65,7 @@ class SingleSectionViewTests(APITestCase):
     def setUp(self):
         # Create a user for authentication
         self.user = CustomUser.objects.create_user(
-            username='testuser', password='testpassword')
+            username='testuser', password='testpassword', email="testuser@gmail.com")
 
         # Create a course for testing
         self.course = Course.objects.create(
@@ -80,7 +80,7 @@ class SingleSectionViewTests(APITestCase):
         # Obtain a JWT token for the user
         url = reverse('token-request')  # TokenObtainPairView URL
         data = {
-            'username': self.user.username,
+            'username': self.user.email,
             'password': 'testpassword'
         }
         response = self.client.post(url, data, format='json')
@@ -96,7 +96,7 @@ class SingleSectionViewTests(APITestCase):
 
         # Get the section by its ID
         url = reverse(
-            'single-section', kwargs={'courseId': self.course.id, 'sectionId': section.id})
+            'single-section', kwargs={'course_id': self.course.id, 'section_id': section.id})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -109,7 +109,7 @@ class SingleSectionViewTests(APITestCase):
 
         # Update the section
         url = reverse(
-            'single-section', kwargs={'courseId': self.course.id, 'sectionId': section.id})
+            'single-section', kwargs={'course_id': self.course.id, 'section_id': section.id})
         data = {'title': 'Updated Section', 'position': 1}
         response = self.client.put(url, data, format='json')
 
@@ -125,7 +125,7 @@ class SingleSectionViewTests(APITestCase):
 
         # Change the position of the first section
         url = reverse(
-            'single-section', kwargs={'courseId': self.course.id, 'sectionId': section_1.id})
+            'single-section', kwargs={'course_id': self.course.id, 'section_id': section_1.id})
         data = {'position': 2}  # Changing position to 2
         response = self.client.patch(url, data, format='json')
 
@@ -139,7 +139,7 @@ class SingleSectionViewTests(APITestCase):
 
         # Delete the section
         url = reverse(
-            'single-section', kwargs={'courseId': self.course.id, 'sectionId': section.id})
+            'single-section', kwargs={'course_id': self.course.id, 'section_id': section.id})
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)

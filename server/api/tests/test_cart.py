@@ -10,10 +10,10 @@ class CartViewTests(APITestCase):
 
         # Create user and authenticate
         self.user = CustomUser.objects.create_user(
-            username='testuser', password='testpassword')
+            username='testuser', password='testpassword', email="testuser@gmail.com")
         url = reverse('token-request')  # Ensure this matches your token URL
         response = self.client.post(
-            url, {'username': 'testuser', 'password': 'testpassword'}, format='json')
+            url, {'username': 'testuser@gmail.com', 'password': 'testpassword'}, format='json')
         self.token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
 
@@ -23,7 +23,7 @@ class CartViewTests(APITestCase):
 
         # Create another user for testing unauthorized access
         self.other_user = CustomUser.objects.create_user(
-            username='otheruser', password='otherpassword')
+            username='otheruser', password='otherpassword', email="otheruser@example.com")
 
         # Create a cart entry
         self.cart = Cart.objects.create(student=self.user, course=self.course)
