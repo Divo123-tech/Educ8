@@ -84,7 +84,7 @@ const StudentsCourseDialog = ({ courseId }: Props) => {
           <UserSearch size={22} />
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] overflow-y-scroll max-h-96">
         <DialogHeader>
           <DialogTitle>Find Students Taking Your Course</DialogTitle>
           <DialogDescription>
