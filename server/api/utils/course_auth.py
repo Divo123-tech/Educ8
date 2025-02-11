@@ -23,7 +23,7 @@ def is_user_reviewer(request, review_id):
 
 def is_user_registered_to_course(request, course_id):
     userRegistered = UserCourse.objects.filter(
-        student=str(request.user), course=course_id)
+        student=str(request.user.id), course=course_id)
 
     if userRegistered is None:
         return False
