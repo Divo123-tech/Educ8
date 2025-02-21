@@ -2,6 +2,8 @@
 
 Welcome to **Educ8**, the next-generation e-learning platform built for modern learners and educators. Whether you're a student eager to take courses or an instructor looking to share your knowledge, Educ8 provides an interactive and intuitive learning environment for everyone.
 
+To see a full comprehensive <a href="https://drive.google.com/file/d/1lcBhi3bMnhVNPWpBxiQN5dDpTAemG8As/view?usp=sharing">report</a>
+
 ---
 
 ## **Table of Contents**
