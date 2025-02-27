@@ -123,11 +123,11 @@ const UserProfile = () => {
             return <CourseHomePageSkeleton key={number} />;
           })
         ) : (
-          <div>
+          <>
             {courses?.map((course: Course) => {
               return <CourseHomeScreen course={course} key={course.id} />;
             })}
-          </div>
+          </>
         )}
       </div>
       <div className="ml-auto">
