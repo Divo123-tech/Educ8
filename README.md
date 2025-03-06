@@ -8,7 +8,7 @@ password: password
 
 To see a full comprehensive <a href="https://drive.google.com/file/d/1lcBhi3bMnhVNPWpBxiQN5dDpTAemG8As/view?usp=sharing">report</a>
 
-Deployed Backend: <a href="https://zgd9uda7ec.ap-northeast-1.awsapprunner.com/">Link</a>
+Deployed Backend: <a href="https://zgd9uda7ec.ap-northeast-1.awsapprunner.com/api/docs">Link</a>
 
 ---
 
