@@ -1,6 +1,6 @@
 # **Educ8 - E-Learning Platform**
 
-Welcome to **Educ8**, the next-generation e-learning platform built for modern learners and educators. Whether you're a student eager to take courses or an instructor looking to share your knowledge, Educ8 provides an interactive and intuitive learning environment for everyone.
+Educ8 is a full-stack e-learning platform meant to clone the look and functionality of <a href="https://www.udemy.com/">Udemy</a> built with React, Tailwind, PostgreSQL, Django, web sockets, and deployed with Docker and AWS, providing users a seamless experience to both take and teach courses.
 
 Login Details <br>
 email: angelayu@gmail.com <br>
