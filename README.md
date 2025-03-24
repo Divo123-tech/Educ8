@@ -26,8 +26,8 @@ Deployed Backend: <a href="https://zgd9uda7ec.ap-northeast-1.awsapprunner.com/ap
 ---
 
 ## **About Educ8**
+Educ8 is a full-stack e-learning platform meant to clone the look and functionality of <a href="https://www.udemy.com/">Udemy</a> built with React, Tailwind, PostgreSQL, Django, web sockets, and deployed with Docker and AWS, providing users a seamless experience to both take and teach courses.
 
-Educ8 is a feature-rich e-learning platform designed to connect learners with educators seamlessly. It allows students to register for courses, track their learning progress, and interact with instructors in real-time. 
 
 ### Key Features:
 - **Real-Time Communication**: Chat with instructors and fellow students during live sessions using WebSockets powered by Django Channels and Redis. This provides an engaging and interactive experience in real-time.
