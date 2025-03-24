@@ -20,7 +20,6 @@ Deployed Backend: <a href="https://zgd9uda7ec.ap-northeast-1.awsapprunner.com/ap
 - [Installation Guide](#installation-guide)
 - [Development Setup](#development-setup)
 - [Deployment](#deployment)
-- [Contributing](#contributing)
 - [License](#license)
 
 ---
