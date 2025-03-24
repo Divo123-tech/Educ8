@@ -31,6 +31,11 @@ Educ8 is a feature-rich e-learning platform designed to connect learners with ed
 
 ### Key Features:
 - **Real-Time Communication**: Chat with instructors and fellow students during live sessions using WebSockets powered by Django Channels and Redis. This provides an engaging and interactive experience in real-time.
+- **User Authentication**: Utilized JWT authentication and authorization to ensure secure API endpoints
+- **AWS S3 Integration**: Integrated AWS S3 to efficiently store and retrieve media files.
+- **Analytics Dashboard**: Provided a comprehensive analytics dashboard for teachers to see statistics of their courses including revenue, students, and price.
+- **CourseRegistration**: Users can take and review courses.
+- **Responsive Design**: Responsive across 8 different devices from a small Iphone to a large desktop
 - **Course Management**: Educators can create, update, and publish courses with video lessons, quizzes, and assignments.
 - **Personalized Experience**: Students can browse through courses by categories, search, and filter for the courses that match their needs.
 
