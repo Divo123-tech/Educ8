@@ -69,7 +69,6 @@ Educ8 offers a wide range of features for both students and instructors:
 - **Progress Tracking**: View your learning progress and completed courses.
 - **Live Chat**: Real-time chat with instructors and other students using WebSockets. Stay connected and engage during live sessions and group discussions.
 - **Search & Filters**: Find courses based on category, course name, or creator.
-- **Assignments**: Submit assignments and get real-time feedback.
 
 ### **For Instructors:**
 - **Course Creation**: Create and manage your courses, add lessons, quizzes, and assignments.
@@ -194,33 +193,6 @@ For production deployment, we use **AWS S3**, **AWS RDS**, and **Docker** to ens
 
 By leveraging AWS services and Docker, the deployment is optimized for scalability, reliability, and performance in a production environment.
 
-
----
-
-## **Contributing**
-
-We welcome contributions from the community! Here's how you can help:
-
-1. **Fork the repository**.
-2. **Clone your fork**:
-    ```bash
-    git clone https://github.com/Divo123-tech/educ8.git
-    ```
-3. Create a **branch** for your feature:
-    ```bash
-    git checkout -b feature/your-feature-name
-    ```
-4. Make your changes and **commit**:
-    ```bash
-    git commit -m "Add feature: your-feature-name"
-    ```
-5. **Push your changes** to your fork:
-    ```bash
-    git push origin feature/your-feature-name
-    ```
-6. Create a **pull request** with a description of your changes.
-
----
 
 ## **License**
 
