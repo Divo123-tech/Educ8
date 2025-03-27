@@ -31,6 +31,7 @@ function App() {
     <>
       <UserProvider>
         {!hideNavigationBar && <NavigationBar />}
+        {/* all routes */}
         <Routes location={location}>
           <Route path={"/"} element={<HomePage />}></Route>
           <Route path={"/login"} element={<Login />}></Route>
